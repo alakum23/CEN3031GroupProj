@@ -1,0 +1,22 @@
+{
+  "name": "cen3031groupproj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alakum23/CEN3031GroupProj.git"
+  },
+  "author": "Gabriel Aldous, Reva Vijiyan, Anushka Lakum, Muhammad Ebrahim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alakum23/CEN3031GroupProj/issues"
+  },
+  "homepage": "https://github.com/alakum23/CEN3031GroupProj#readme"
+}
