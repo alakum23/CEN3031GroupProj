@@ -40,7 +40,7 @@ jobs:
 
       # Run Unit Tests on Client src
       - run: 
-          name: Test Client Src
+          name: Run Client Src Unit Tests
           command: npm run test -- --selectProjects client
 
       # Build Dev Client
@@ -51,7 +51,7 @@ jobs:
 
       # Run our tests
       - run: 
-          name: Test Dev Client
+          name: Run Client Dev Build Unit Tests
           command: |
             npm run test -- --selectProjects build
 
@@ -63,7 +63,7 @@ jobs:
 
       # Run our test
       - run: 
-          name: Test Prod Client
+          name: Run Client Prod Build Unit Tests
           command: |
             npm run test -- --selectProjects build
 
@@ -83,8 +83,28 @@ jobs:
       - run: npm install
 
       # Run server unit tests
-      - run: npm run test -- --selectProjects server
+      - run: 
+          name: Run Server Unit Tests
+          command: |
+            npm run test -- --selectProjects server
 
+  # Lint the src code
+  lint: 
+    # Set execution environment to latest node JS version
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+      
+      # Install dependencies
+      - run: npm install
+
+      # Lint the code
+      - run: npm run lint
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -96,5 +116,6 @@ workflows:
 
   build-and-test-workflow:
     jobs:
+      - lint
       - build-and-test-client
       - build-and-test-server
