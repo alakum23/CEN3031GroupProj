@@ -10,5 +10,5 @@ test('adds 3 + 2 to equal 5', () => {
 });
 
 test('mult(3, 2) equals 6', () =>  {
-    expect(mult(3, 2)).toBe(6);
+    expect(mult(3, 2)).toBe(9);
 });
