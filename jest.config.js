@@ -9,7 +9,7 @@ module.exports = {
             rootDir: './',
             displayName: "client",
             testEnvironment: "jsdom",
-            testRegex: "./test/frontend/.*\\.(js|jsx)$",
+            testRegex: "./test/client/.*\\.(js|jsx)$",
             moduleNameMapper:  {
                 "\\.(css|sass)$": "identity-obj-proxy"
             }
@@ -19,7 +19,7 @@ module.exports = {
             rootDir: './',
             displayName: "server",
             testEnvironment: "node",
-            testRegex: "./test/backend/.*\\.(js|jsx)$"
+            testRegex: "./test/server/.*\\.(js|jsx)$"
         },
         // Run the built client unit tests
         {

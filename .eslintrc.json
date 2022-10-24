@@ -6,20 +6,20 @@
         "eslint:recommended"
     ],
     "overrides":  [
-        // An override for linting the NODE backend
+        // An override for linting the NODE server
         {
             "files":  [
-                "./src/backend/**/*.js"
+                "./src/server/**/*.js"
             ],
             "env": {
                 // For NODE JS globals
                 "node": true
             }
         },
-        // An override for linting the frontend src files
+        // An override for linting the client src files
         {
             "files":  [
-                "./src/frontend/**/*.js"
+                "./src/client/**/*.js"
             ],
             "env":  {
                 // For browser globals

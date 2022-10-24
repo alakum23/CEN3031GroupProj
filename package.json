@@ -4,7 +4,17 @@
   "description": "",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ./src/client & eslint ./src/server & eslint ./test",
+    "test": "jest --config ./jest.config.js",
+    "coverage": "jest --coverage",
+    "removeCoverage": "rmdir /s /q coverage",
+    "removeDist": "rmdir /s /q dist",
+    "removeNodeModules": "rmdir /s /q node_modules",
+    "buildTests": "webpack --config ./webpack/webpack.tests.js",
+    "buildDev": "npm run removeDist & webpack --config ./webpack/webpack.dev.js && webpack --config ./webpack/webpack.tests.js --env mode=development",
+    "buildProd": "npm run removeDist & webpack --config ./webpack/webpack.prod.js && webpack --config ./webpack/webpack.tests.js --env mode=production",
+    "startDev": "npm run buildDev && node ./src/server/server.js development",
+    "startProd": "npm run buildProd && node ./src/server/server.js production"
   },
   "repository": {
     "type": "git",
