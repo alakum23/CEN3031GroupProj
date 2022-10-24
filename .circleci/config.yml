@@ -26,6 +26,7 @@ jobs:
   # Build and test the client dev and prod and src code
   build-and-test-client:
     # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
     executor: node/default
     steps:
       # Checkout the code as the first step
@@ -34,9 +35,6 @@ jobs:
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
-      
-      # Install dependencies
-      - run: npm install
 
       # Run Unit Tests on Client src
       - run: 
@@ -70,6 +68,7 @@ jobs:
   # Build and test the server
   build-and-test-server:
     # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
     executor: node/default
     steps:
       # Checkout the code as the first step
@@ -78,9 +77,6 @@ jobs:
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
-      
-      # Install dependencies
-      - run: npm install
 
       # Run server unit tests
       - run: 
@@ -99,9 +95,6 @@ jobs:
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
-      
-      # Install dependencies
-      - run: npm install
 
       # Lint the code
       - run: npm run lint
