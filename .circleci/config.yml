@@ -23,30 +23,8 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
 
-  # Build Client Job
-  build:
-    executor: node/default
-    steps:
-      # Checkout the code as the first step
-      - checkout
-
-      # Set NPM as the Node package manager
-      - node/install-packages:
-        pkg-manager: "npm"
-
-      # Run our tests
-      - run:
-          name: Build Dev Client
-          command: |
-            npm run buildDev
-      - run:
-          name: Build Prod Client
-          command: |
-            npm run buildProd
-
-
-  # Unit Test Job
-  test:
+  # Build-And-Test-Job
+  build-and-test:
     # Set execution environment to latest node JS version
     executor: node/default
     steps:
@@ -60,9 +38,34 @@ jobs:
       # Install dependencies
       - run: npm install
 
-      # Run our tests
-      - run: npm run test
+      # Run Unit Tests on SRC
+      - run: 
+          name: Test SRC Code
+          command: npm run test
 
+      # Build Dev Client
+      - run:
+          name: Build Dev Client
+          command: |
+            npm run buildDev
+
+      # Run our tests
+      - run: 
+          name: Test Dev Client
+          command: |
+            jest --config ./jest.config.js --selectProjects build
+
+      # Build Prod Client
+      - run:
+          name: Build Prod Client
+          command: |
+            npm run buildProd
+
+      # Run our test
+      - run: 
+          name: Test Prod Client
+          command: |
+            jest --config ./jest.config.js --selectProjects build
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -74,5 +77,4 @@ workflows:
 
   build-and-test-workflow:
     jobs:
-      - build
-      - test
+      - build-and-test
