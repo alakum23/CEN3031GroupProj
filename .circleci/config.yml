@@ -2,6 +2,10 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+# Specify we are using the latest NODE JS orb
+orbs:
+  node: circleci/node@5.0.2
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -21,9 +25,7 @@ jobs:
 
   # Build Client Job
   build:
-    docker:
-      image: cimg/node:lts
-    working_directory: ~/
+    executor: node/default
     steps:
       # Checkout the code as the first step
       - checkout
@@ -46,9 +48,7 @@ jobs:
   # Unit Test Job
   test:
     # Set execution environment to latest node JS version
-    docker:
-      image: cimg/node:lts
-    working_directory: ~/
+    executor: node/default
     steps:
       # Checkout the code as the first step
       - checkout
@@ -56,11 +56,12 @@ jobs:
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
+      
+      # Install dependencies
+      - run: npm install
 
       # Run our tests
-      - run:
-        name: Run Unit Tests
-        command: npm run test
+      - run: npm run test
 
 
 # Invoke jobs via workflows
