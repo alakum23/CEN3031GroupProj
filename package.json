@@ -10,7 +10,6 @@
     "removeCoverage": "rmdir /s /q coverage",
     "removeDist": "rmdir /s /q dist",
     "removeNodeModules": "rmdir /s /q node_modules",
-    "buildTests": "webpack --config ./webpack/webpack.tests.js",
     "buildDev": "npm run removeDist & webpack --config ./webpack/webpack.dev.js && webpack --config ./webpack/webpack.tests.js --env mode=development",
     "buildProd": "npm run removeDist & webpack --config ./webpack/webpack.prod.js && webpack --config ./webpack/webpack.tests.js --env mode=production",
     "startDev": "npm run buildDev && node ./src/server/server.js development",
