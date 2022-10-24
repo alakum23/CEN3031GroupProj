@@ -5,6 +5,7 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  # Hello-World Job
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -18,9 +19,59 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
 
+  # Build Client Job
+  build:
+    docker:
+      image: cimg/node:lts
+    working_directory: ~/
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Run our tests
+      - run:
+          name: Build Dev Client
+          command: |
+            npm run buildDev
+      - run:
+          name: Build Prod Client
+          command: |
+            npm run buildProd
+
+
+  # Unit Test Job
+  test:
+    # Set execution environment to latest node JS version
+    docker:
+      image: cimg/node:lts
+    working_directory: ~/
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Run our tests
+      - run:
+        name: Run Unit Tests
+        command: npm run test
+
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
+  # Run the hello world job
   say-hello-workflow:
     jobs:
       - say-hello
+
+  build-and-test-workflow:
+    jobs:
+      - build
+      - test
