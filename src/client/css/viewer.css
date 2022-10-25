@@ -6,6 +6,13 @@ html, body, #cesiumContainer {
     overflow: hidden;
 }
 
+#pageButton  {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+
 /* Here is a sample of how to use images within CSS classes */
 .comp-sci-pic  {
     background-image: url('../img/Comp-Sci-Img.jpg');
