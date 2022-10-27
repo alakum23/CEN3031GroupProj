@@ -1,0 +1,23 @@
+html, body, #cesiumContainer {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#pageButton  {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+
+/* Here is a sample of how to use images within CSS classes */
+.comp-sci-pic  {
+    background-image: url('../img/Comp-Sci-Img.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: auto;
+    height: 25%;
+}

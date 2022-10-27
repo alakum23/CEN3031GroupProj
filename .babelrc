@@ -1,0 +1,4 @@
+{
+  	// File used for specifying options for webpacking the express server
+    "presets": [ "@babel/preset-env" ]
+}

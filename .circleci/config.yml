@@ -2,9 +2,14 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+# Specify we are using the latest NODE JS orb
+orbs:
+  node: circleci/node@5.0.2
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  # Hello-World Job
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -18,9 +23,92 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
 
+  # Build and test the client dev and prod and src code
+  build-and-test-client:
+    # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Run Unit Tests on Client src
+      - run: 
+          name: Run Client Src Unit Tests
+          command: npm run test -- --selectProjects client
+
+      # Build Dev Client
+      - run:
+          name: Build Dev Client
+          command: |
+            npm run buildDev
+
+      # Run our tests
+      - run: 
+          name: Run Client Dev Build Unit Tests
+          command: |
+            npm run test -- --selectProjects build
+
+      # Build Prod Client
+      - run:
+          name: Build Prod Client
+          command: |
+            npm run buildProd
+
+      # Run our test
+      - run: 
+          name: Run Client Prod Build Unit Tests
+          command: |
+            npm run test -- --selectProjects build
+
+  # Build and test the server
+  build-and-test-server:
+    # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Run server unit tests
+      - run: 
+          name: Run Server Unit Tests
+          command: |
+            npm run test -- --selectProjects server
+
+  # Lint the src code
+  lint: 
+    # Set execution environment to latest node JS version
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Lint the code
+      - run: npm run lint
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
+  # Run the hello world job
   say-hello-workflow:
     jobs:
       - say-hello
+
+  build-and-test-workflow:
+    jobs:
+      - lint
+      - build-and-test-client
+      - build-and-test-server

@@ -1,0 +1,42 @@
+{
+    // Setup to use the babel parser that webpack builds with
+    "parser": "@babel/eslint-parser",
+    // Use the recommended rules
+    "extends": [
+        "eslint:recommended"
+    ],
+    "overrides":  [
+        // An override for linting the NODE server
+        {
+            "files":  [
+                "./src/server/**/*.js"
+            ],
+            "env": {
+                // For NODE JS globals
+                "node": true
+            }
+        },
+        // An override for linting the client src files
+        {
+            "files":  [
+                "./src/client/**/*.js"
+            ],
+            "env":  {
+                // For browser globals
+                "browser": true,
+                // For webpack globals 
+                "commonjs": true
+            }
+        },
+        // An override for linting testing files with jest
+        {
+            "files": [
+                "./test/**/*.test.js"
+            ],
+            "env": {
+                // For jest globals
+                "jest": true
+            }
+        }
+    ]
+}
