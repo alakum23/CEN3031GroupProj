@@ -84,6 +84,30 @@ jobs:
           command: |
             npm run test -- --selectProjects server
 
+  e2e-testing: 
+    # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Build Prod Client
+      - run:
+          name: Build Prod Client
+          command: |
+            npm run buildProd
+
+      # Run server unit tests
+      - run: 
+          name: Run Production E2E Tests
+          command: |
+            npm run test -- --selectProjects "End To End Tests"
+
   # Lint the src code
   lint: 
     # Set execution environment to latest node JS version
@@ -112,3 +136,4 @@ workflows:
       - lint
       - build-and-test-client
       - build-and-test-server
+      - e2e-testing
