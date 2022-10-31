@@ -85,25 +85,25 @@ jobs:
           command: |
             npm run test -- --selectProjects server
 
-  e2e-testing: 
-    # Set execution environment to latest node JS version
-    # It auto performs NPM package installation and other steps
-    executor: node/default
+  install-chrome:
     docker:
-    - image: 'cimg/node:13.12-browsers'
+      - image: 'browser-tools/default'
     steps:
-      # Checkout the code as the first step
-      - checkout
-
       # Install Chrome
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
 
+  e2e-testing: 
+    # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
-
-      
 
       # Build Prod Client
       - run:
@@ -145,4 +145,6 @@ workflows:
       - lint
       - build-and-test-client
       - build-and-test-server
+
+      - install-chrome
       - e2e-testing
