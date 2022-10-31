@@ -16,7 +16,7 @@ beforeAll(async () => {
     server = app.listen(port);
     browser = await puppeteer.launch({
         //headless:false, uncomment this if you want to see the pages open up 
-        args: ["--no-sandbox"]
+        args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
 });
 
