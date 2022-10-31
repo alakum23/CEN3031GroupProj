@@ -36,8 +36,6 @@ afterAll(async () => {
 });
 
 
-
-
 // Test functions here
 describe('Page Navigation Tests', () =>  {
 
