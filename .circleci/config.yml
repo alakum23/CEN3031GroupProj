@@ -4,8 +4,8 @@ version: 2.1
 
 # Specify we are using the latest NODE JS orb
 orbs:
-  node: circleci/node:latest-browsers
-  #puppeteer: threetreeslight/puppeteer@0.1.2
+  node: circleci/node@5.0.2
+  browser-tools: circleci/browser-tools@1.4.0
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -89,16 +89,20 @@ jobs:
     # Set execution environment to latest node JS version
     # It auto performs NPM package installation and other steps
     executor: node/default
+    - image: 'cimg/node:13.12-browsers'
     steps:
       # Checkout the code as the first step
       - checkout
+
+      # Install Chrome
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
 
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
 
-      #- Install Headless Chrome dependencies
-      #- Install puppeteer with chronium
+      
 
       # Build Prod Client
       - run:
