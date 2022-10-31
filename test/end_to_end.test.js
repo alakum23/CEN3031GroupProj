@@ -17,6 +17,16 @@ beforeAll(async () => {
     browser = await puppeteer.launch();
 });
 
+// Do this before every test is run
+beforeEach(async () =>  {
+    page = await browser.newPage();
+});
+
+// Do this after every test is run
+afterEach(async () =>  {
+    await page.close();
+});
+
 // Do this after all test finishes
 afterAll(async () => {
     browser.close();
@@ -30,24 +40,14 @@ afterAll(async () => {
 
 // Test functions here
 describe('Page Navigation Tests', () =>  {
-    // Do this before all the page navigation tests starts
-    
-    // Do this after all the page navigation tests finish
-
-    // Tests
 
     it('Should display the /viewer page properly', async () =>  {
-        page = await browser.newPage(); 
         await page.goto(`http://127.0.0.1:${port}/viewer`, { waitUntil: "domcontentloaded" }); 
         expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
         await expect(page.title()).resolves.toMatch('HazardVis');
-
-        await page.close();
     }, maxTestTime);
 
     it('Should redirect nonsense routes to /viewer', async () => {
-        page = await browser.newPage();
-
         await page.goto(`http://127.0.0.1:${port}`); 
         expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
         await expect(page.title()).resolves.toMatch('HazardVis');
@@ -59,39 +59,25 @@ describe('Page Navigation Tests', () =>  {
         await page.goto(`http://127.0.0.1:${port}/nonsense-route/nested-again/crazy-route`); 
         expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
         await expect(page.title()).resolves.toMatch('HazardVis');
-
-        await page.close();
     }, maxTestTime);
 });
 
 // Test functions here
 describe('Api Route Tests', () =>  {
-    // Do this before all the api route tests start
 
-
-    // Tests
-
-    it('Should return some data when going to /api/test route', async () =>  {
-        page = await browser.newPage(); 
+    it('Should return some data when going to /api/test route', async () =>  { 
         await page.goto(`http://127.0.0.1:${port}/api/test`, { waitUntil: "domcontentloaded" }); 
         expect(page.url()).toBe(`http://127.0.0.1:${port}/api/test`);
         
         let text = await page.evaluate(() => document.body.textContent)
         expect(text).toContain('{\"body\":\"Hello\"}');
-
-        await page.close();
     }, maxTestTime);
 });
 
 // Test functions here
 describe('Viewer Page UI', () =>  {
 
-    // Do this before all the viewer page UI tests start
-
-    // Tests
-
     it('Should have a viewer element on the page', async () =>  {
-        page = await browser.newPage(); 
         await page.goto(`http://127.0.0.1:${port}/viewer`, { waitUntil: "domcontentloaded" }); 
 
         await page.waitForSelector('#cesiumContainer');
@@ -102,6 +88,5 @@ describe('Viewer Page UI', () =>  {
         });
 
         expect(containerExists).toBeTruthy();
-        await page.close();
     }, maxTestTime);
 });
