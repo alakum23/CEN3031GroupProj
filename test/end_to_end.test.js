@@ -14,7 +14,10 @@ let page;
 beforeAll(async () => {
     port = await portfinder.getPortPromise();
     server = app.listen(port);
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+        //headless:false, uncomment this if you want to see the pages open up 
+        args: ["--no-sandbox"]
+    });
 });
 
 // Do this before every test is run
