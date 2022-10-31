@@ -85,21 +85,20 @@ jobs:
           command: |
             npm run test -- --selectProjects server
 
-  install-chrome:
-    docker:
-      - image: 'browser-tools/default'
-    steps:
-      # Install Chrome
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
 
   e2e-testing: 
     # Set execution environment to latest node JS version
     # It auto performs NPM package installation and other steps
+    docker:
+      - image: 'browser-tools/default'
     executor: node/default
     steps:
       # Checkout the code as the first step
       - checkout
+
+      # Install Chrome
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
 
       # Set NPM as the Node package manager
       - node/install-packages:
@@ -145,6 +144,4 @@ workflows:
       - lint
       - build-and-test-client
       - build-and-test-server
-
-      - install-chrome
       - e2e-testing
