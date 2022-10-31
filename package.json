@@ -5,7 +5,8 @@
   "main": "",
   "scripts": {
     "lint": "eslint ./src/client & eslint ./src/server & eslint ./test",
-    "test": "jest --config ./jest.config.js",
+    "e2e": "jest --config ./jest.config.js --selectProjects \"End To End Tests\"",
+    "test": "jest --config ./jest.config.js --selectProjects client server build",
     "coverage": "jest --coverage",
     "removeCoverage": "rmdir /s /q coverage",
     "removeDist": "rmdir /s /q dist",
