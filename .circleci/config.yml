@@ -88,7 +88,6 @@ jobs:
     # Set execution environment to latest node JS version
     # It auto performs NPM package installation and other steps
     executor: node/default
-    NODE_ENV: development
     steps:
       # Checkout the code as the first step
       - checkout
