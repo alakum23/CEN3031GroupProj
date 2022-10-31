@@ -31,12 +31,22 @@
         // An override for linting testing files with jest
         {
             "files": [
-                "./test/**/*.test.js",
-                "./e2e/**/*.test.js"
+                "./test/**/*.test.js"
             ],
             "env": {
                 // For jest globals
                 "jest": true
+            }
+        },
+        // An override for linting the e2e test file
+        {
+            "files": [
+                "./test/end_to_end.test.js"
+            ],
+            "env":  {
+                "jest": true,
+                "browser": true,
+                "es6": true
             }
         }
     ]

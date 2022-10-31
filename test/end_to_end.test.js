@@ -68,7 +68,7 @@ describe('Api Route Tests', () =>  {
         expect(page.url()).toBe(`http://127.0.0.1:${port}/api/test`);
         
         let text = await page.evaluate(() => document.body.textContent)
-        expect(text).toContain('{\"body\":\"Hello\"}');
+        expect(text).toContain('{"body":"Hello"}');
     }, maxTestTime);
 });
 
