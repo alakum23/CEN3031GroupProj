@@ -37,7 +37,8 @@ module.exports = {
         {
             rootDir: './',
             displayName: "End To End Tests",
-            testRegex: "./e2e/.*\\.test.(js|jsx)$",
+            testRegex: "./test/end_to_end.test.(js|jsx)$",
+            testEnvironment: 'node'
         }
     ]
 };

@@ -4,30 +4,35 @@ const portfinder = require('portfinder');
 const app = require('../src/server/server.js');
 const maxTestTime = 30000;
 
+// Gloabls that we need
+let server = null;
+let port = null;
+let browser;
+let page;
+
+// Do this before the tests run
+beforeAll(async () => {
+    port = await portfinder.getPortPromise();
+    server = app.listen(port);
+    browser = await puppeteer.launch();
+});
+
+// Do this after all test finishes
+afterAll(async () => {
+    browser.close();
+    server.close();
+    // Include a small delay to allow server to close and avoid a warning message
+    await new Promise(resolve => setTimeout(() => resolve(), 500));
+});
+
+
+
+
 // Test functions here
 describe('Page Navigation Tests', () =>  {
-    let server = null;
-    let port = null;
-    let browser;
-    let page;
-
-    // Do this before all the page navigation tests start
-    beforeAll(async () => {
-        port = await portfinder.getPortPromise();
-        server = app.listen(port);
-        browser = await puppeteer.launch();
-    });
-    
-    // Do this after each test finishes
-    afterEach(async () => {
-        await page.close();
-    });
+    // Do this before all the page navigation tests starts
     
     // Do this after all the page navigation tests finish
-    afterAll(async () => {
-        await browser.close();
-        await server.close();
-    });
 
     // Tests
 
@@ -36,6 +41,8 @@ describe('Page Navigation Tests', () =>  {
         await page.goto(`http://127.0.0.1:${port}/viewer`, { waitUntil: "domcontentloaded" }); 
         expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
         await expect(page.title()).resolves.toMatch('HazardVis');
+
+        await page.close();
     }, maxTestTime);
 
     it('Should redirect nonsense routes to /viewer', async () => {
@@ -52,33 +59,15 @@ describe('Page Navigation Tests', () =>  {
         await page.goto(`http://127.0.0.1:${port}/nonsense-route/nested-again/crazy-route`); 
         expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
         await expect(page.title()).resolves.toMatch('HazardVis');
+
+        await page.close();
     }, maxTestTime);
 });
 
 // Test functions here
 describe('Api Route Tests', () =>  {
-    let server = null;
-    let port = null;
-    let browser;
-    let page;
+    // Do this before all the api route tests start
 
-    // Do this before all the page navigation tests start
-    beforeAll(async () => {
-        port = await portfinder.getPortPromise();
-        server = app.listen(port);
-        browser = await puppeteer.launch();
-    });
-    
-    // Do this after each test finishes
-    afterEach(async () => {
-        await page.close();
-    });
-    
-    // Do this after all the page navigation tests finish
-    afterAll(async () => {
-        await browser.close();
-        await server.close();
-    });
 
     // Tests
 
@@ -89,33 +78,15 @@ describe('Api Route Tests', () =>  {
         
         let text = await page.evaluate(() => document.body.textContent)
         expect(text).toContain('{\"body\":\"Hello\"}');
+
+        await page.close();
     }, maxTestTime);
 });
 
 // Test functions here
 describe('Viewer Page UI', () =>  {
-    let server = null;
-    let port = null;
-    let browser;
-    let page;
 
-    // Do this before all the page navigation tests start
-    beforeAll(async () => {
-        port = await portfinder.getPortPromise();
-        server = app.listen(port);
-        browser = await puppeteer.launch();
-    });
-    
-    // Do this after each test finishes
-    afterEach(async () => {
-        await page.close();
-    });
-    
-    // Do this after all the page navigation tests finish
-    afterAll(async () => {
-        await browser.close();
-        await server.close();
-    });
+    // Do this before all the viewer page UI tests start
 
     // Tests
 
@@ -131,5 +102,6 @@ describe('Viewer Page UI', () =>  {
         });
 
         expect(containerExists).toBeTruthy();
+        await page.close();
     }, maxTestTime);
 });
