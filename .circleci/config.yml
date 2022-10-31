@@ -89,7 +89,8 @@ jobs:
     # Set execution environment to latest node JS version
     # It auto performs NPM package installation and other steps
     executor: node/default
-    image: 'cimg/node:13.12-browsers'
+    docker:
+    - image: 'cimg/node:13.12-browsers'
     steps:
       # Checkout the code as the first step
       - checkout
