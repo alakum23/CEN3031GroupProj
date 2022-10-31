@@ -5,7 +5,6 @@ version: 2.1
 # Specify we are using the latest NODE JS orb
 orbs:
   node: circleci/node@5.0.2
-  browser-tools: circleci/browser-tools@1.4.0
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -90,7 +89,7 @@ jobs:
     # Set execution environment to latest node JS version
     # It auto performs NPM package installation and other steps
     docker:
-      - image: 'browser-tools/default'
+      - image: circleci/node:12-browsers
     executor: node/default
     steps:
       # Checkout the code as the first step
