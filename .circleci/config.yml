@@ -95,10 +95,6 @@ jobs:
       # Checkout the code as the first step
       - checkout
 
-      # Install Chrome
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-
       # Set NPM as the Node package manager
       - node/install-packages:
         pkg-manager: "npm"
