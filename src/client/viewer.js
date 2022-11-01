@@ -38,7 +38,7 @@ const wildfirePin = Promise.resolve(
   pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80)
 ).then(function (canvas) {
   return viewer.entities.add({
-    name: "Grocery store",
+    name: "Wildfire Pin",
     position: Cartesian3.fromDegrees(-75.1705217, 39.921786),
     billboard: {
       image: canvas.toDataURL(),
