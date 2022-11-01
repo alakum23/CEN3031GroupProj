@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math } from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, buildModuleUrl} from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -29,24 +29,27 @@ const viewer = new Viewer('cesiumContainer', {
 // Add Cesium OSM Buildings, a global 3D buildings layer.
 viewer.scene.primitives.add(createOsmBuildings());   
 
+// Cesium provided class for making pin icons
+const pinBuilder = new PinBuilder();
+
+// Create a wildfire pin on the map
+import * as wildfireImg from "./img/Wildfire.png";
+const wildfirePin = Promise.resolve(
+  pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80)
+).then(function (canvas) {
+  return viewer.entities.add({
+    name: "Grocery store",
+    position: Cartesian3.fromDegrees(-75.1705217, 39.921786),
+    billboard: {
+      image: canvas.toDataURL(),
+      verticalOrigin: VerticalOrigin.BOTTOM,
+    },
+  });
+});
+
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
 
 // Test making an api call to the backend express app
 let req = fetch("http://localhost:8080/api/test");
 req.then(response => console.log(response));
-
-
-// Sample for how to import an image file for use in js
-// Uncomment this code and have a div with ID 'HiThere' in the viewer.html to see this in action.
-/*
-import * as url from "./img/Comp-Sci-Img.jpg";  // Import's the image with the name 'url' for use in the JS file.
-let img = document.createElement('img');
-img.style = {
-  height: '25%',
-  width: '25'
-};
-img.src = url.default;
-console.log('imported', url);
-document.getElementById('HiThere').appendChild(img);
-*/
