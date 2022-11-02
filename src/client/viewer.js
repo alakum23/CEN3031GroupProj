@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, HeightReference} from "cesium";
+import { Ion, Viewer, BillboardCollection, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, HeightReference} from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -80,6 +80,26 @@ const earthquakePin = Promise.resolve(
   });
 });
 
+// Make an array of pins
+let billboards = new BillboardCollection({ scene: viewer.scene});
+const pinsArray = [];
+for (let i = 0; i < 200; i++)  {
+  pinsArray[i] = pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80);
+}
+Promise.all(pinsArray).then(function (pins)  {
+  pins.forEach(element => {
+    console.log(element);
+    return billboards.add({
+      id: "Wildfire Pin",
+      position: Cartesian3.fromDegrees(Math.randomBetween(-180, 180), Math.randomBetween(-90, 90)),
+      image: element.toDataURL(),
+      verticalOrigin: VerticalOrigin.BOTTOM,
+      heightReference: HeightReference.CLAMP_TO_GROUND,
+      // Look into aligned axis and some math to fix visual bug?
+    });
+  });
+});
+viewer.scene.primitives.add(billboards);
 
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
