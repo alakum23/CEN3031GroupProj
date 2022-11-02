@@ -47,6 +47,37 @@ const wildfirePin = Promise.resolve(
   });
 });
 
+// Create a flooding pin on the map
+import * as floodingImg from "./img/Comp-Sci-Img.jpg";
+const floodingPin = Promise.resolve(
+  pinBuilder.fromUrl(floodingImg.default, Color.ROYALBLUE, 80)
+).then(function (canvas) {
+  return viewer.entities.add({
+    name: "Wildfire Pin",
+    position: Cartesian3.fromDegrees(-75.1705217, 40.921786),
+    billboard: {
+      image: canvas.toDataURL(),
+      verticalOrigin: VerticalOrigin.BOTTOM,
+    },
+  });
+});
+
+// Create an earthquake pin on the map
+import * as earthquakeImg from "./img/Comp-Sci-Img.jpg";
+const earthquakePin = Promise.resolve(
+  pinBuilder.fromUrl(earthquakeImg.default, Color.ROSYBROWN, 80)
+).then(function (canvas) {
+  return viewer.entities.add({
+    name: "Wildfire Pin",
+    position: Cartesian3.fromDegrees(-75.1705217, 45.921786),
+    billboard: {
+      image: canvas.toDataURL(),
+      verticalOrigin: VerticalOrigin.BOTTOM,
+    },
+  });
+});
+
+
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
 
