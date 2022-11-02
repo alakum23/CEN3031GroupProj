@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin} from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, HeightReference} from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -43,7 +43,8 @@ const wildfirePin = Promise.resolve(
     billboard: {
       image: canvas.toDataURL(),
       verticalOrigin: VerticalOrigin.BOTTOM,
-    },
+      heightReference: HeightReference.CLAMP_TO_GROUND,
+    }
   });
 });
 
@@ -58,6 +59,7 @@ const floodingPin = Promise.resolve(
     billboard: {
       image: canvas.toDataURL(),
       verticalOrigin: VerticalOrigin.BOTTOM,
+      heightReference: HeightReference.CLAMP_TO_GROUND,
     },
   });
 });
@@ -73,6 +75,7 @@ const earthquakePin = Promise.resolve(
     billboard: {
       image: canvas.toDataURL(),
       verticalOrigin: VerticalOrigin.BOTTOM,
+      heightReference: HeightReference.CLAMP_TO_GROUND,
     },
   });
 });
