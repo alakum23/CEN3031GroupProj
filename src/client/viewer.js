@@ -9,12 +9,13 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, BillboardCollection, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, HeightReference} from "cesium";
+import { Ion, Viewer, CallbackProperty, BillboardCollection, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, HeightReference} from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
 import logMessage from "./js/customLog"; // Example custom function import
+import generateDisasterPins from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
 
 // Your access token can be found at: https://cesium.com/ion/tokens.
@@ -31,75 +32,12 @@ viewer.scene.primitives.add(createOsmBuildings());
 
 // Cesium provided class for making pin icons
 const pinBuilder = new PinBuilder();
+viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// Create a wildfire pin on the map
-import * as wildfireImg from "./img/Wildfire.png";
-const wildfirePin = Promise.resolve(
-  pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80)
-).then(function (canvas) {
-  return viewer.entities.add({
-    name: "Wildfire Pin",
-    position: Cartesian3.fromDegrees(-75.1705217, 39.921786),
-    billboard: {
-      image: canvas.toDataURL(),
-      verticalOrigin: VerticalOrigin.BOTTOM,
-      heightReference: HeightReference.CLAMP_TO_GROUND,
-    }
-  });
-});
-
-// Create a flooding pin on the map
-import * as floodingImg from "./img/Comp-Sci-Img.jpg";
-const floodingPin = Promise.resolve(
-  pinBuilder.fromUrl(floodingImg.default, Color.ROYALBLUE, 80)
-).then(function (canvas) {
-  return viewer.entities.add({
-    name: "Wildfire Pin",
-    position: Cartesian3.fromDegrees(-75.1705217, 40.921786),
-    billboard: {
-      image: canvas.toDataURL(),
-      verticalOrigin: VerticalOrigin.BOTTOM,
-      heightReference: HeightReference.CLAMP_TO_GROUND,
-    },
-  });
-});
-
-// Create an earthquake pin on the map
-import * as earthquakeImg from "./img/Comp-Sci-Img.jpg";
-const earthquakePin = Promise.resolve(
-  pinBuilder.fromUrl(earthquakeImg.default, Color.ROSYBROWN, 80)
-).then(function (canvas) {
-  return viewer.entities.add({
-    name: "Wildfire Pin",
-    position: Cartesian3.fromDegrees(-75.1705217, 45.921786),
-    billboard: {
-      image: canvas.toDataURL(),
-      verticalOrigin: VerticalOrigin.BOTTOM,
-      heightReference: HeightReference.CLAMP_TO_GROUND,
-    },
-  });
-});
 
 // Make an array of pins
-let billboards = new BillboardCollection({ scene: viewer.scene});
-const pinsArray = [];
-for (let i = 0; i < 200; i++)  {
-  pinsArray[i] = pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80);
-}
-Promise.all(pinsArray).then(function (pins)  {
-  pins.forEach(element => {
-    console.log(element);
-    return billboards.add({
-      id: "Wildfire Pin",
-      position: Cartesian3.fromDegrees(Math.randomBetween(-180, 180), Math.randomBetween(-90, 90)),
-      image: element.toDataURL(),
-      verticalOrigin: VerticalOrigin.BOTTOM,
-      heightReference: HeightReference.CLAMP_TO_GROUND,
-      // Look into aligned axis and some math to fix visual bug?
-    });
-  });
-});
-viewer.scene.primitives.add(billboards);
+generateDisasterPins(viewer, []);
+
 
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
