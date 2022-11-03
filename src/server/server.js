@@ -4,6 +4,8 @@
  */
 
 // Determine development or production server
+require('dotenv').config();
+console.log(process.env);
 const ENVIRONMENT = process.argv[2] || 'development';
 
 // List server imports
@@ -42,4 +44,5 @@ APP.listen(PORT, () => {
     console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
     console.log(`Serving build from: ${BUILD_DIR}`);
     console.log('Press Ctrl+C to quit.');
+    console.log(process.env.NASA_API_KEY);
 });
