@@ -37,9 +37,9 @@ let req = fetch("http://localhost:8080/api/test");
 req.then(response => console.log(response));
 
 
-// Sample for how to import an image file for use in js
-// Uncomment this code and have a div with ID 'HiThere' in the viewer.html to see this in action.
 /*
+ Sample for how to import an image file for use in js
+ Uncomment this code and have a div with ID 'HiThere' in the viewer.html to see this in action.
 import * as url from "./img/Comp-Sci-Img.jpg";  // Import's the image with the name 'url' for use in the JS file.
 let img = document.createElement('img');
 img.style = {
@@ -50,3 +50,31 @@ img.src = url.default;
 console.log('imported', url);
 document.getElementById('HiThere').appendChild(img);
 */
+
+//Start of JAVASCRIPT Code
+function searchDate(){
+  console.log("entered");
+  // let input = document.getElementByID('search-date').value;
+  var input = document.getElementById('search-date').value;
+  console.log(input);
+  alert("hey");
+  
+}
+
+async function searchLocation(){
+  console.log("entered");
+  // let input = document.getElementByID('search-date').value;
+  var input = document.getElementById('search-location').value;
+  console.log(input);
+  //sample fetch request, must post 
+  await fetch('http://localhost:8080/api/test')
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+}
+
+function searchDisaster(){
+  console.log("entered");
+  // let input = document.getElementByID('search-date').value;
+  var input = document.getElementById('search-disaster').value;
+  console.log(input);
+}

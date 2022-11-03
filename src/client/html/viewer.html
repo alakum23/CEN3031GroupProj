@@ -3,53 +3,68 @@
 <head>
     <title>HazardVis</title>
     <meta charset="utf-8">
+
 </head>
     
     <!-- <button id="pageButton" onclick="buttonClicked()">Click Me!</button> -->
     <!-- <div id="overlay" > -->
-        <div class="navBar" style = "color: blue">
+        
 
-            <!-- <div class="search-container" style = "float:left">  -->
-                <text style="float:left; padding: 15px" >Date: </text>
-                <div id="searchDate" >
-                    <input type="date" name="search-date" class="search-input"/> 
-                    <button class="search-button" onclick="searchDate()">&#x1F50D</button>
-                </div>
-            <!-- </div> -->
-            
-            <text style="float:left; padding: 15px">Location: </text>
-                <div id="searchLocation" >
-                    <input type="text" name="search-location" placeholder = "Enter specific location" class="search-input"/> 
-                    <button class="search-button" onclick="searchLocation()">&#x1F50D</button> 
-                </div>
-
-            <text style="float:left; padding: 15px">Natural Disaster: </text>
-            <div id="searchNaturalDisaster" >
-                <input type="text" name="search-disaster" placeholder = "Enter specific natural disaster" class="search-input"/> 
-                <button class="search-button">&#x1F50D</button> 
-            </div>
-        </div>
     <!-- </div> -->
 <body>
+    <div class="navBar" style = "color: blue">
+
+        <!-- <div class="search-container" style = "float:left">  -->
+            <text style="float:left; padding: 15px" >Date: </text>
+            <div id="searchDate" >
+                <input type="date" id="search-date" class="search-input" placeholder="mm/dd/yyyy"/> 
+                <button class="search-button" onclick="searchDate()">&#x1F50D</button>
+            </div>
+        <!-- </div> -->
+        
+        <text style="float:left; padding: 15px">Location: </text>
+            <div id="searchLocation" >
+                <input type="text" id="search-location" placeholder = "Enter specific location" class="search-input"/> 
+                <button class="search-button" onclick="searchLocation()">&#x1F50D</button> 
+            </div>
+
+        <text style="float:left; padding: 15px">Natural Disaster: </text>
+        <div id="searchNaturalDisaster" >
+            <input type="text" id="search-disaster" placeholder = "Enter specific natural disaster" class="search-input"/> 
+            <button class="search-button" onclick="searchDisaster()">&#x1F50D</button> 
+        </div>
+    </div>
 
     <div id="cesiumContainer"></div>
+    <!-- <script type="text/javascript" src="../viewer.js"></script> -->
     
 </body>
 </html>
 
-<script>
+
+     <!-- let key = "GVrS0imqfZukC5UJezVczFd4bNSxAecF82uo7vBQ"; -->
+     <script> 
     function searchDate(){
-        console.log("entered");
-        // let input = document.getElementByID('search-date').value;
-        let input = document.getElementsByName('search-date').value;
+        var input = document.getElementById('search-date').value;
         console.log(input);
+        alert("hey");
+        
     }
 
-    function searchLocation(){
-        console.log("entered");
-        // let input = document.getElementByID('search-date').value;
-        let input = document.getElementsByName('search-location').value;
+    async function searchLocation(){
+        var input = document.getElementById('search-location').value;
         console.log(input);
+        //sample fetch request, must post 
+        await fetch('http://localhost:8080/api/test')
+        .then((response) => response.json())
+        .then((data) => console.log(data));
     }
+
+    function searchDisaster(){
+        var input = document.getElementById('search-disaster').value;
+        console.log(input);
+    } 
 </script>
+    
+
 
