@@ -26,15 +26,15 @@ const generateDisasterPins = async (viewer, disasterData) =>  {
     // Place at the correct disaster position, with and ID equal to the disaster name?
     Promise.all(pinsArray).then((pins) => {
       	pins.forEach((element) => {
-        	return billboards.add({
-        		id: "Wildfire Pin",
+        	let currentPin = billboards.add({
+        		id: "Disaster Pin",
         		position: Cartesian3.fromDegrees(Math.randomBetween(-180, 180), Math.randomBetween(-90, 90)),
         		image: element.toDataURL(),
         		verticalOrigin: VerticalOrigin.BOTTOM,
         		heightReference: HeightReference.CLAMP_TO_GROUND,
         		scaleByDistance: new NearFarScalar(1.5e2, 1.25, 8.0e7, 0.1), // Set scale to change with distance so pins are more readable far away
-        		// Look into aligned axis and some math to fix visual bug?
         	});
+			currentPin.isDisasterPin = true;
       	});
     });
 

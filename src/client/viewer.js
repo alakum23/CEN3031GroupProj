@@ -43,10 +43,11 @@ generateDisasterPins(viewer, []).then((billboards) =>  {
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 	const pickedFeature = viewer.scene.pick(movement.position);
-	console.log(pickedFeature);
-
-	// Anything from Cesium left clicking that we want to happen we can put here...
 	
+	// Anything from Cesium left clicking that we want to happen we can put here...
+	if (pickedFeature && pickedFeature.id === "Disaster Pin")  {
+		console.log(pickedFeature);
+	}
 
 }, ScreenSpaceEventType.LEFT_CLICK);
 
