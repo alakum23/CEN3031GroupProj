@@ -9,6 +9,10 @@ import * as wildfireImg from "../img/Wildfire.png"
  * @param {Object[]} disasterData 
  */
 const generateDisasterPins = async (viewer, disasterData) =>  {
+    //if ()  { return; }
+    //if (disasterData.length === 0)  { return; }
+    
+
     // Define some constants
     const pinBuilder = new PinBuilder();
     const billboards = new BillboardCollection( { scene: viewer.scene });
