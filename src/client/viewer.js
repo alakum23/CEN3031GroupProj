@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings } from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings, ScreenSpaceEventHandler, ScreenSpaceEventType } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -39,6 +39,13 @@ let disasterPins;
 generateDisasterPins(viewer, []).then((billboards) =>  {
 	disasterPins = viewer.scene.primitives.add(billboards);
 });
+
+// Setup mouse click action to make things in viewer clickable
+viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
+	const pickedFeature = viewer.scene.pick(movement.position);
+	console.log(pickedFeature);
+}, ScreenSpaceEventType.LEFT_CLICK);
+
 
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
