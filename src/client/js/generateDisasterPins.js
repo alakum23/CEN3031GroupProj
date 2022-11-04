@@ -20,22 +20,22 @@ const generateDisasterPins = async (viewer, disasterData) =>  {
 
     // Determine color & image based on disaster type
     for (let i = 0; i < 200; i++)  {
-      pinsArray[i] = pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80);
+    	pinsArray[i] = pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80);
     }
 
     // Place at the correct disaster position, with and ID equal to the disaster name?
     Promise.all(pinsArray).then((pins) => {
-      pins.forEach((element) => {
-        return billboards.add({
-          id: "Wildfire Pin",
-          position: Cartesian3.fromDegrees(Math.randomBetween(-180, 180), Math.randomBetween(-90, 90)),
-          image: element.toDataURL(),
-          verticalOrigin: VerticalOrigin.BOTTOM,
-          heightReference: HeightReference.CLAMP_TO_GROUND,
-          scaleByDistance: new NearFarScalar(1.5e2, 1.25, 8.0e7, 0.1), // Set scale to change with distance so pins are more readable far away
-          // Look into aligned axis and some math to fix visual bug?
-        });
-      });
+      	pins.forEach((element) => {
+        	return billboards.add({
+        		id: "Wildfire Pin",
+        		position: Cartesian3.fromDegrees(Math.randomBetween(-180, 180), Math.randomBetween(-90, 90)),
+        		image: element.toDataURL(),
+        		verticalOrigin: VerticalOrigin.BOTTOM,
+        		heightReference: HeightReference.CLAMP_TO_GROUND,
+        		scaleByDistance: new NearFarScalar(1.5e2, 1.25, 8.0e7, 0.1), // Set scale to change with distance so pins are more readable far away
+        		// Look into aligned axis and some math to fix visual bug?
+        	});
+      	});
     });
 
     // Return the created billboard collection
