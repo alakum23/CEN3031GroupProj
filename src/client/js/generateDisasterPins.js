@@ -38,8 +38,8 @@ const generateDisasterPins = async (viewer, disasterData) =>  {
       });
     });
 
-    // Add the new set of billboards to the globe
-    viewer.scene.primitives.add(billboards);
+    // Return the created billboard collection
+    return billboards;
 }
 
 export default generateDisasterPins;

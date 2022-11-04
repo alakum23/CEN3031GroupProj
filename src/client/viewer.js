@@ -34,8 +34,11 @@ viewer.scene.primitives.add(createOsmBuildings());
 // Cesium provided class for making pin icons
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// Make an array of pins
-generateDisasterPins(viewer, []);
+// Make an array of pins for representing disasters
+let disasterPins;
+generateDisasterPins(viewer, []).then((billboards) =>  {
+	disasterPins = viewer.scene.primitives.add(billboards);
+});
 
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
