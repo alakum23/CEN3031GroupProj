@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, ScreenSpaceEventHandler, ScreenSpaceEventType } from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings, ScreenSpaceEventType } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -31,7 +31,7 @@ const viewer = new Viewer('cesiumContainer', {
 // Add Cesium OSM Buildings, a global 3D buildings layer.
 viewer.scene.primitives.add(createOsmBuildings());   
 
-// Cesium provided class for making pin icons
+// Turn this depth test off to help the disaster pins display correctly.
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
 // Make an array of pins for representing disasters
@@ -44,6 +44,10 @@ generateDisasterPins(viewer, []).then((billboards) =>  {
 viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 	const pickedFeature = viewer.scene.pick(movement.position);
 	console.log(pickedFeature);
+
+	// Anything from Cesium left clicking that we want to happen we can put here...
+	
+
 }, ScreenSpaceEventType.LEFT_CLICK);
 
 
