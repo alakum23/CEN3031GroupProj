@@ -88,7 +88,7 @@ describe('Viewer Page UI', () =>  {
         await page.waitForSelector('#cesiumContainer');
         
         let containerExists = await page.evaluate(() => {
-            let el = document.querySelector("#cesiumContainer")
+            let el = document.querySelector("#cesiumContainer");
             return el ? true : false;
         });
 

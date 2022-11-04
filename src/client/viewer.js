@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, CallbackProperty, BillboardCollection, createWorldTerrain, createOsmBuildings, Cartesian3, Math, PinBuilder, Color, VerticalOrigin, HeightReference} from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -24,7 +24,7 @@ Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1O
 
 // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
 const viewer = new Viewer('cesiumContainer', {
-  sceneModePicker: false,
+	sceneModePicker: false,
 	terrainProvider: createWorldTerrain() // Give terrain data to viewer (for example see Yosemite Valley, CA, USA)
 });
 
@@ -32,13 +32,10 @@ const viewer = new Viewer('cesiumContainer', {
 viewer.scene.primitives.add(createOsmBuildings());   
 
 // Cesium provided class for making pin icons
-const pinBuilder = new PinBuilder();
 viewer.scene.globe.depthTestAgainstTerrain = false;
-
 
 // Make an array of pins
 generateDisasterPins(viewer, []);
-
 
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
