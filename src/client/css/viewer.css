@@ -6,7 +6,7 @@ html, body, #cesiumContainer {
     overflow: hidden;
 }
 
-#pageButton  {
+.pageButton  {
     position: absolute;
     top: 5px;
     left: 5px;
