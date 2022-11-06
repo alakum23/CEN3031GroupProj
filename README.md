@@ -71,10 +71,15 @@ The configuration options are located within the `jest.config.js` file. </br>
 
 </br>
 
-**IMPORTANT: UNIT TESTS FOR THE BUILT FRONTEND ARE NOT RECOMPILED AUTOMATICALLY!** </br>
-You must run `npm run buildDev`, `npm run buildProd`, `npm run startDev`, or `npm run startProd` in order for webpack to rebuild the unit tests for the bundle. </br>
+**IMPORTANT: UNIT TESTS ARE NO LONGER GENERATED FOR THE CLIENT BUNDLES!** </br>
 
 View this information for getting started with jest. https://jestjs.io/docs/getting-started </br>
+
+### Adding new unit tests
+
+Create a new file in the appropriate directory with a name following the `*.test.js` name convention. </br>
+Import the functions you wish to test from the `src` directory. Then add your JEST unit tests in this file. </br>
+Then use `npm run test` or `npm run coverage` to run the test. </br>
 
 ## Jest & Puppeteer Unit Testing Configuration
 
@@ -87,8 +92,8 @@ and puppeteer to control and manage the browser and browser simulated interactio
 
 View this information for getting started with puppeteer. https://developer.chrome.com/docs/puppeteer/get-started/ </br>
 
-### Adding new unit tests
+### Adding new End To End tests
 
-Create a new file in the appropriate directory with a name following the `*.test.js` name convention. </br>
-Import the functions you wish to test from the `src` directory. Then add your JEST unit tests in this file. </br>
-Then use `npm run test` or `npm run coverage` to run the test. </br>
+Review the information on how to write a unit test with jest / puppeteer before attempting to write end to end tests. </br>
+Also note that much of the puppeteer setup (such as launching puppeteer and making a new webpage for each test) is done for you. </br>
+View the current tests in the `./test/end_to_end.test.js` file for some example tests. </br>
