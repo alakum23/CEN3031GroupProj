@@ -35,9 +35,9 @@ viewer.scene.primitives.add(createOsmBuildings());
 // Turn this depth test off to help the disaster pins display correctly.
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// Make an array of pins for representing disasters
+// Make an array of pins for representing disasters (will eventually become HTML button function too)
 const disasterPinsCollection = new BillboardCollection( { scene: viewer.scene });
-generateDisasterPins([]).then((billboards) =>  {
+generateDisasterPins([1]).then((billboards) =>  {
 	billboards.forEach((billboard) =>  { disasterPinsCollection.add(billboard); });
 	viewer.scene.primitives.add(disasterPinsCollection);
 });

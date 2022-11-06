@@ -22,34 +22,22 @@ jobs:
       - node/install-packages:
         pkg-manager: "npm"
 
-      # Run Unit Tests on Client src
-      - run: 
-          name: Run Client Src Unit Tests
-          command: npm run test -- --selectProjects client
-
       # Build Dev Client
       - run:
           name: Build Dev Client
           command: |
             npm run buildDev
 
-      # Run our tests
-      - run: 
-          name: Run Client Dev Build Unit Tests
-          command: |
-            npm run test -- --selectProjects build
-
       # Build Prod Client
       - run:
           name: Build Prod Client
           command: |
             npm run buildProd
-
-      # Run our test
+      
+      # Run Unit Tests on Client src
       - run: 
-          name: Run Client Prod Build Unit Tests
-          command: |
-            npm run test -- --selectProjects build
+          name: Run Client Src Unit Tests
+          command: npm run test -- --selectProjects client
 
   # Build and test the server
   build-and-test-server:
@@ -118,7 +106,7 @@ workflows:
   # Run the build and test workflow
   build-and-test-workflow:
     jobs:
-      - lint
       - build-and-test-client
       - build-and-test-server
       - e2e-testing
+      - lint

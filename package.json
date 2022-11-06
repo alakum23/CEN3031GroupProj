@@ -6,13 +6,13 @@
   "scripts": {
     "lint": "eslint ./src/client & eslint ./src/server & eslint ./test",
     "e2e": "jest --config ./jest.config.js --selectProjects \"End To End Tests\"",
-    "test": "jest --config ./jest.config.js --selectProjects client server build",
+    "test": "jest --config ./jest.config.js --selectProjects client server",
     "coverage": "npm run buildProd && jest --coverage",
     "removeCoverage": "rmdir /s /q coverage",
     "removeDist": "rmdir /s /q dist",
     "removeNodeModules": "rmdir /s /q node_modules",
-    "buildDev": "npm run removeDist & webpack --config ./webpack/webpack.dev.js && webpack --config ./webpack/webpack.tests.js --env mode=development",
-    "buildProd": "npm run removeDist & webpack --config ./webpack/webpack.prod.js && webpack --config ./webpack/webpack.tests.js --env mode=production",
+    "buildDev": "npm run removeDist & webpack --config ./webpack/webpack.dev.js",
+    "buildProd": "npm run removeDist & webpack --config ./webpack/webpack.prod.js",
     "startDev": "npm run buildDev && node ./src/server/server.js development",
     "startProd": "npm run buildProd && node ./src/server/server.js production"
   },
