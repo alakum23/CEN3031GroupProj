@@ -44,6 +44,12 @@ const getEntries = (folder) =>
 const testDirectory = path.resolve(__dirname, '../test/client/');
 const entries = getEntries(testDirectory);
 
+console.log(entries);
+
+const entryPoint = {
+  "testBundle.test" : Object.values(entries)
+}
+
 module.exports = env => {
 	// Exporting a function so we can determine the mode to build tests in from command line arguments
 	const webPack = env.mode === "production" ? require('./webpack.prod.js') : require('./webpack.dev.js');
@@ -51,10 +57,11 @@ module.exports = env => {
 	// Merge the common webpack config with the new one 
 	// Using Object.assign instead of merge because I didn't know about merge when I wrote this and this works fine
 	return (Object.assign({}, webPack, {
-		entry: entries, 
+		entry: entryPoint, 
 		output: { 
-			filename: "testBundle.test.js", 
-			path: path.resolve(__dirname, '../dist/__tests__/')
+			filename: "[name].js", 
+			path: path.resolve(__dirname, '../dist/__tests__/'),
+      publicPath: ''
 		},
 		plugins: []
 	}));
