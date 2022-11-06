@@ -44,11 +44,9 @@ const getEntries = (folder) =>
 const testDirectory = path.resolve(__dirname, '../test/client/');
 const entries = getEntries(testDirectory);
 
-console.log(entries);
-
-const entryPoint = {
-  "testBundle.test" : Object.values(entries)
-}
+const finalEntry = {
+  "testBundle.test": Object.values(entries)
+};
 
 module.exports = env => {
 	// Exporting a function so we can determine the mode to build tests in from command line arguments
@@ -57,7 +55,7 @@ module.exports = env => {
 	// Merge the common webpack config with the new one 
 	// Using Object.assign instead of merge because I didn't know about merge when I wrote this and this works fine
 	return (Object.assign({}, webPack, {
-		entry: entryPoint, 
+		entry: finalEntry, 
 		output: { 
 			filename: "[name].js", 
 			path: path.resolve(__dirname, '../dist/__tests__/'),

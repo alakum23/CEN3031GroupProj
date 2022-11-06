@@ -28,7 +28,6 @@ module.exports = {
             displayName: "build",
             testEnvironment: "jsdom",
             testRegex: "./dist/__tests__/.*\\.test.(js|jsx)$",
-            moduleDirectories: ["node_modules"],
             moduleNameMapper: {
                 "\\.(css|sass)$": "identity-obj-proxy",
                 '/src/viewer$': '<rootDir>/dist/static/viewer.bundle', //paths of the main html page bundles????? IS THIS NEEDED?
