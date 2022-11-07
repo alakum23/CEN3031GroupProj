@@ -11,7 +11,8 @@ module.exports = {
             testEnvironment: "jsdom",
             testRegex: "./test/client/.*\\.test.(js|jsx)$",
             moduleNameMapper:  {
-                "\\.(css|sass)$": "identity-obj-proxy"
+                "\\.(css|sass)$": "identity-obj-proxy",
+                "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/mocks/fileMock.js",
             }
         },
         // Run the server source code unit tests
@@ -20,18 +21,6 @@ module.exports = {
             displayName: "server",
             testEnvironment: "node",
             testRegex: "./test/server/.*\\.test.(js|jsx)$"
-        },
-        // Run the built client unit tests
-        {
-            rootDir: './',
-            displayName: "build",
-            testEnvironment: "jsdom",
-            testRegex: "./dist/__tests__/.*\\.test.(js|jsx)$",
-            moduleNameMapper: {
-                "\\.(css|sass)$": "identity-obj-proxy",
-                '/src/viewer$': '<rootDir>/dist/static/viewer.bundle', //paths of the main html page bundles????? IS THIS NEEDED?
-                '/src/login$': '<rootDir>/dist/static/login.bundle'
-            }
         },
         // Run the end to end unit tests
         {
