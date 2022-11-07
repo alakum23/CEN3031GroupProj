@@ -9,20 +9,6 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  # Hello-World Job
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
   # Build and test the client dev and prod and src code
   build-and-test-client:
     # Set execution environment to latest node JS version
@@ -84,6 +70,33 @@ jobs:
           command: |
             npm run test -- --selectProjects server
 
+  # Execute end to end testing on the production build
+  e2e-testing: 
+    # Set execution environment to latest node JS version
+    # It auto performs NPM package installation and other steps
+    docker:
+      - image: circleci/node:16-browsers  # Special docker image needed to run a machine with node and chrome on it
+    executor: node/default
+    steps:
+      # Checkout the code as the first step
+      - checkout
+
+      # Set NPM as the Node package manager
+      - node/install-packages:
+        pkg-manager: "npm"
+
+      # Build Prod Client
+      - run:
+          name: Build Prod Client
+          command: |
+            npm run buildProd
+
+      # Run the end to end tests
+      - run: 
+          name: Run Production E2E Tests
+          command: |
+            npm run test -- --selectProjects "End To End Tests"
+
   # Lint the src code
   lint: 
     # Set execution environment to latest node JS version
@@ -102,13 +115,10 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  # Run the hello world job
-  say-hello-workflow:
-    jobs:
-      - say-hello
-
+  # Run the build and test workflow
   build-and-test-workflow:
     jobs:
       - lint
       - build-and-test-client
       - build-and-test-server
+      - e2e-testing

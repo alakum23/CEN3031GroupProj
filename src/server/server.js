@@ -13,7 +13,7 @@
 
 // Determine development or production server
 require('dotenv').config();
-const ENVIRONMENT = process.argv[2] || 'development';
+const ENVIRONMENT = process.argv[2] || 'production';
 
 // List server imports
 const path = require('path');
@@ -46,10 +46,14 @@ APP.use('/static', express.static(path.join(BUILD_DIR, '/static')));
 // Allow the app to use the routes we defined in the router.js file
 APP.use('/', router);
 
-// Make server listen
-APP.listen(PORT, () => {
-    console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
-    console.log(`Serving build from: ${BUILD_DIR}`);
-    console.log('Press Ctrl+C to quit.');
-    console.log('NASA API KEY: ' + process.env.NASA_API_KEY);
-});
+// Start the server if running the code with node command, else export our app
+if( require.main === module )  {
+    // Make server listen
+    APP.listen(PORT, () => {
+        console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
+        console.log(`Serving build from: ${BUILD_DIR}`);
+        console.log('Press Ctrl+C to quit.');
+    });
+} else  {
+    module.exports = APP;
+}
