@@ -117,5 +117,5 @@ html {
         margin-left: 200 px;
         margin-top: 200px;
         z-index: 100;
-
+        position: absolute;
       }
