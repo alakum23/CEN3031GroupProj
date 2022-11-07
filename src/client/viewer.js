@@ -9,9 +9,8 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, ScreenSpaceEventType } from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings, ScreenSpaceEventType, BillboardCollection } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import BillboardCollection from "cesium/Source/Scene/BillboardCollection";
 
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
