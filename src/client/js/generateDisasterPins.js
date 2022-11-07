@@ -20,11 +20,12 @@ const generateDisasterPins = async (disasterData) =>  {
     const wildFirePin = await pinBuilder.fromUrl(wildfireImg.default, Color.RED, 80);
     
     // Add the billboard options to the array for each disaster
-    for (let i = 0; i < 200; i++)  {
+    for (let i = 0; i < disasterData.length; i++)  {
+        const coords = disasterData[i].geometry[0].coordinates;
         const entity = {
             // ID and location
             id: "Disaster Pin: " + i,
-            position: Cartesian3.fromDegrees(Math.randomBetween(-180, 180), Math.randomBetween(-90, 90)),
+            position: Cartesian3.fromDegrees(coords[0], coords[1]),
             heightReference: HeightReference.CLAMP_TO_GROUND,
             // Setup the billboard
             billboard: {
@@ -35,9 +36,9 @@ const generateDisasterPins = async (disasterData) =>  {
             },
             // Define our custom disaster data properties in this grab-bag
             properties:  {
-                disasterName: "SAMPLE DISASTER NAME", 
-                lat: "HI",
-                lon: "WORLD"
+                disasterName: disasterData[i].title, 
+                lat: coords[0],
+                lon: coords[1]
             },
         };
         entities.push(entity);

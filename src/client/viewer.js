@@ -35,12 +35,31 @@ viewer.scene.primitives.add(createOsmBuildings());
 // Turn this depth test off to help the disaster pins display correctly.
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
-// Make an array of pins for representing disasters (will eventually become HTML button function too)
-generateDisasterPins([1]).then((entities) =>  {
-	entities.forEach((entity) =>  { 
-		viewer.entities.add(entity);
-	});
+
+// Make a request for wildfire data
+
+let req = fetch("http://localhost:8080/NASA/disasters", {
+	method: 'POST',
+    json: true,
+    body:  JSON.stringify({
+      categories: ["wildfires"]
+    })
 });
+req.then(value =>  value.json().then(data =>  {
+    console.log(data);
+
+	// Make an array of pins for representing disasters (will eventually become HTML button function too)
+	generateDisasterPins(data.events).then((entities) =>  {
+		entities.forEach((entity) =>  { 
+			viewer.entities.add(entity);
+		});
+	});
+}));
+
+	
+
+
+
 
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
@@ -65,9 +84,8 @@ viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 logMessage("Viewer setup with building data!");
 
 // Test making an api call to the backend express app
-let req = fetch("http://localhost:8080/api/test");
-req.then(response => console.log(response));
-
+let req2 = fetch("http://localhost:8080/api/test");
+req2.then(response => console.log(response));
 
 // Sample request for disaster data
 fetch(`http://localhost:` + 8080 + `/NASA/disasters`, {
