@@ -9,8 +9,9 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, ScreenSpaceEventType, BillboardCollection } from "cesium";
+import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math, Cartographic, ScreenSpaceEventType, BillboardCollection, EntityCollection, HeadingPitchRange } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
+import Billboard from "cesium/Source/Scene/Billboard";
 
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
@@ -35,10 +36,10 @@ viewer.scene.primitives.add(createOsmBuildings());
 viewer.scene.globe.depthTestAgainstTerrain = false;
 
 // Make an array of pins for representing disasters (will eventually become HTML button function too)
-const disasterPinsCollection = new BillboardCollection( { scene: viewer.scene });
-generateDisasterPins([1]).then((billboards) =>  {
-	billboards.forEach((billboard) =>  { disasterPinsCollection.add(billboard); });
-	viewer.scene.primitives.add(disasterPinsCollection);
+generateDisasterPins([1]).then((entities) =>  {
+	entities.forEach((entity) =>  { 
+		viewer.entities.add(entity);
+	});
 });
 
 // Setup mouse click action to make things in viewer clickable
@@ -46,8 +47,15 @@ viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 	const pickedFeature = viewer.scene.pick(movement.position);
 	
 	// Anything from Cesium left clicking that we want to happen we can put here...
-	if (pickedFeature && pickedFeature.id === "Disaster Pin")  {
+	if (pickedFeature /*&& pickedFeature.collection === disasterPinsCollection*/)  {
+		// Below object has lat lon position (in radians)
+		// x: longitude, y: latitude, z: height
+		const positionCartographic = Cartographic.fromCartesian(pickedFeature.primitive.position);
+		
+		//console.log(positionCartographic);
+
 		console.log(pickedFeature);
+		viewer.flyTo(pickedFeature.id);
 	}
 
 }, ScreenSpaceEventType.LEFT_CLICK);
