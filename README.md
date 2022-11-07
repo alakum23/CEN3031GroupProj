@@ -5,6 +5,10 @@
 Clone the repository, then run the following commands from the root directory to build and run HazardVis in development mode. </br>
 Make sure that you have Node JS version 16.17.0 or higher and NPM version 8.15.0 or higher. </br>
 
+**IMPORTANT: You need to create an .env file in the root of the project and ensure it is never pushed to the github repo** </br>
+
+Use the file sample.env as a guide for including your NASA API KEY. Don't put spaces or quotes around the NASA API KEY. </br>
+
 ```
 npm install 
 npm run startDev 
