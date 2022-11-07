@@ -67,3 +67,15 @@ logMessage("Viewer setup with building data!");
 // Test making an api call to the backend express app
 let req = fetch("http://localhost:8080/api/test");
 req.then(response => console.log(response));
+
+
+// Sample request for disaster data
+fetch(`http://localhost:` + 8080 + `/NASA/disasters`, {
+    method: 'POST',
+    json: true,
+    body:  JSON.stringify({
+      categories: ["wildfires", "earthquakes"]
+    })
+}).then(value =>  value.json().then(data =>  {
+    console.log(data);
+}));
