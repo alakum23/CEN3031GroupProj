@@ -1,67 +1,51 @@
-html, body, #cesiumContainer {
+html {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: rgb(43, 130, 229);
+    background-color: #287AB8;
   }
-  /* body{
+  #cesiumContainer{
     width: 100%;
-    height: 90%;
+    height: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: black;
-  }  */
-
-#pageButton  {
+    background-color: #287AB8;
     position: absolute;
-    top: 5px;
-    left: 5px;
-    z-index: 1;
-}
+    z-index: 0;
+  }
 
-/* Here is a sample of how to use images within CSS classes */
-.comp-sci-pic  {
-    background-image: url('../img/Comp-Sci-Img.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: auto;
-    height: 25%;
-}
-
-/* .navbar a {
-    float: left;
-    background-color: blue;
-    color: #125ee0;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-    position: fixed;
-  } */
+   body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: white;
+    position: absolute;
+  }  
   
-  /* Change the color of links on hover */
-  /* .navbar a:hover {
-    background-color: #125ee0;
-    color: black;
-  } */
-  
-  /* Add a color to the active/current link */
-  /* .navbar a.active {
-    background-color: #04AA6D;
-    color: #125ee0;
+  /* nav{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: absolute;
+    z-index: 99;
   } */
 
   .search-container {
     width: 240px; 
     margin-left:auto; 
-    
     padding: 10px; } 
     
-
-
     .search-input { 
         height: 15px; 
         width: 175px; 
@@ -71,6 +55,15 @@ html, body, #cesiumContainer {
         border: 1px solid black; 
         border-right: none; 
     } 
+    .search-input1 { 
+      height: 15px; 
+      width: 145px; 
+      padding: 5px; 
+      margin: 0; 
+      background: white; 
+      border: 1px solid black; 
+      border-right: none; 
+  } 
     .search-button { 
         cursor: pointer; 
         height: 27px; 
@@ -81,19 +74,6 @@ html, body, #cesiumContainer {
         background: white; 
     }
   
-    #overlay {
-        position: fixed;
-        display: none;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0,0,0,0.5);
-        z-index: 2;
-        cursor: pointer;
-      }
       #searchDate{
         width: 240; 
     margin-left:auto; 
@@ -113,5 +93,29 @@ html, body, #cesiumContainer {
     margin-left:auto; 
     float:left;
     padding: 10px; 
+
+      }
+
+      #navBar{
+        width: 80%;
+    height: 20%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: absolute;
+    z-index: 99;
+      }
+
+      #popup{
+        width: 150px;
+        height: 150px;
+        background-color: #287AB8;
+        margin-left: 200 px;
+        margin-top: 200px;
+        z-index: 100;
 
       }
