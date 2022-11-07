@@ -37,6 +37,18 @@ let req = fetch("http://localhost:8080/api/test");
 req.then(response => console.log(response));
 
 
+// Sample request for disaster data
+fetch(`http://localhost:` + 8080 + `/NASA/disasters`, {
+    method: 'POST',
+    json: true,
+    body:  JSON.stringify({
+      categories: ["wildfires", "earthquakes"]
+    })
+}).then(value =>  value.json().then(data =>  {
+    console.log(data);
+}));
+
+
 // Sample for how to import an image file for use in js
 // Uncomment this code and have a div with ID 'HiThere' in the viewer.html to see this in action.
 /*
