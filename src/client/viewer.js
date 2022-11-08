@@ -84,8 +84,6 @@ viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 logMessage("Viewer setup with building data!");
 
 // Test making an api call to the backend express app
-let req = fetch("http://localhost:8080/api/test");
-req.then(response => console.log(response));
 
 
 /*
