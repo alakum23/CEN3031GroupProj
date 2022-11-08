@@ -98,11 +98,7 @@ viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
-
-// // Test making an api call to the backend express app
-// let req = fetch("http://localhost:8080/api/test");
-// req.then(response => console.log(response));
-
+// Test making an api call to the backend express app
 
 /*
  Sample for how to import an image file for use in js
