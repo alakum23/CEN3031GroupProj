@@ -1,5 +1,7 @@
 # HazardVis
 
+This is HazardVis.
+
 ## Setup
 
 Clone the repository, then run the following commands from the root directory to build and run HazardVis in development mode. </br>
