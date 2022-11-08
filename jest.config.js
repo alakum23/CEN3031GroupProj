@@ -9,9 +9,10 @@ module.exports = {
             rootDir: './',
             displayName: "client",
             testEnvironment: "jsdom",
-            testRegex: "./test/client/.*\\.(js|jsx)$",
+            testRegex: "./test/client/.*\\.test.(js|jsx)$",
             moduleNameMapper:  {
-                "\\.(css|sass)$": "identity-obj-proxy"
+                "\\.(css|sass)$": "identity-obj-proxy",
+                "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/mocks/fileMock.js",
             }
         },
         // Run the server source code unit tests
@@ -19,19 +20,14 @@ module.exports = {
             rootDir: './',
             displayName: "server",
             testEnvironment: "node",
-            testRegex: "./test/server/.*\\.(js|jsx)$"
+            testRegex: "./test/server/.*\\.test.(js|jsx)$"
         },
-        // Run the built client unit tests
+        // Run the end to end unit tests
         {
             rootDir: './',
-            displayName: "build",
-            testEnvironment: "jsdom",
-            testRegex: "./dist/__tests__/.*\\.(js|jsx)$",
-            moduleNameMapper: {
-                "\\.(css|sass)$": "identity-obj-proxy",
-                '/src/viewer$': '<rootDir>/dist/static/viewer.bundle', //paths of the main html page bundles????? IS THIS NEEDED?
-                '/src/login$': '<rootDir>/dist/static/login.bundle'
-            }
+            displayName: "End To End Tests",
+            testRegex: "./test/end_to_end.test.(js|jsx)$",
+            testEnvironment: 'node'
         }
     ]
 };
