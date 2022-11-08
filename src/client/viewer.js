@@ -57,13 +57,29 @@ req.then(value =>  value.json().then(data =>  {
 }));
 
 	
+const popupDiv = document.getElementById("popup");
+popupDiv.style.display = "none";
 
-
+viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(commandInfo)  {
+  popupDiv.style.display = "none";
+  });
 
 
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
-	const pickedFeature = viewer.scene.pick(movement.position);
+  const pickedFeature = viewer.scene.pick(movement.position);
+  console.log(pickedFeature.id._properties._disasterName._value);
+  console.log(pickedFeature.id._properties._lat._value);
+  console.log(pickedFeature.id._properties._lon._value);
+
+  if (popupDiv.style.display !== "none") {
+    popupDiv.style.display = "none";
+  } 
+  else {
+    popupDiv.style.display = "block";
+    popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value 
+    + "\n Latitude: " + pickedFeature.id._properties._lat._value + "\n Longitude: " + pickedFeature.id._properties._lon._value;
+  }
 	
 	// Anything from Cesium left clicking that we want to happen we can put here...
 	if (pickedFeature /*&& pickedFeature.collection === disasterPinsCollection*/)  {
@@ -83,9 +99,9 @@ viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 // Test the custom function I imported
 logMessage("Viewer setup with building data!");
 
-// Test making an api call to the backend express app
-let req = fetch("http://localhost:8080/api/test");
-req.then(response => console.log(response));
+// // Test making an api call to the backend express app
+// let req = fetch("http://localhost:8080/api/test");
+// req.then(response => console.log(response));
 
 
 /*
