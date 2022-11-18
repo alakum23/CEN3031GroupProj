@@ -39,7 +39,7 @@ viewer.scene.globe.enableLighting = true;
 
 // Make a request for disaster data
 let req = fetch("http://localhost:8080/NASA/all-disasters", {
-	  method: 'GET',
+	method: 'GET',
     json: true,
 });
 req.then(value =>  value.json().then(data =>  {
@@ -94,14 +94,3 @@ logMessage("Viewer setup with building data!");
 // Test making an api call to the backend express app
 let req2 = fetch("http://localhost:8080/api/test");
 req2.then(response => console.log(response));
-
-// Sample request for disaster data
-fetch(`http://localhost:` + 8080 + `/NASA/disasters`, {
-    method: 'POST',
-    json: true,
-    body:  JSON.stringify({
-      categories: ["wildfires", "earthquakes"]
-    })
-}).then(value =>  value.json().then(data =>  {
-    console.log(data);
-}));
