@@ -34,16 +34,13 @@ viewer.scene.primitives.add(createOsmBuildings());
 
 // Turn this depth test off to help the disaster pins display correctly.
 viewer.scene.globe.depthTestAgainstTerrain = false;
+viewer.scene.globe.enableLighting = true;
 
 
-// Make a request for wildfire data
-
-let req = fetch("http://localhost:8080/NASA/disasters", {
-	method: 'POST',
+// Make a request for disaster data
+let req = fetch("http://localhost:8080/NASA/all-disasters", {
+	  method: 'GET',
     json: true,
-    body:  JSON.stringify({
-      categories: ["wildfires"]
-    })
 });
 req.then(value =>  value.json().then(data =>  {
     console.log(data);
@@ -74,7 +71,7 @@ viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
 		//console.log(positionCartographic);
 
 		console.log(pickedFeature);
-		viewer.flyTo(pickedFeature.id);
+    viewer.flyTo(pickedFeature.id).then(() =>  viewer.flyTo(pickedFeature.id)); 
 	}
 
 }, ScreenSpaceEventType.LEFT_CLICK);
