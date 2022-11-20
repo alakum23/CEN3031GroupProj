@@ -56,19 +56,14 @@ req.then(value =>  value.json().then(data =>  {
 
 
 
+
+const filterRegion = addSelectorToViewer(viewer);
+
+// Set the drawEventHandler actions 
 const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
-
-addSelectorToViewer(viewer);
-
-//Draw the selector while the user drags the mouse while holding shift
-drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
-
-// On draw start
 drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
-
-// On draw end
+drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
 drawEventHandler.setInputAction(() => endDrawRegion(viewer), ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
-
 //Hide the selector by clicking anywhere
 drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
 
