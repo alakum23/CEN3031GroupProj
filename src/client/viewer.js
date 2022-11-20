@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, Ellipsoid, createWorldTerrain, KeyboardEventModifier, CallbackProperty, createOsmBuildings, Color, defined, Rectangle, Cartesian3, Cartographic, ScreenSpaceEventType, BillboardCollection, EntityCollection, HeadingPitchRange } from "cesium";
+import { Ion, Viewer, Ellipsoid, ScreenSpaceEventHandler, createWorldTerrain, KeyboardEventModifier, CallbackProperty, createOsmBuildings, Color, defined, Rectangle, Cartesian3, Cartographic, ScreenSpaceEventType, BillboardCollection, EntityCollection, HeadingPitchRange } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import Billboard from "cesium/Source/Scene/Billboard";
 
@@ -18,8 +18,7 @@ import "./css/viewer.css";  // Incluse the page's CSS functions here
 import logMessage from "./js/customLog"; // Example custom function import
 import generateDisasterPins from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
-import "./js/selectRegion";
-import selectRegion from "./js/selectRegion";
+import { addSelectorToViewer, drawSelector, endDrawRegion, hideSelector, startDrawRegion } from "./js/selectRegion";
 
 // Your access token can be found at: https://cesium.com/ion/tokens.
 // This is the default access token
@@ -58,77 +57,29 @@ req.then(value =>  value.json().then(data =>  {
 	});
 }));
 
-	
 
-var selector;
-var rectangleSelector = new Rectangle();
-var cartesian = new Cartesian3();
-var tempCartographic = new Cartographic();
-var firstPoint = new Cartographic();
-var firstPointSet = false;
-var mouseDown = false;
+
+
+const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
+
+addSelectorToViewer(viewer);
 
 //Draw the selector while the user drags the mouse while holding shift
-viewer.screenSpaceEventHandler.setInputAction(function drawSelector(movement) {
-	if (!mouseDown) { return; }
-	
-	cartesian = viewer.scene.camera.pickEllipsoid(movement.endPosition, viewer.scene.globe.ellipsoid, cartesian);
-	
-	if (cartesian)  {
-		// Mouse cartographic position (rectangle needs that not the cartesian location)
-		tempCartographic = Cartographic.fromCartesian(cartesian, viewer.scene.globe.ellipsoid);
-
-	  	if (!firstPointSet)  {
-			Cartographic.clone(tempCartographic, firstPoint);
-			firstPointSet = true;
-	  	} else  {
-			// We order the points so the rectangle draws correctly
-			rectangleSelector.east = Math.max(tempCartographic.longitude, firstPoint.longitude);
-			rectangleSelector.west = Math.min(tempCartographic.longitude, firstPoint.longitude);
-			rectangleSelector.north = Math.max(tempCartographic.latitude, firstPoint.latitude);
-			rectangleSelector.south = Math.min(tempCartographic.latitude, firstPoint.latitude);
-			selector.show = true;
-		}
-	}
-}, ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
-
-// Create the callback function for the rectangle coordinates
-const getSelectorLocation = new CallbackProperty(function getSelectorLocation(time, result) {
-	return Rectangle.clone(rectangleSelector, result);
-}, false);
+drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
 
 // On draw start
-viewer.screenSpaceEventHandler.setInputAction(function startClickShift() {
-	mouseDown = true;
-	selector.rectangle.coordinates = getSelectorLocation;
-	viewer.scene.screenSpaceCameraController.enableLook = false;
-}, ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
+drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
 
 // On draw end
-viewer.screenSpaceEventHandler.setInputAction(function endClickShift() {
-	mouseDown = false;
-	firstPointSet = false;
-	selector.rectangle.coordinates = rectangleSelector;
-	viewer.scene.screenSpaceCameraController.enableLook = true;
-	console.log(selector.rectangle.coordinates);
-}, ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
+drawEventHandler.setInputAction(() => endDrawRegion(viewer), ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
 
 //Hide the selector by clicking anywhere
-viewer.screenSpaceEventHandler.setInputAction(function hideSelector() {
-	selector.show = false;
-}, ScreenSpaceEventType.LEFT_CLICK);
-  
-selector = viewer.entities.add({
-	selectable: false,
-	show: false,
-	rectangle: {
-	  coordinates: getSelectorLocation,
-	  material: Color.LIGHTSEAGREEN.withAlpha(0.5)
-	}
-});
+drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
 
 // To filter on that location we will simply check if the point lat/lons are within those of the rectangle coordinates 
 // Using simple checks (west <= lon <= east --- south <= lat <= north)
+
+
 
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
