@@ -65,51 +65,52 @@ var rectangleSelector = new Rectangle();
 var cartesian = new Cartesian3();
 var tempCartographic = new Cartographic();
 var firstPoint = new Cartographic();
-var firstPointCart = new Cartesian3();
 var firstPointSet = false;
 var mouseDown = false;
 
 //Draw the selector while the user drags the mouse while holding shift
 viewer.screenSpaceEventHandler.setInputAction(function drawSelector(movement) {
-	if (!mouseDown) {
-	  	return;
-	}
+	if (!mouseDown) { return; }
 	
 	cartesian = viewer.scene.camera.pickEllipsoid(movement.endPosition, viewer.scene.globe.ellipsoid, cartesian);
 	
 	if (cartesian)  {
-	  	//mouse cartographic
-	  	tempCartographic = Cartographic.fromCartesian(cartesian, viewer.scene.globe.ellipsoid);
-  
+		// Mouse cartographic position (rectangle needs that not the cartesian location)
+		tempCartographic = Cartographic.fromCartesian(cartesian, viewer.scene.globe.ellipsoid);
+
 	  	if (!firstPointSet)  {
 			Cartographic.clone(tempCartographic, firstPoint);
 			firstPointSet = true;
 	  	} else  {
+			// We order the points so the rectangle draws correctly
 			rectangleSelector.east = Math.max(tempCartographic.longitude, firstPoint.longitude);
 			rectangleSelector.west = Math.min(tempCartographic.longitude, firstPoint.longitude);
 			rectangleSelector.north = Math.max(tempCartographic.latitude, firstPoint.latitude);
 			rectangleSelector.south = Math.min(tempCartographic.latitude, firstPoint.latitude);
 			selector.show = true;
 		}
-		
 	}
 }, ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
 
+// Create the callback function for the rectangle coordinates
 const getSelectorLocation = new CallbackProperty(function getSelectorLocation(time, result) {
 	return Rectangle.clone(rectangleSelector, result);
 }, false);
-  
+
+// On draw start
 viewer.screenSpaceEventHandler.setInputAction(function startClickShift() {
 	mouseDown = true;
 	selector.rectangle.coordinates = getSelectorLocation;
 	viewer.scene.screenSpaceCameraController.enableLook = false;
 }, ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
-  
+
+// On draw end
 viewer.screenSpaceEventHandler.setInputAction(function endClickShift() {
 	mouseDown = false;
 	firstPointSet = false;
 	selector.rectangle.coordinates = rectangleSelector;
 	viewer.scene.screenSpaceCameraController.enableLook = true;
+	console.log(selector.rectangle.coordinates);
 }, ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
 
 //Hide the selector by clicking anywhere
@@ -122,10 +123,12 @@ selector = viewer.entities.add({
 	show: false,
 	rectangle: {
 	  coordinates: getSelectorLocation,
-	  material: Color.BLACK.withAlpha(0.5)
+	  material: Color.LIGHTSEAGREEN.withAlpha(0.5)
 	}
 });
 
+// To filter on that location we will simply check if the point lat/lons are within those of the rectangle coordinates 
+// Using simple checks (west <= lon <= east --- south <= lat <= north)
 
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
