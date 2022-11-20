@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, KeyboardEventModifier, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
+import { Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, sampleTerrainMostDetailed, KeyboardEventModifier, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
