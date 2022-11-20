@@ -23,13 +23,19 @@ router.get('/api/test', async (req, res) =>  {
 router.post('/NASA/disasters', async (req, res) =>  {
     const params = new URLSearchParams({
         api_key: process.env.NASA_API_KEY,
-        category: req.body.categories.toString(),
-        start: req.body.pastDataStart,
-        end: req.body.pastDataEnd,
-        status: "all"
+        status: req.body.status || "all"
     });
+
+    // Append filter params if they exist
+    if (req.body.categories !== undefined)  { params.append("category", req.body.categories.toString()); }
+    if (req.body.start !== undefined)  { params.append("start", req.body.pastDataStart); }
+    if (req.body.end !== undefined)  { params.append("end", req.body.pastDataEnd); }    
+    if (req.body.boundaryBox !== undefined)  { params.append("bbox", req.body.boundaryBox); }
+
+    // Log the params
     console.log(params.toString());
 
+    // Make the request
     const response = await fetch(`https://eonet.gsfc.nasa.gov/api/v3/events?` + params.toString(), {
         method: "GET", 
         json: true, 

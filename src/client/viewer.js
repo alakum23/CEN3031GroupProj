@@ -9,7 +9,7 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, sampleTerrainMostDetailed, KeyboardEventModifier, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
+import { Rectangle, Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, sampleTerrainMostDetailed, KeyboardEventModifier, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
@@ -41,11 +41,6 @@ viewer.scene.globe.enableLighting = true;
 let req = fetch("http://localhost:8080/NASA/all-disasters", {
 	method: 'GET',
     json: true,
-    body:  JSON.stringify({
-      categories: ["wildfires", "earthquakes","severeStorms"],
-      pastDataStart: "2019-01-01",
-      pastDataEnd: "2019-12-31",
-    })
 }).then(value =>  value.json().then(data =>  {
     console.log(data);
 
@@ -60,20 +55,43 @@ let req = fetch("http://localhost:8080/NASA/all-disasters", {
 
 
 
-
+// filterRegion is a rectangle entity that user draws on globe
 const filterRegion = addSelectorToViewer(viewer);
 
 // Set the drawEventHandler actions 
 const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
 drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
 drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
-drawEventHandler.setInputAction(() => endDrawRegion(viewer), ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
+drawEventHandler.setInputAction(() =>  {
+	endDrawRegion(viewer);
+
+	// BELOW CODE GETS THE CORNERS FROM THE RECTANGLE AND QUERIES NASA FOR ALL EVENTS IN THAT REGION
+	const rect = filterRegion.rectangle.coordinates._value;
+	const northwest = Rectangle.northwest(rect);
+	const southeast = Rectangle.southeast(rect);
+
+	// Convert to degrees for NASA
+	const toDegrees = (radians) => radians * 180 / Math.PI;
+
+	const boundaryBoxCoord = toDegrees(northwest.longitude) + "," + 
+						     toDegrees(northwest.latitude) + "," + 
+						     toDegrees(southeast.longitude) + "," + 
+						     toDegrees(southeast.latitude);
+
+	fetch("http://localhost:8080/NASA/disasters", {
+		method: 'POST',
+    	json: true,
+    	body:  JSON.stringify({
+			boundaryBox: boundaryBoxCoord,
+			status: "open"
+    	})
+	}).then(value =>  value.json().then(data =>  {
+    	console.log(data);
+	}));
+
+}, ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
 //Hide the selector by clicking anywhere
 drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
-
-// To filter on that location we will simply check if the point lat/lons are within those of the rectangle coordinates 
-// Using simple checks (west <= lon <= east --- south <= lat <= north)
-
 
 
 // Setup mouse click action to make things in viewer clickable
