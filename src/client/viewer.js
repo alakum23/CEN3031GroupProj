@@ -43,7 +43,9 @@ fetch(`http://localhost:` + 8080 + `/NASA/disasters`, {
     method: 'POST',
     json: true,
     body:  JSON.stringify({
-      categories: ["wildfires", "earthquakes"]
+      categories: ["wildfires", "earthquakes","severeStorms"],
+      pastDataStart: "2019-01-01",
+      pastDataEnd: "2019-12-31",
     })
 }).then(value =>  value.json().then(data =>  {
     console.log(data);

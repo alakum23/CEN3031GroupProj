@@ -9,6 +9,10 @@
  *      - category
  * look into getting old disaster data (from past days)
  * caching requests
+ * 
+ * get old data from nasa for all disasters type
+ * 
+ * 
 */
 
 // Determine development or production server
