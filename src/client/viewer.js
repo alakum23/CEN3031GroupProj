@@ -40,8 +40,12 @@ viewer.scene.globe.enableLighting = true;
 let req = fetch("http://localhost:8080/NASA/all-disasters", {
 	method: 'GET',
     json: true,
-});
-req.then(value =>  value.json().then(data =>  {
+    body:  JSON.stringify({
+      categories: ["wildfires", "earthquakes","severeStorms"],
+      pastDataStart: "2019-01-01",
+      pastDataEnd: "2019-12-31",
+    })
+}).then(value =>  value.json().then(data =>  {
     console.log(data);
 
 	// Make an array of pins for representing disasters (will eventually become HTML button function too)

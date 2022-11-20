@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const { stringify } = require('querystring');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 require('dotenv').config();
 
@@ -22,8 +23,12 @@ router.get('/api/test', async (req, res) =>  {
 router.post('/NASA/disasters', async (req, res) =>  {
     const params = new URLSearchParams({
         api_key: process.env.NASA_API_KEY,
-        category: req.body.categories.toString()
+        category: req.body.categories.toString(),
+        start: req.body.pastDataStart,
+        end: req.body.pastDataEnd,
+        status: "all"
     });
+    console.log(params.toString());
 
     const response = await fetch(`https://eonet.gsfc.nasa.gov/api/v3/events?` + params.toString(), {
         method: "GET", 
