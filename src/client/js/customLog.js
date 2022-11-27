@@ -9,4 +9,4 @@
  */
 const logMessage = (msg) => {console.log(msg);}
 
-module.exports = logMessage;
+export default logMessage;

@@ -15,7 +15,7 @@ html, body, #cesiumContainer {
     background-color: black;
   }  */
 
-#pageButton  {
+.pageButton  {
     position: absolute;
     top: 5px;
     left: 5px;

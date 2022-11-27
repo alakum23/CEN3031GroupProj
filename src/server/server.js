@@ -1,10 +1,23 @@
 /**
  * Server backend file using express.js
  * Serves the latest webpack build of the frontend directory
- */
+ * 
+ * figure out which data we will need and not need. 
+ *      - latitude
+ *      - longitude
+ *      - title
+ *      - category
+ * look into getting old disaster data (from past days)
+ * caching requests
+ * 
+ * get old data from nasa for all disasters type
+ * 
+ * 
+*/
 
 // Determine development or production server
-const ENVIRONMENT = process.argv[2] || 'development';
+require('dotenv').config();
+const ENVIRONMENT = process.argv[2] || 'production';
 
 // List server imports
 const path = require('path');
@@ -37,9 +50,14 @@ APP.use('/static', express.static(path.join(BUILD_DIR, '/static')));
 // Allow the app to use the routes we defined in the router.js file
 APP.use('/', router);
 
-// Make server listen
-APP.listen(PORT, () => {
-    console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
-    console.log(`Serving build from: ${BUILD_DIR}`);
-    console.log('Press Ctrl+C to quit.');
-});
+// Start the server if running the code with node command, else export our app
+if( require.main === module )  {
+    // Make server listen
+    APP.listen(PORT, () => {
+        console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
+        console.log(`Serving build from: ${BUILD_DIR}`);
+        console.log('Press Ctrl+C to quit.');
+    });
+} else  {
+    module.exports = APP;
+}
