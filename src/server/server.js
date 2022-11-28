@@ -30,7 +30,7 @@ APP.disable("x-powered-by");
 const BUILD_DIR = path.join(__dirname, '../../dist');
 const PORT = process.env.PORT || 8080;
 
-// Setup Server Logging (useful for debugging purposes)
+// Setup Server Logging (useful for debugging)
 const morgan = require('morgan');
 morgan.token('id', (req) => { req.id.split('-')[0] });
 const addRequestId = require('express-request-id')({ setHeader: false });
@@ -39,7 +39,17 @@ APP.use(morgan("[:date[iso] #:id] Started :method :url for :remote-addr", { imme
 APP.use(morgan("[:date[iso] #:id] Completed :status :res[content-length] in :response-time ms"));
 
 // Setup the initial mongo db connection
-const dbo = require('./db/connection.js');
+const mongoose = require("mongoose");
+mongoose.connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+const db = mongoose.connection;
+db.on("error", () =>  {
+    console.error.bind(console, "MongoDB connection error:");
+    console.log("QUITTING THE SERVER!");
+    process.exit(1);    // Exit with error
+});
 
 // Setup webpack hot module reloading on a development server
 if (ENVIRONMENT === 'development')  {
@@ -64,17 +74,10 @@ APP.use('/', router);
 // Start the server if running the code with node command, else export our app
 if( require.main === module )  {
     // Make server listen
-    dbo.connectToServer(function (err) {
-        if (err) {
-          console.error(err);
-          process.exit();
-        }
-
-        APP.listen(PORT, () => {
-            console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
-            console.log(`Serving build from: ${BUILD_DIR}`);
-            console.log('Press Ctrl+C to quit.');
-        });
+    APP.listen(PORT, () => {
+        console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
+        console.log(`Serving build from: ${BUILD_DIR}`);
+        console.log('Press Ctrl+C to quit.');
     });
 } else  {
     module.exports = APP;

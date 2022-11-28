@@ -1,9 +1,11 @@
-const path = require('path');
-const express = require('express');
-const { stringify } = require('querystring');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const dbo = require('./db/connection.js');
-require('dotenv').config();
+//Node JS package imports 
+const path = require('path');   // For common operations with file paths
+const express = require('express'); // For setting up the router
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); // For requests to NASA
+require('dotenv').config(); // For reading needed info from .env for NASA connection
+
+// Database Schema Imports
+const Student = require("./db/studentSchema"); // Get the student schema 
 
 // Creating express router
 const router = express.Router();
@@ -20,20 +22,40 @@ router.get('/api/test', async (req, res) =>  {
     res.send({body: "Hello"});
 });
 
-router.get('/api/Mongo/test', async (req, res) =>  {
-    const dbConnect = dbo.getDb();
-    console.log(dbo);
-    console.log(dbConnect);
+// Let's add a student as a test (occurs every time we start the server)
+// Below is a sample of how to add a student to the database
 
-    dbConnect.collection("listingsAndReviews").find({}).limit(50).toArray(function (err, result) {
-        if (err) {
-            res.status(400).send("Error fetching listings!");
-        } else {
-            res.json(result);
-        }
+//  Sample route for adding info to mongoose
+router.get('/mongoose/test/add', async (req, res) => {
+    // Define a new student object to add
+    const stud = new Student({
+        roll_no: 1001,
+        name: 'Madison Hyde',
+        year: 3,
+        subjects: ['DBMS', 'OS', 'Graph Theory', 'Internet Programming']
     });
 
+    try  {
+        // Call to save the student to the database
+        let result = await stud.save();
+
+        // Return Success Message
+        res.send("Added One Student");
+    } catch (error)  {
+        // Handle Errors that could be thrown by the await
+        console.log(error);
+        res.send("Could Not Add Student");
+    }
 });
+
+//  Sample route for getting info from Mongoose
+router.get('/mongoose/test/find', async (req, res) => {
+    let query = await Student.find({}); // Get all records in database
+    // You should do error handling and stuff here...
+    console.log(query);
+    res.send(query);
+});
+
 
 router.post('/NASA/disasters', async (req, res) =>  {
     const params = new URLSearchParams({
