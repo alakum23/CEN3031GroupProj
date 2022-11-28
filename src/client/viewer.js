@@ -9,15 +9,15 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Ion, Viewer, createWorldTerrain, createOsmBuildings, Cartesian3, Math, Cartographic, ScreenSpaceEventType, BillboardCollection, EntityCollection, HeadingPitchRange } from "cesium";
+import { Rectangle, Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, sampleTerrainMostDetailed, KeyboardEventModifier, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import Billboard from "cesium/Source/Scene/Billboard";
 
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
 import logMessage from "./js/customLog"; // Example custom function import
 import generateDisasterPins from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
+import { addSelectorToViewer, drawSelector, endDrawRegion, hideSelector, startDrawRegion } from "./js/selectRegion";
 
 // Your access token can be found at: https://cesium.com/ion/tokens.
 // This is the default access token
@@ -34,18 +34,14 @@ viewer.scene.primitives.add(createOsmBuildings());
 
 // Turn this depth test off to help the disaster pins display correctly.
 viewer.scene.globe.depthTestAgainstTerrain = false;
+viewer.scene.globe.enableLighting = true;
 
 
-// Make a request for wildfire data
-
-let req = fetch("http://localhost:8080/NASA/disasters", {
-	method: 'POST',
+// Make a request for disaster data
+let req = fetch("http://localhost:8080/NASA/all-disasters", {
+	method: 'GET',
     json: true,
-    body:  JSON.stringify({
-      categories: ["wildfires"]
-    })
-});
-req.then(value =>  value.json().then(data =>  {
+}).then(value =>  value.json().then(data =>  {
     console.log(data);
 
 	// Make an array of pins for representing disasters (will eventually become HTML button function too)
@@ -64,33 +60,70 @@ viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(comm
   popupDiv.style.display = "none";
   });
 
+// filterRegion is a rectangle entity that user draws on globe
+const filterRegion = addSelectorToViewer(viewer);
+
+// Set the drawEventHandler actions 
+const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
+drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
+drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
+drawEventHandler.setInputAction(() =>  {
+	endDrawRegion(viewer);
+
+	// BELOW CODE GETS THE CORNERS FROM THE RECTANGLE AND QUERIES NASA FOR ALL EVENTS IN THAT REGION
+	const rect = filterRegion.rectangle.coordinates._value;
+	const northwest = Rectangle.northwest(rect);
+	const southeast = Rectangle.southeast(rect);
+
+	// Convert to degrees for NASA
+	const toDegrees = (radians) => radians * 180 / Math.PI;
+
+	const boundaryBoxCoord = toDegrees(northwest.longitude) + "," + 
+						     toDegrees(northwest.latitude) + "," + 
+						     toDegrees(southeast.longitude) + "," + 
+						     toDegrees(southeast.latitude);
+
+	fetch("http://localhost:8080/NASA/disasters", {
+		method: 'POST',
+    	json: true,
+    	body:  JSON.stringify({
+			boundaryBox: boundaryBoxCoord,
+			status: "open"
+    	})
+	}).then(value =>  value.json().then(data =>  {
+    	console.log(data);
+	}));
+
+}, ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
+//Hide the selector by clicking anywhere
+drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
+
 
 // Setup mouse click action to make things in viewer clickable
-viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(movement)  {
-  const pickedFeature = viewer.scene.pick(movement.position);
-  console.log(pickedFeature.id._properties._disasterName._value);
-  console.log(pickedFeature.id._properties._lat._value);
-  console.log(pickedFeature.id._properties._lon._value);
-
-  if (popupDiv.style.display !== "none") {
-    popupDiv.style.display = "none";
-  } 
-  else {
-    popupDiv.style.display = "block";
-    popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value 
-    + "\n Latitude: " + pickedFeature.id._properties._lat._value + "\n Longitude: " + pickedFeature.id._properties._lon._value;
-  }
-	
+viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movement)  {
 	// Anything from Cesium left clicking that we want to happen we can put here...
-	if (pickedFeature /*&& pickedFeature.collection === disasterPinsCollection*/)  {
-		// Below object has lat lon position (in radians)
-		// x: longitude, y: latitude, z: height
-		const positionCartographic = Cartographic.fromCartesian(pickedFeature.primitive.position);
-		
-		//console.log(positionCartographic);
 
-		console.log(pickedFeature);
-		viewer.flyTo(pickedFeature.id);
+	const pickedFeature = viewer.scene.pick(movement.position);	
+	if (pickedFeature)  {
+		// Get the terrain based location of the entity we picked 
+		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);
+		const terrainLocation = await sampleTerrainMostDetailed(viewer.terrainProvider, [cartographicPos]);
+
+		// Create a temporary entity to fly to (needed to prevent clipping into ground during flight)
+		const tempEntity = viewer.entities.add({
+			position: Cartesian3.fromRadians(terrainLocation[0].longitude, terrainLocation[0].latitude, terrainLocation[0].height),
+			point : {
+				pixelSize : 0,
+				color : Color.TRANSPARENT,
+				outlineColor : Color.TRANSPARENT,
+				outlineWidth : 0
+			},
+		});
+
+		// Fly to that temporary entity and then delete it
+		viewer.flyTo(tempEntity, { 
+			offset: new HeadingPitchRange(undefined, -Math.PI/6, 1000) 
+		}).then(() => viewer.entities.remove(tempEntity));
 	}
 
 }, ScreenSpaceEventType.LEFT_CLICK);
@@ -143,14 +176,3 @@ function searchDisaster(){
 }
 let req2 = fetch("http://localhost:8080/api/test");
 req2.then(response => console.log(response));
-
-// Sample request for disaster data
-fetch(`http://localhost:` + 8080 + `/NASA/disasters`, {
-    method: 'POST',
-    json: true,
-    body:  JSON.stringify({
-      categories: ["wildfires", "earthquakes"]
-    })
-}).then(value =>  value.json().then(data =>  {
-    console.log(data);
-}));
