@@ -38,6 +38,9 @@ APP.use(addRequestId);
 APP.use(morgan("[:date[iso] #:id] Started :method :url for :remote-addr", { immediate: true }));
 APP.use(morgan("[:date[iso] #:id] Completed :status :res[content-length] in :response-time ms"));
 
+// Setup the initial mongo db connection
+const dbo = require('./db/connection.js');
+
 // Setup webpack hot module reloading on a development server
 if (ENVIRONMENT === 'development')  {
     const webpack = require('webpack');
@@ -61,10 +64,17 @@ APP.use('/', router);
 // Start the server if running the code with node command, else export our app
 if( require.main === module )  {
     // Make server listen
-    APP.listen(PORT, () => {
-        console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
-        console.log(`Serving build from: ${BUILD_DIR}`);
-        console.log('Press Ctrl+C to quit.');
+    dbo.connectToServer(function (err) {
+        if (err) {
+          console.error(err);
+          process.exit();
+        }
+
+        APP.listen(PORT, () => {
+            console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
+            console.log(`Serving build from: ${BUILD_DIR}`);
+            console.log('Press Ctrl+C to quit.');
+        });
     });
 } else  {
     module.exports = APP;

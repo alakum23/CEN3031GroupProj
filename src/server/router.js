@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const { stringify } = require('querystring');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const dbo = require('./db/connection.js');
 require('dotenv').config();
 
 // Creating express router
@@ -19,6 +20,20 @@ router.get('/api/test', async (req, res) =>  {
     res.send({body: "Hello"});
 });
 
+router.get('/api/Mongo/test', async (req, res) =>  {
+    const dbConnect = dbo.getDb();
+    console.log(dbo);
+    console.log(dbConnect);
+
+    dbConnect.collection("listingsAndReviews").find({}).limit(50).toArray(function (err, result) {
+        if (err) {
+            res.status(400).send("Error fetching listings!");
+        } else {
+            res.json(result);
+        }
+    });
+
+});
 
 router.post('/NASA/disasters', async (req, res) =>  {
     const params = new URLSearchParams({
