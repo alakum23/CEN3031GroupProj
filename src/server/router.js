@@ -5,7 +5,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 require('dotenv').config(); // For reading needed info from .env for NASA connection
 
 // Database Schema Imports
-const Student = require("./db/studentSchema"); // Get the student schema 
+const Student = require("./db_schemas/studentSchema"); // Get the student schema 
 
 // Creating express router
 const router = express.Router();

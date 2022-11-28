@@ -2,16 +2,7 @@
  * Server backend file using express.js
  * Serves the latest webpack build of the frontend directory
  * 
- * figure out which data we will need and not need. 
- *      - latitude
- *      - longitude
- *      - title
- *      - category
- * look into getting old disaster data (from past days)
- * caching requests
- * 
- * get old data from nasa for all disasters type
- * 
+ * look into caching requests
  * 
 */
 
