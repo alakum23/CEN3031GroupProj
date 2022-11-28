@@ -52,14 +52,6 @@ let req = fetch("http://localhost:8080/NASA/all-disasters", {
 	});
 }));
 
-	
-const popupDiv = document.getElementById("popup");
-popupDiv.style.display = "none";
-
-viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(commandInfo)  {
-  popupDiv.style.display = "none";
-  });
-
 // filterRegion is a rectangle entity that user draws on globe
 const filterRegion = addSelectorToViewer(viewer);
 
@@ -99,12 +91,30 @@ drawEventHandler.setInputAction(() =>  {
 drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
 
 
+// Handle setup of the popup div for when pins are clicked
+const popupDiv = document.getElementById("popup");
+popupDiv.style.display = "none";
+
+viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(commandInfo)  {
+  popupDiv.style.display = "none";
+});
+
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movement)  {
 	// Anything from Cesium left clicking that we want to happen we can put here...
+	const pickedFeature = viewer.scene.pick(movement.position);
 
-	const pickedFeature = viewer.scene.pick(movement.position);	
 	if (pickedFeature)  {
+		
+		// Handle the pop up div information
+		if (popupDiv.style.display !== "none") {
+			popupDiv.style.display = "none";
+		} else {
+			popupDiv.style.display = "block";
+			popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value 
+			+ "\n Latitude: " + pickedFeature.id._properties._lat._value + "\n Longitude: " + pickedFeature.id._properties._lon._value;
+		}
+
 		// Get the terrain based location of the entity we picked 
 		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);
 		const terrainLocation = await sampleTerrainMostDetailed(viewer.terrainProvider, [cartographicPos]);
