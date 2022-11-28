@@ -30,6 +30,14 @@ APP.disable("x-powered-by");
 const BUILD_DIR = path.join(__dirname, '../../dist');
 const PORT = process.env.PORT || 8080;
 
+// Setup Server Logging (useful for debugging purposes)
+const morgan = require('morgan');
+morgan.token('id', (req) => { req.id.split('-')[0] });
+const addRequestId = require('express-request-id')({ setHeader: false });
+APP.use(addRequestId);
+APP.use(morgan("[:date[iso] #:id] Started :method :url for :remote-addr", { immediate: true }));
+APP.use(morgan("[:date[iso] #:id] Completed :status :res[content-length] in :response-time ms"));
+
 // Setup webpack hot module reloading on a development server
 if (ENVIRONMENT === 'development')  {
     const webpack = require('webpack');
