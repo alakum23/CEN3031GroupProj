@@ -3,6 +3,7 @@ const path = require('path');   // For common operations with file paths
 const express = require('express'); // For setting up the router
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); // For requests to NASA
 require('dotenv').config(); // For reading needed info from .env for NASA connection
+const { check, validationResult } = require('express-validator');
 
 // Database Schema Imports
 const Student = require("./db_schemas/studentSchema"); // Get the student schema 
@@ -13,12 +14,12 @@ router.use(express.json({limit: '1mb', type: `*/*`}));
 const BUILD_DIR = path.join(__dirname, '../../dist');
 
 // Define all the application routes here
-router.get('/viewer', (req, res) =>  {
+router.get('/viewer', [], (req, res) =>  {
     res.sendFile(path.join(BUILD_DIR, './viewer.html'))
 });
 
 //Specify api routes (server routes that don't server HTML files but still return information)
-router.get('/api/test', async (req, res) =>  {
+router.get('/api/test', [], async (req, res) =>  {
     res.send({body: "Hello"});
 });
 
@@ -26,7 +27,7 @@ router.get('/api/test', async (req, res) =>  {
 // Below is a sample of how to add a student to the database
 
 //  Sample route for adding info to mongoose
-router.get('/mongoose/test/add', async (req, res) => {
+router.get('/mongoose/test/add', [], async (req, res) => {
     // Define a new student object to add
     const stud = new Student({
         roll_no: 1001,
@@ -49,7 +50,7 @@ router.get('/mongoose/test/add', async (req, res) => {
 });
 
 //  Sample route for getting info from Mongoose
-router.get('/mongoose/test/find', async (req, res) => {
+router.get('/mongoose/test/find', [], async (req, res) => {
     let query = await Student.find({}); // Get all records in database
     // You should do error handling and stuff here...
     console.log(query);
@@ -57,7 +58,36 @@ router.get('/mongoose/test/find', async (req, res) => {
 });
 
 
-router.post('/NASA/disasters', async (req, res) =>  {
+router.post('/NASA/disasters', [
+    // Handle validation
+    check('categories').optional().isArray({ min: 1, max: 13 }),
+    check('categories.*').isString().isIn([
+        'drought',
+        'dustHaze',
+        'earthquakes',
+        'floods',
+        'landslides',
+        'manmade',
+        'seaLakeIce',
+        'severeStorms',
+        'snow',
+        'tempExtremes',
+        'volcanoes',
+        'waterColor',
+        'wildfires'
+    ]).withMessage('categories array values must be valid option'),
+    check('start').optional().trim().isDate().withMessage('start must be a valid date'),
+    check('end').optional().trim().isDate().withMessage('end must be a valid date'),
+    check('boundaryBox').optional().isString().withMessage('boundaryBox should be a string with the two corners of the bounding box'),
+    check('status').optional().isString().isIn(['open', 'closed', 'all']).withMessage('status should be open, closed, or all')
+],  async (req, res) =>  {
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Do rest of logic
     const params = new URLSearchParams({
         api_key: process.env.NASA_API_KEY,
         status: req.body.status || "all"
@@ -80,10 +110,11 @@ router.post('/NASA/disasters', async (req, res) =>  {
     });
 
     const data = await response.json();
+    console.log(data);
     res.send(data);
 });
 
-router.get('/NASA/all-disasters', async (req, res) => {
+router.get('/NASA/all-disasters', [], async (req, res) => {
     const response = await fetch(`https://eonet.gsfc.nasa.gov/api/v3/events?api_key=` + process.env.NASA_API_KEY, {
         method: "GET", 
         json: true, 

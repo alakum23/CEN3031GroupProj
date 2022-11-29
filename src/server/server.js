@@ -35,11 +35,9 @@ mongoose.connect(process.env.ATLAS_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-const db = mongoose.connection;
-db.on("error", () =>  {
-    console.error.bind(console, "MongoDB connection error:");
-    console.log("QUITTING THE SERVER!");
-    process.exit(1);    // Exit with error
+// Log any mongoose db errors to console
+mongoose.connection.on('error', err => {
+    console.log(err);
 });
 
 // Setup webpack hot module reloading on a development server
