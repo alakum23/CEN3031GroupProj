@@ -1,62 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>HazardVis</title>
-    <meta charset="utf-8">
-</head>
-   
-<body>
-    <div class = "parent">
-        <div id="navBar">
-            <text style="float:left; padding: 15px; color: white" >Date: </text>
-            <div id="searchDate" >
-                <input type="date" id="search-date" class="search-input1" placeholder="mm/dd/yyyy"/> 
+    <head>
+        <title>HazardVis</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div class = "parent">
+            <div id="navBar">
+                <text style="float:left; padding: 15px; color: white" >Date: </text>
+                <div id="searchDate" >
+                    <input type="date" id="search-date" class="search-input1" placeholder="mm/dd/yyyy"/> 
+                </div>
+
+                <text style="float:left; padding: 15px; color: white">Natural Disaster: </text>
+                <div id="searchNaturalDisaster" >
+                    <input type="text" id="search-disaster" placeholder = "Enter specific natural disaster" class="search-input"/> 
+                </div> 
+            
+                <text style="float:left; padding: 15px; color: white">Location: </text>
+                <div id="searchLocation" >
+                    <input type="text" id="search-location" placeholder = "Enter specific location" class="search-input"/> 
+
+                </div>     
+                <button class="search-button" onclick="getFromSearch()">&#x1F50D</button> 
             </div>
-
-            <text style="float:left; padding: 15px; color: white">Natural Disaster: </text>
-            <div id="searchNaturalDisaster" >
-                <input type="text" id="search-disaster" placeholder = "Enter specific natural disaster" class="search-input"/> 
-            </div> 
-        
-            <text style="float:left; padding: 15px; color: white">Location: </text>
-            <div id="searchLocation" >
-                <input type="text" id="search-location" placeholder = "Enter specific location" class="search-input"/> 
-                
-            </div>     
-            <button class="search-button" onclick="getFromSearch()">&#x1F50D</button> 
+            <div id="cesiumContainer"></div>
         </div>
-        <div id="cesiumContainer"></div>
-    </div>
-    <div id="popup">
-        NASA DATA popup
-    </div>
-
-
-</body>
+        <div id="popup">
+            NASA DATA popup
+        </div>
+    </body>
 </html>
-
-
-<script> 
-
-
- function getFromSearch(){
-    var dateInput = document.getElementById('search-date').value;
-    var locationInput = document.getElementById('search-location').value;
-    var disasterInput = document.getElementById('search-disaster').value;
-    console.log(dateInput);
-    console.log(locationInput);
-    console.log(disasterInput);
-        //sample fetch request, must post 
-        // await fetch('http://localhost:8080/api/test')
-        // .then((response) => response.json())
-        // .then((data) => console.log(data));
-        // await fetch('http://localhost:8080/NASA/env')
-        // .then((response) => response.json())
-        // .then((data) => console.log(data));
-    }
-    
-    
-</script>
-    
-
-
