@@ -108,13 +108,8 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 	if (pickedFeature)  {
 		
 		// Handle the pop up div information
-		if (popupDiv.style.display !== "none") {
-			popupDiv.style.display = "none";
-		} else {
-			popupDiv.style.display = "block";
-			popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value 
-			+ "\n Latitude: " + pickedFeature.id._properties._lat._value + "\n Longitude: " + pickedFeature.id._properties._lon._value;
-		}
+		popupDiv.style.display = "block";
+		popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value + "\n Latitude: " + pickedFeature.id._properties._lat._value + "\n Longitude: " + pickedFeature.id._properties._lon._value;
 
 		// Get the terrain based location of the entity we picked 
 		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);
@@ -135,6 +130,9 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 		viewer.flyTo(tempEntity, { 
 			offset: new HeadingPitchRange(undefined, -Math.PI/6, 1000) 
 		}).then(() => viewer.entities.remove(tempEntity));
+	} else  {
+		// No pin selected so hide the pop-up
+		popupDiv.style.display = "none";
 	}
 
 }, ScreenSpaceEventType.LEFT_CLICK);
