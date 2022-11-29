@@ -100,8 +100,8 @@ router.post('/NASA/disasters', [
 
     // Append filter params if they exist
     if (req.body.categories !== undefined)  { params.append("category", req.body.categories.toString()); }
-    if (req.body.start !== undefined)  { params.append("start", req.body.pastDataStart); }
-    if (req.body.end !== undefined)  { params.append("end", req.body.pastDataEnd); }    
+    if (req.body.start !== undefined)  { params.append("start", req.body.start); }
+    if (req.body.end !== undefined)  { params.append("end", req.body.end); }    
     if (req.body.boundaryBox !== undefined)  { params.append("bbox", req.body.boundaryBox); }
 
     // Log the params
