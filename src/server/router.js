@@ -13,6 +13,8 @@ const router = express.Router();
 router.use(express.json({limit: '1mb', type: `*/*`}));
 const BUILD_DIR = path.join(__dirname, '../../dist');
 
+//------------------------------WEBPAGE ROUTES------------------------------//
+
 // Define all the application routes here
 router.get('/viewer', [], (req, res) =>  {
     res.sendFile(path.join(BUILD_DIR, './viewer.html'))
@@ -23,8 +25,7 @@ router.get('/api/test', [], async (req, res) =>  {
     res.send({body: "Hello"});
 });
 
-// Let's add a student as a test (occurs every time we start the server)
-// Below is a sample of how to add a student to the database
+//------------------------------MONGO DB DATABASE ROUTES------------------------------//
 
 //  Sample route for adding info to mongoose
 router.get('/mongoose/test/add', [], async (req, res) => {
@@ -56,6 +57,8 @@ router.get('/mongoose/test/find', [], async (req, res) => {
     console.log(query);
     res.send(query);
 });
+
+//------------------------------NASA DATASET ROUTES------------------------------//
 
 /**
  * POST route that will get disaster data from NASA based on provided filters
@@ -129,6 +132,8 @@ router.get('/NASA/all-disasters', [], async (req, res) => {
     const data = await response.json();
     res.send(data);
 });
+
+//------------------------------DEFAULT ROUTE------------------------------//
 
 //Specify the default webpage last!
 router.get('*', (req, res) =>  {
