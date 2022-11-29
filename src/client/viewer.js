@@ -75,6 +75,7 @@ drawEventHandler.setInputAction(() =>  {
 						     toDegrees(southeast.longitude) + "," + 
 						     toDegrees(southeast.latitude);
 
+	// This is the sample of how to query nasa for a bounding box (only use await if you don't use .then())
 	fetch("http://localhost:8080/NASA/disasters", {
 		method: 'POST',
     	json: true,
