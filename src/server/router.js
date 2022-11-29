@@ -57,7 +57,9 @@ router.get('/mongoose/test/find', [], async (req, res) => {
     res.send(query);
 });
 
-
+/**
+ * POST route that will get disaster data from NASA based on provided filters
+ */
 router.post('/NASA/disasters', [
     // Handle validation
     check('categories').optional().isArray({ min: 1, max: 13 }),
@@ -114,6 +116,9 @@ router.post('/NASA/disasters', [
     res.send(data);
 });
 
+/**
+ * GET route that will get disaster data for the current day from NASA with no filters
+ */
 router.get('/NASA/all-disasters', [], async (req, res) => {
     const response = await fetch(`https://eonet.gsfc.nasa.gov/api/v3/events?api_key=` + process.env.NASA_API_KEY, {
         method: "GET", 
