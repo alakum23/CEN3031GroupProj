@@ -29,17 +29,6 @@ APP.use(addRequestId);
 APP.use(morgan("[:date[iso] #:id] Started :method :url for :remote-addr", { immediate: true }));
 APP.use(morgan("[:date[iso] #:id] Completed :status :res[content-length] in :response-time ms"));
 
-// Setup the initial mongo db connection
-const mongoose = require("mongoose");
-mongoose.connect(process.env.ATLAS_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-// Log any mongoose db errors to console
-mongoose.connection.on('error', err => {
-    console.log(err);
-});
-
 // Setup webpack hot module reloading on a development server
 if (ENVIRONMENT === 'development')  {
     const webpack = require('webpack');
@@ -62,6 +51,17 @@ APP.use('/', router);
 
 // Start the server if running the code with node command, else export our app
 if( require.main === module )  {
+    // Setup the initial mongo db connection
+    const mongoose = require("mongoose");
+    mongoose.connect(process.env.ATLAS_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    // Log any mongoose db errors to console
+    mongoose.connection.on('error', err => {
+        console.log(err);
+    });
+
     // Make server listen
     APP.listen(PORT, () => {
         console.log(`Server is in ${ENVIRONMENT} mode listening @ http://localhost:${PORT}`);
