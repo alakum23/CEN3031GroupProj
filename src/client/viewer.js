@@ -95,7 +95,6 @@ drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_
 // Handle setup of the popup div for when pins are clicked
 const popupDiv = document.getElementById("popup");
 popupDiv.style.display = "none";
-
 viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(commandInfo)  {
   popupDiv.style.display = "none";
 });
