@@ -7,19 +7,20 @@
   <h2 class="active"> 
     <button id = "signupbtn" onclick = "signUpFunc()"> Sign up </button>  
   </h2>
+
   <form id = "form1">
-    <input type="text" class="text" name="username">
+    <input type="input" id = "username" class="text" name="username">
      <span>username</span>
     <br> 
     <br>
-    <input type="password" class="text" name="password">
+    <input type="input" id = "pwd" class="text" name="password">
     <span>password</span>
     <br>
 
     <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
     <label for="checkbox-1-1">Keep me Signed in</label>
     
-    <button class="signin" onclick="myFunc()">Sign In</button>
+    <button id="signin" type = "button" onclick= "authenticate()">Sign In</button>
 
     <hr>
 
@@ -38,7 +39,7 @@
     <br>
 
     
-    <button class="signup" onclick="myFunc()">Sign Up</button>
+    <button class="signup" type = "button" onclick="myFunc()">Sign Up</button>
 
     <hr>
 
@@ -73,6 +74,15 @@
           form1.style.display = "none";
           form2.style.display = "block";
         
+        }
+
+        function authenticate(){       
+          var us = document.getElementById('username').value;
+          var pd = document.getElementById('pwd').value;
+          console.log(us);
+          console.log(pd);
+          //sample fetch request, must post 
+          
         }
 
 </script>
