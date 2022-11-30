@@ -59,16 +59,16 @@ const filterRegion = addSelectorToViewer(viewer);
 const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
 drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN);
 drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE);
-drawEventHandler.setInputAction(() =>  { endDrawRegion(viewer); }, ScreenSpaceEventType.LEFT_UP);
+drawEventHandler.setInputAction(() =>  endDrawRegion(viewer), ScreenSpaceEventType.LEFT_UP);
 //Hide the selector by clicking anywhere
-drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
+//drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
 
 
 // Handle setup of the popup div for when pins are clicked
 const popupDiv = document.getElementById("popup");
 popupDiv.style.display = "none";
 viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(commandInfo)  {
-  popupDiv.style.display = "none";
+	popupDiv.style.display = "none";
 });
 
 // Setup mouse click action to make things in viewer clickable

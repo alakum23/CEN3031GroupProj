@@ -40,7 +40,7 @@ window.getFromSearch = async function()  {
     if (bbox !== undefined)  { bodyObj["bbox"] = boundaryBoxCoord; }
     if (disasterInput !== undefined)  { bodyObj["categories"] = [disasterInput]; }
 
-    // Get the new disaster data
+    // Get the new disaster data (somehow add it to the viewer)
     fetch('http://localhost:8080/NASA/disasters', {
             method: 'POST',
             json: true, 
