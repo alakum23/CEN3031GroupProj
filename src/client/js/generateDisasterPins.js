@@ -23,6 +23,40 @@ import * as dustStormImg from "../img/dustStormPinImg.png"
 //<a href="https://www.flaticon.com/free-icons/cyclone" title="cyclone icons">Cyclone icons created by Karacis - Flaticon</a>
 
 
+// Rework to be add pins to viewer
+// With a set pinGenerationViewer function
+// And a method to get the disaster pins
+// Export those and we can use them in the HTML UI functions
+
+let viewer;
+let generatedPinData = [];
+let disasterPins = [];
+
+/**
+ * Set the cesium viewer that the disasterPinGenerator will use
+ * @param {Viewer} _viewer 
+ */
+const setDisasterPinViewer = (_viewer) =>  { viewer = _viewer; }
+
+/**
+ * Add the generated disaster pins to the viewer
+ */
+const addDisasterPinsToViewer = () =>  {
+    generatedPinData.forEach((entity) =>  { 
+        disasterPins.push(viewer.entities.add(entity));
+    });
+}
+
+/**
+ * Removes all the disaster pins from the cesium viewer
+ */
+const removeDisasterPinsFromViewer = () =>  {
+    disasterPins.forEach((entity) =>  {
+        viewer.entities.remove(entity)
+    });
+}
+
+
 /**
  * 
  * @param {Object[]} disasterData an array of the options needed to create the pins for the disasters
@@ -37,7 +71,6 @@ const generateDisasterPins = async (disasterData) =>  {
 
     // Create Pin Images for each disaster type
     const pinBuilder  = new PinBuilder();
-    const pinArray = [];
     const pinImages = {
         "drought": await pinBuilder.fromUrl(droughtImg.default, Color.YELLOW, 80),
         "dustHaze": await pinBuilder.fromUrl(dustStormImg.default, Color.RED, 80),
@@ -81,7 +114,8 @@ const generateDisasterPins = async (disasterData) =>  {
     }
 
     // Return the created billboard collection
+    generatedPinData = entities;
     return entities;
 }
 
-export default generateDisasterPins;
+export { setDisasterPinViewer, addDisasterPinsToViewer, removeDisasterPinsFromViewer, generateDisasterPins} ;

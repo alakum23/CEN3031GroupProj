@@ -36,9 +36,9 @@ window.getFromSearch = async function()  {
 
     // Make the POST request body
     let bodyObj = {};
-    if (dateInput !== undefined)  { bodyObj["start"] = dateInput; bodyObj["end"] = dateInput;}
+    //if (dateInput !== undefined)  { bodyObj["start"] = dateInput; bodyObj["end"] = dateInput;}
     if (bbox !== undefined)  { bodyObj["bbox"] = boundaryBoxCoord; }
-    if (disasterInput !== undefined)  { bodyObj["categories"] = [disasterInput]; }
+    //if (disasterInput !== undefined)  { bodyObj["categories"] = [disasterInput]; }
 
     // Get the new disaster data (somehow add it to the viewer)
     fetch('http://localhost:8080/NASA/disasters', {
