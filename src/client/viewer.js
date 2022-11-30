@@ -51,9 +51,8 @@ let req = fetch("http://localhost:8080/NASA/all-disasters", {
 		addDisasterPinsToViewer();
 		console.log("SUCCESSFULLY ADDED!");
 
-		removeDisasterPinsFromViewer();
-
-		console.log("SUCCESSFULLY REMOVED!");
+		//removeDisasterPinsFromViewer();
+		//console.log("SUCCESSFULLY REMOVED!");
 	});
 
 	
