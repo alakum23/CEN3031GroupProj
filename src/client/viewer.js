@@ -15,7 +15,7 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
 import logMessage from "./js/customLog"; // Example custom function import
-import generateDisasterPins from "./js/generateDisasterPins";
+import {generateDisasterPins, addDisasterPinsToViewer, removeDisasterPinsFromViewer, setDisasterPinViewer} from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
 import { addSelectorToViewer, drawSelector, endDrawRegion, hideSelector, startDrawRegion } from "./js/selectRegion";
 
@@ -36,6 +36,8 @@ viewer.scene.primitives.add(createOsmBuildings());
 viewer.scene.globe.depthTestAgainstTerrain = false;
 viewer.scene.globe.enableLighting = true;
 
+// Setup disaster pin functions for viewer
+setDisasterPinViewer(viewer);
 
 // Make a request for disaster data
 let req = fetch("http://localhost:8080/NASA/all-disasters", {
@@ -46,10 +48,15 @@ let req = fetch("http://localhost:8080/NASA/all-disasters", {
 
 	// Make an array of pins for representing disasters (will eventually become HTML button function too)
 	generateDisasterPins(data.events).then((entities) =>  {
-		entities.forEach((entity) =>  { 
-			viewer.entities.add(entity);
-		});
+		addDisasterPinsToViewer();
+		console.log("SUCCESSFULLY ADDED!");
+
+		removeDisasterPinsFromViewer();
+
+		console.log("SUCCESSFULLY REMOVED!");
 	});
+
+	
 }));
 
 // filterRegion is a rectangle entity that user draws on globe
