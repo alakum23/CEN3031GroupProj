@@ -53,7 +53,7 @@ router.get('/NASA/all-disasters', async (req, res) => {
 
 //Specify the default webpage last!
 router.get('*', (req, res) =>  {
-    res.redirect('/login');
+    res.redirect('/viewer');
 });
 
 // Exporting router
