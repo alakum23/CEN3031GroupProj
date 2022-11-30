@@ -57,37 +57,9 @@ const filterRegion = addSelectorToViewer(viewer);
 
 // Set the drawEventHandler actions 
 const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
-drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
-drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
-drawEventHandler.setInputAction(() =>  {
-	endDrawRegion(viewer);
-
-	// BELOW CODE GETS THE CORNERS FROM THE RECTANGLE AND QUERIES NASA FOR ALL EVENTS IN THAT REGION
-	const rect = filterRegion.rectangle.coordinates._value;
-	const northwest = Rectangle.northwest(rect);
-	const southeast = Rectangle.southeast(rect);
-
-	// Convert to degrees for NASA
-	const toDegrees = (radians) => radians * 180 / Math.PI;
-
-	const boundaryBoxCoord = toDegrees(northwest.longitude) + "," + 
-						     toDegrees(northwest.latitude) + "," + 
-						     toDegrees(southeast.longitude) + "," + 
-						     toDegrees(southeast.latitude);
-
-	// This is the sample of how to query nasa for a bounding box (only use await if you don't use .then())
-	fetch("http://localhost:8080/NASA/disasters", {
-		method: 'POST',
-    	json: true,
-    	body:  JSON.stringify({
-			boundaryBox: boundaryBoxCoord,
-			status: "open"
-    	})
-	}).then(value =>  value.json().then(data =>  {
-    	console.log(data);
-	}));
-
-}, ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
+drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN);
+drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE);
+drawEventHandler.setInputAction(() =>  { endDrawRegion(viewer); }, ScreenSpaceEventType.LEFT_UP);
 //Hide the selector by clicking anywhere
 drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
 

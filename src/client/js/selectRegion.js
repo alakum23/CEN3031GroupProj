@@ -2,6 +2,8 @@ import { CallbackProperty, Cartographic, Rectangle, Cartesian3, VerticalOrigin, 
 import Event from "cesium/Source/Core/Event";
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
 
+let drawingEnabled = false;
+
 let selector;
 let rectangleSelector = new Rectangle();
 let cartesian = new Cartesian3();
@@ -17,7 +19,7 @@ const getSelectorLocation = new CallbackProperty(function getSelectorLocation(ti
 
 /**
  * 
- * @returns 
+ * @returns the rectangle selector
  */
 const getSelector = () =>  selector;
 
@@ -44,12 +46,24 @@ const addSelectorToViewer = (viewer) =>  {
 const hideSelector = () => selector.show = false;
 
 /**
+ * Turns drawing on if enabled or off if disabled (used in UI functions)
+ */
+const toggleDrawing = () => drawingEnabled = !drawingEnabled;
+
+/**
  * Function which starts the drawing routine
  * @param {Viewer} viewer the cesium viewer that the draw region selector is on 
  */
 const startDrawRegion = (viewer) =>  {
+	if (!drawingEnabled)  { return; }
     startedDrawing = true;
 	selector.rectangle.coordinates = getSelectorLocation;
+
+	//Disable default camera controls
+	viewer.scene.screenSpaceCameraController.enableRotate = false;
+	viewer.scene.screenSpaceCameraController.enableTranslate = false;
+	viewer.scene.screenSpaceCameraController.enableZoom = false;
+	viewer.scene.screenSpaceCameraController.enableTilt = false;
 	viewer.scene.screenSpaceCameraController.enableLook = false;
 }
 
@@ -59,6 +73,7 @@ const startDrawRegion = (viewer) =>  {
  * @param {Event} movement an event from the ScreenSpaceEventHandler MOUSE_MOVE event
  */
 const drawSelector = (viewer, movement) =>  {
+	if (!drawingEnabled)  { return; }
 	if (!startedDrawing) { return; }
 	
 	cartesian = viewer.scene.camera.pickEllipsoid(movement.endPosition, viewer.scene.globe.ellipsoid, cartesian);
@@ -86,10 +101,18 @@ const drawSelector = (viewer, movement) =>  {
  * @param {Viewer} viewer the cesium viewer that the draw region selector is on 
  */
 const endDrawRegion = (viewer) =>  {
+	if (!drawingEnabled)  { return; }
+	if (!startedDrawing) { return; }
+	drawingEnabled = false;
     startedDrawing = false;
 	firstPointSet = false;
 	selector.rectangle.coordinates = rectangleSelector;
+
+	viewer.scene.screenSpaceCameraController.enableRotate = true;
+	viewer.scene.screenSpaceCameraController.enableTranslate = true;
+	viewer.scene.screenSpaceCameraController.enableZoom = true;
+	viewer.scene.screenSpaceCameraController.enableTilt = true;
 	viewer.scene.screenSpaceCameraController.enableLook = true;
 }
 
-export {startDrawRegion, drawSelector, endDrawRegion, addSelectorToViewer, hideSelector, getSelector};
+export {startDrawRegion, drawSelector, endDrawRegion, addSelectorToViewer, hideSelector, getSelector, toggleDrawing};

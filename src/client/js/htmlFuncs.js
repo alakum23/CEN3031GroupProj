@@ -3,10 +3,14 @@
  */
 
 import Rectangle from "cesium/Source/Core/Rectangle";
-import { getSelector } from "./selectRegion.js"
+import { getSelector, toggleDrawing } from "./selectRegion.js"
 
 window.buttonClicked = function()  {
     console.log("A button was clicked");
+}
+
+window.startLocationSelection = function()  {
+    toggleDrawing();
 }
 
 window.getFromSearch = async function()  {
@@ -25,7 +29,6 @@ window.getFromSearch = async function()  {
     
     // Get the disaster name
     const disasterInput = document.getElementById('search-disaster').value;
-
 
     console.log(dateInput);
     console.log(boundaryBoxCoord);
