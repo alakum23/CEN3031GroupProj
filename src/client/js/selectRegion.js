@@ -17,6 +17,12 @@ const getSelectorLocation = new CallbackProperty(function getSelectorLocation(ti
 
 /**
  * 
+ * @returns 
+ */
+const getSelector = () =>  selector;
+
+/**
+ * 
  * @param {Viewer} viewer 
  * @returns {Entity} The 'selector' entity that was added to the viewer
  */
@@ -86,4 +92,4 @@ const endDrawRegion = (viewer) =>  {
 	viewer.scene.screenSpaceCameraController.enableLook = true;
 }
 
-export {startDrawRegion, drawSelector, endDrawRegion, addSelectorToViewer, hideSelector};
+export {startDrawRegion, drawSelector, endDrawRegion, addSelectorToViewer, hideSelector, getSelector};
