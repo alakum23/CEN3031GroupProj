@@ -50,9 +50,15 @@ router.get('/mongoose/test/add', [], async (req, res) => {
 });
 
 //  Sample route for getting info from Mongoose
+//we will use this for "sign in"
 router.get('/mongoose/test/find', [], async (req, res) => {
-    let query = await User.find({}); // Get all records in database
+    let query = await User.find({
+        //username, password
+    }); // Get all records in database
     // You should do error handling and stuff here...
+    //if query is not null, then allow login
+    //response await
+    //send response, read response, if blah blah then perform action
     console.log(query);
     res.send(query);
 });
