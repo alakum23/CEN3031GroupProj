@@ -6,7 +6,7 @@ require('dotenv').config(); // For reading needed info from .env for NASA connec
 const { check, validationResult } = require('express-validator');
 
 // Database Schema Imports
-const Student = require("./db_schemas/studentSchema"); // Get the student schema 
+const User = require("./db_schemas/userSchema"); // Get the student schema 
 
 // Creating express router
 const router = express.Router();
@@ -29,31 +29,36 @@ router.get('/api/test', [], async (req, res) =>  {
 
 //  Sample route for adding info to mongoose
 router.get('/mongoose/test/add', [], async (req, res) => {
-    // Define a new student object to add
-    const stud = new Student({
-        roll_no: 1001,
-        name: 'Madison Hyde',
-        year: 3,
-        subjects: ['DBMS', 'OS', 'Graph Theory', 'Internet Programming']
+    // Define a new user object to add
+    const newUser = new User({
+        username: 'group22', 
+        password: 'g22pass',
+        favLocation: ['Rainesville']
     });
 
     try  {
-        // Call to save the student to the database
-        let result = await stud.save();
+        // Call to save the user to the database
+        let result = await newUser.save();
 
         // Return Success Message
-        res.send("Added One Student");
+        res.send("Added One User");
     } catch (error)  {
         // Handle Errors that could be thrown by the await
         console.log(error);
-        res.send("Could Not Add Student");
+        res.send("Could Not Add User");
     }
 });
 
 //  Sample route for getting info from Mongoose
+//we will use this for "sign in"
 router.get('/mongoose/test/find', [], async (req, res) => {
-    let query = await Student.find({}); // Get all records in database
+    let query = await User.find({
+        //username, password
+    }); // Get all records in database
     // You should do error handling and stuff here...
+    //if query is not null, then allow login
+    //response await
+    //send response, read response, if blah blah then perform action
     console.log(query);
     res.send(query);
 });
