@@ -17,7 +17,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Define the html pages names here
-const htmlPageNames = ['viewer'];
+const htmlPageNames = ['viewer', 'login'];
 
 // Define all the entry points used by the html pages
 const entryPoints = htmlPageNames.reduce((config, page) => { 

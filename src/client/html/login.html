@@ -1,0 +1,88 @@
+<html>
+    <!-- <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'> -->
+<div class="login">
+  <h2 class="active"> 
+    <button id = "signinbtn" onclick = "signinFunc()"> Sign in </button> 
+  </h2>
+  <h2 class="active"> 
+    <button id = "signupbtn" onclick = "signUpFunc()"> Sign up </button>  
+  </h2>
+
+  <form id = "form1">
+    <input type="input" id = "username" class="text" name="username">
+     <span>username</span>
+    <br> 
+    <br>
+    <input type="input" id = "pwd" class="text" name="password">
+    <span>password</span>
+    <br>
+
+    <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
+    <label for="checkbox-1-1">Keep me Signed in</label>
+    
+    <button id="signin" type = "button" onclick= "authenticate()">Sign In</button>
+
+    <hr>
+
+    <a href="#">Forgot Password?</a>
+  </form>
+
+  <form id = "form2">
+
+    
+    <input type="text" class="text" name="username">
+     <span>Enter desired username</span>
+    <br> 
+    <br>
+    <input type="password" class="text" name="password">
+    <span>Enter desired password</span>
+    <br>
+
+    
+    <button class="signup" type = "button" onclick="myFunc()">Sign Up</button>
+
+    <hr>
+
+  </form>
+
+  
+
+</div>
+<button onclick = "myFunc()">test</button>
+</html>
+<script>
+          const form1 = document.getElementById('form1');
+      form1.style.display = "block";
+      const form2 = document.getElementById('form2');
+      form2.style.display = "none";
+
+      
+        function myFunc() {
+            location.replace("http://localhost:8080/viewer");
+        }
+
+        const btn = document.getElementById('btn');
+
+        function signinFunc(){
+          if(form1.style.display = "none"){
+          form1.style.display = "block";
+          form2.style.display = "none";
+          }
+   
+        }
+        function signUpFunc(){
+          form1.style.display = "none";
+          form2.style.display = "block";
+        
+        }
+
+        function authenticate(){       
+          var us = document.getElementById('username').value;
+          var pd = document.getElementById('pwd').value;
+          console.log(us);
+          console.log(pd);
+          //sample fetch request, must post 
+          
+        }
+
+</script>

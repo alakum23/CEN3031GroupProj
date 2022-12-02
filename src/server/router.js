@@ -16,6 +16,10 @@ const BUILD_DIR = path.join(__dirname, '../../dist');
 //------------------------------WEBPAGE ROUTES------------------------------//
 
 // Define all the application routes here
+router.get('/login', [], (req, res) =>  {
+    res.sendFile(path.join(BUILD_DIR, './login.html'))
+});
+
 router.get('/viewer', [], (req, res) =>  {
     res.sendFile(path.join(BUILD_DIR, './viewer.html'))
 });
@@ -142,7 +146,7 @@ router.get('/NASA/all-disasters', [], async (req, res) => {
 
 //Specify the default webpage last!
 router.get('*', (req, res) =>  {
-    res.redirect('/viewer');
+    res.redirect('/login');
 });
 
 // Exporting router
