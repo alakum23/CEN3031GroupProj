@@ -43,7 +43,7 @@ setDisasterPinViewer(viewer);
 let req = fetch("http://localhost:8080/NASA/all-disasters", {
 	method: 'GET',
     json: true,
-}).then(value =>  value.json().then(data =>  {
+}).then(value =>  value.json()).then(data =>  {
     console.log(data);
 
 	// Make an array of pins for representing disasters (will eventually become HTML button function too)
@@ -56,7 +56,7 @@ let req = fetch("http://localhost:8080/NASA/all-disasters", {
 	});
 
 	
-}));
+});
 
 // filterRegion is a rectangle entity that user draws on globe
 const filterRegion = addSelectorToViewer(viewer);

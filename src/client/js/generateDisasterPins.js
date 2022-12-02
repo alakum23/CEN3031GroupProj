@@ -1,5 +1,5 @@
 // Import dependencies for this function
-import { PinBuilder, Cartesian3, Math, VerticalOrigin, HeightReference, NearFarScalar, Color, Billboard } from "cesium";
+import { PinBuilder, Cartesian3, Viewer, VerticalOrigin, HeightReference, NearFarScalar, Color, Billboard } from "cesium";
 import * as wildfireImg from "../img/wildfirePinImg.png"
 import * as earthquakeImg from "../img/earthquakePinImg.png"
 import * as volcanoImg from "../img/volcanoPinImg.png"
@@ -42,18 +42,24 @@ const setDisasterPinViewer = (_viewer) =>  { viewer = _viewer; }
  * Add the generated disaster pins to the viewer
  */
 const addDisasterPinsToViewer = () =>  {
+    console.log(generatedPinData);
+    console.log("ADDING!");
+    console.log(viewer);
     generatedPinData.forEach((entity) =>  { 
         disasterPins.push(viewer.entities.add(entity));
     });
+    console.log(viewer.entities);
 }
 
 /**
  * Removes all the disaster pins from the cesium viewer
  */
 const removeDisasterPinsFromViewer = () =>  {
+    console.log("REMOVING!");
     disasterPins.forEach((entity) =>  {
         viewer.entities.remove(entity)
     });
+    disasterPins = [];
 }
 
 
@@ -114,6 +120,7 @@ const generateDisasterPins = async (disasterData) =>  {
     }
 
     // Return the created billboard collection
+    generatedPinData = [];
     generatedPinData = entities;
     return entities;
 }

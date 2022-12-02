@@ -4,6 +4,7 @@
 
 import Rectangle from "cesium/Source/Core/Rectangle";
 import { getSelector, toggleDrawing } from "./selectRegion.js"
+import { addDisasterPinsToViewer, removeDisasterPinsFromViewer, generateDisasterPins } from "./generateDisasterPins.js";
 
 window.buttonClicked = function()  {
     console.log("A button was clicked");
@@ -37,7 +38,7 @@ window.getFromSearch = async function()  {
     // Make the POST request body
     let bodyObj = {};
     //if (dateInput !== undefined)  { bodyObj["start"] = dateInput; bodyObj["end"] = dateInput;}
-    if (bbox !== undefined)  { bodyObj["bbox"] = boundaryBoxCoord; }
+    if (bbox !== undefined)  { bodyObj["boundaryBox"] = boundaryBoxCoord; }
     //if (disasterInput !== undefined)  { bodyObj["categories"] = [disasterInput]; }
 
     // Get the new disaster data (somehow add it to the viewer)
@@ -49,6 +50,13 @@ window.getFromSearch = async function()  {
         .then(value =>  value.json())
         .then(data =>  {
             console.log(data)
+            // BELOW is not working for some reason??? 
+            removeDisasterPinsFromViewer();
+            generateDisasterPins(data.events).then((entities) =>  {
+                addDisasterPinsToViewer();
+                console.log("SUCCESSFULLY ADDED!");
+            });
+            console.log("DONE!");
         });
    
 }
