@@ -23,13 +23,15 @@ window.getFromSearch = async function()  {
     const dateInput = document.getElementById('search-date').value;
 
     // Get coords from bbox
-    const toDegrees = (radians) => radians * 180 / Math.PI;
-    const bbox = getSelector().rectangle.coordinates._value;
-    let boundaryBoxCoord;
-    if (bbox !== undefined)  {
-        const northwest = Rectangle.northwest(bbox);
-        const southeast = Rectangle.southeast(bbox);
-        boundaryBoxCoord = toDegrees(northwest.longitude) + "," + toDegrees(northwest.latitude) + "," + toDegrees(southeast.longitude) + "," + toDegrees(southeast.latitude);    
+    let boundaryBoxCoord = undefined;
+    if (getSelector().show === true)  {
+        const bbox = getSelector().rectangle.coordinates._value;
+        if (bbox !== undefined)  {
+            const northwest = Rectangle.northwest(bbox);
+            const southeast = Rectangle.southeast(bbox);
+            const toDegrees = (radians) => radians * 180 / Math.PI;
+            boundaryBoxCoord = toDegrees(northwest.longitude) + "," + toDegrees(northwest.latitude) + "," + toDegrees(southeast.longitude) + "," + toDegrees(southeast.latitude);    
+        }
     }
     
     // Get the disaster name
@@ -42,10 +44,10 @@ window.getFromSearch = async function()  {
     // Make the POST request body
     let bodyObj = {};
     //if (dateInput !== undefined)  { bodyObj["start"] = dateInput; bodyObj["end"] = dateInput;}
-    if (bbox !== undefined)  { bodyObj["boundaryBox"] = boundaryBoxCoord; }
+    if (boundaryBoxCoord !== undefined)  { bodyObj["boundaryBox"] = boundaryBoxCoord; }
     //if (disasterInput !== undefined)  { bodyObj["categories"] = [disasterInput]; }
 
-    
+
     // Get the new disaster data & add it to the viewer
     const response = await fetch('http://localhost:8080/NASA/disasters', {
         method: 'POST',

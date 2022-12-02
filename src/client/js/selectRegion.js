@@ -43,7 +43,9 @@ const addSelectorToViewer = (viewer) =>  {
 /**
  * Hides the draw region selector
  */
-const hideSelector = () => selector.show = false;
+const hideSelector = () =>  {
+	selector.show = false;
+}
 
 /**
  * Turns drawing on if enabled or off if disabled (used in UI functions)

@@ -72,6 +72,8 @@ const generateDisasterPins = async (disasterData) =>  {
         const coords = disasterData[i].geometry[0].coordinates;
         console.log(coords);
         // Needs check for if coords are multi-dimensional array
+        // Really needs different processing based on disaster type...
+        // Split into own function that isn't exported?
 
         entityOptions.push({
             // ID and location
