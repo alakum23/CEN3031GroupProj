@@ -1,5 +1,5 @@
 // Import Statements
-import generateDisasterPins from "../../src/client/js/generateDisasterPins.js";
+import { generateDisasterPins } from "../../src/client/js/generateDisasterPins.js";
 
 // Test function here
 describe('generateDisasterPins() Function', () =>  {

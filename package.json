@@ -65,7 +65,11 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-request-id": "^1.4.1",
+    "express-validator": "^6.14.2",
     "find-config": "^1.0.0",
+    "mongoose": "^6.7.3",
+    "morgan": "^1.10.0",
     "node-fetch": "^3.2.10"
   }
 }

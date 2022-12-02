@@ -1,5 +1,7 @@
 # HazardVis
 
+This is HazardVis.
+
 ## Setup
 
 Clone the repository, then run the following commands from the root directory to build and run HazardVis in development mode. </br>
@@ -58,6 +60,15 @@ The backend is a NODE JS express server. It can be run in development or product
 Running in development mode enables hot module reloading (which is outlined above). </br>
 
 Currently the `server.js` file holds all setup and implementation of the express server, and the `router.js` file holds the express routes that are used. View those files for more information about how they work. `multiply.js` is used to demonstrate how backend unit testing should be done. </br> 
+
+#### NASA EONET Connection
+Create a .env file in the base directory of this project and setup a NASA_API_KEY following the 
+sample.env template. Create a NASA_API_KEY for yourself on their website. 
+
+#### MONGO DB Database Connection
+Within the .env file you created for NASA EONET API Connection and setup the ATLUS_URI following the 
+sample.env template (REMEMBER TO REMOVE THE <> chars on the outside of the username and password).
+We will create a username and password for you to access the shared MONGO DB database in person. 
 
 ## ESLint Configuration
 
