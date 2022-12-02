@@ -3,7 +3,7 @@
  */
 
 import Rectangle from "cesium/Source/Core/Rectangle";
-import { getSelector, toggleDrawing } from "./selectRegion.js"
+import { getSelector, hideSelector, toggleDrawing } from "./selectRegion.js"
 import { addDisasterPinsToViewer, removeDisasterPinsFromViewer, generateDisasterPins } from "./generateDisasterPins.js";
 
 window.buttonClicked = function()  {
@@ -12,6 +12,10 @@ window.buttonClicked = function()  {
 
 window.startLocationSelection = function()  {
     toggleDrawing();
+}
+
+window.clearLocationSelection = function()  {
+    hideSelector();
 }
 
 window.getFromSearch = async function()  {
