@@ -29,7 +29,6 @@ import * as dustStormImg from "../img/dustStormPinImg.png"
 // Export those and we can use them in the HTML UI functions
 
 let viewer;
-let generatedPinData = [];
 let disasterPins = [];
 
 /**
@@ -37,31 +36,6 @@ let disasterPins = [];
  * @param {Viewer} _viewer 
  */
 const setDisasterPinViewer = (_viewer) =>  { viewer = _viewer; }
-
-/**
- * Add the generated disaster pins to the viewer
- */
-const addDisasterPinsToViewer = () =>  {
-    console.log(generatedPinData);
-    console.log("ADDING!");
-    console.log(viewer);
-    generatedPinData.forEach((entity) =>  { 
-        disasterPins.push(viewer.entities.add(entity));
-    });
-    console.log(viewer.entities);
-}
-
-/**
- * Removes all the disaster pins from the cesium viewer
- */
-const removeDisasterPinsFromViewer = () =>  {
-    console.log("REMOVING!");
-    disasterPins.forEach((entity) =>  {
-        viewer.entities.remove(entity)
-    });
-    disasterPins = [];
-}
-
 
 /**
  * 
@@ -73,7 +47,7 @@ const generateDisasterPins = async (disasterData) =>  {
     if (disasterData.length === 0)  { return []; }
     
     // Define some constants
-    const entities = [];
+    const entityOptions = [];
 
     // Create Pin Images for each disaster type
     const pinBuilder  = new PinBuilder();
@@ -96,8 +70,10 @@ const generateDisasterPins = async (disasterData) =>  {
     // Add the billboard options to the array for each disaster
     for (let i = 0; i < disasterData.length; i++)  {
         const coords = disasterData[i].geometry[0].coordinates;
+        console.log(coords);
+        // Needs check for if coords are multi-dimensional array
 
-        const entity = {
+        entityOptions.push({
             // ID and location
             id: "Disaster Pin: " + i,
             position: Cartesian3.fromDegrees(coords[0], coords[1]),
@@ -115,14 +91,19 @@ const generateDisasterPins = async (disasterData) =>  {
                 lat: coords[0],
                 lon: coords[1]
             },
-        };
-        entities.push(entity);
+        });
     }
 
-    // Return the created billboard collection
-    generatedPinData = [];
-    generatedPinData = entities;
-    return entities;
+    // Clear the pins from the viewer 
+    disasterPins.forEach((entity) =>  {
+        viewer.entities.remove(entity)
+    });
+    disasterPins = [];
+    //Add the pins to the viewer & return the result
+    entityOptions.forEach((entity) =>  {
+        disasterPins.push(viewer.entities.add(entity));
+    })
+    return disasterPins;
 }
 
-export { setDisasterPinViewer, addDisasterPinsToViewer, removeDisasterPinsFromViewer, generateDisasterPins} ;
+export { setDisasterPinViewer, generateDisasterPins} ;

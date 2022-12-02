@@ -15,7 +15,7 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
 import logMessage from "./js/customLog"; // Example custom function import
-import {generateDisasterPins, addDisasterPinsToViewer, setDisasterPinViewer} from "./js/generateDisasterPins";
+import {generateDisasterPins, setDisasterPinViewer} from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
 import { addSelectorToViewer, drawSelector, endDrawRegion, startDrawRegion } from "./js/selectRegion";
 
@@ -46,7 +46,7 @@ fetch("http://localhost:8080/NASA/all-disasters", {
 }).then(value =>  value.json()).then(data =>  {
 	// Make an array of pins for representing disasters (will eventually become HTML button function too)
 	generateDisasterPins(data.events).then(() =>  {
-		addDisasterPinsToViewer();
+		console.log("ADDED");
 	});
 });
 
