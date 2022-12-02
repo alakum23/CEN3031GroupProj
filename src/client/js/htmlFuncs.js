@@ -52,11 +52,9 @@ window.getFromSearch = async function()  {
             console.log(data)
             // BELOW is not working for some reason??? 
             removeDisasterPinsFromViewer();
-            generateDisasterPins(data.events).then((entities) =>  {
+            generateDisasterPins(data.events).then(() =>  {
                 addDisasterPinsToViewer();
-                console.log("SUCCESSFULLY ADDED!");
             });
-            console.log("DONE!");
         });
    
 }
