@@ -20,6 +20,8 @@ window.toggleNavbar = function()  {
 }
 
 window.startLocationSelection = function()  {
+    let UI = document.getElementById("navBar");
+    UI.style.display = "none";
     toggleDrawing();
 }
 
