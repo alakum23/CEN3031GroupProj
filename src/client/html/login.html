@@ -30,11 +30,11 @@
   <form id = "form2">
 
     
-    <input type="text" class="text" name="username">
+    <input type="text" id = "SUuser" class="text" name="username">
      <span>Enter desired username</span>
     <br> 
     <br>
-    <input type="password" class="text" name="password">
+    <input type="password" id = "SUpass" class="text" name="password">
     <span>Enter desired password</span>
     <br>
 
@@ -90,27 +90,43 @@
                   user: us,
                   pass: pd
               }), // JSON stringify is needed to send JSON over the network
-          }).then((data) => {
-            console.log(data);
-          });
+          })
+          .then((response) => response.json())
+    .then((data) => {
+      console.log('This is data', data);
+      if(data.length > 0){
+              console.log("worked");
+              myFunc();
+            }
+            else{
+              console.log("wrong answer")
+             }
 
-          //  responseData = await req.json();
-          // console.log(responseData.parse());
-          // if (responseData== "good")
-          // {
-          //   console.log(responseData);
-          //   myFunc();
-
-          // } 
-          // else if (responseData == "bad")
-          // {
-          //   console.log("bad");
-
-          // }
-            
-
-          //I'm using async / await instead of .then because it's easier to read in this case
+    })
+          
 }
+  async function createUser(){
+    let us = document.getElementById('SUuser').value;
+          let pd = document.getElementById('SUpass').value;
+          console.log(us);
+          console.log(pd);
+
+          let req = await fetch("http://localhost:8080/mongoose/test/add", { // Had an extra slash here
+              method: 'PUT',
+              json: true, // Tells server this is JSON data
+              body: JSON.stringify({
+                  user: us,
+                  pass: pd
+              }), // JSON stringify is needed to send JSON over the network
+          })
+          .then((response) => response.json())
+    .then((data) => {
+    })
+
+
+
+    
+  }
         
       
 

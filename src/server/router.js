@@ -66,17 +66,18 @@ router.put('/mongoose/test/find', [], async (req, res) => {
     //if query is not null, then allow login
     //response await
     //send response, read response, if blah blah then perform action
-    if(query!="[]")
-    {
-        console.log("not null")
-        res.send({body: "bad"});
+    res.send(query);
+    // if(query!="[]")
+    // {
+    //     console.log("not null")
+    //     res.send({body: "bad"});
 
-    }
-    else{
-        console.log("null")
-        res.send({body: "good"});
+    // }
+    // else{
+    //     console.log("null")
+    //     res.send({body: "good"});
 
-    }
+    // }
         
 });
 
