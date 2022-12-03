@@ -31,7 +31,8 @@ window.clearLocationSelection = function()  {
 
 window.getFromSearch = async function()  {
     // Get info from the UI parts
-    const dateInput = document.getElementById('search-date').value;
+    const startDateInput = document.getElementById('startDate').value;
+    const endDateInput = document.getElementById('endDate').value;
 
     // Get coords from bbox
     let boundaryBoxCoord = undefined;
@@ -45,19 +46,24 @@ window.getFromSearch = async function()  {
         }
     }
     
-    // Get the disaster name
-    const disasterInput = document.getElementById('search-disaster').value;
-
-    console.log(dateInput);
-    console.log(boundaryBoxCoord);
-    console.log(disasterInput);
+    // Get the disaster types from the checkboxes
+    let disasterCategories = [];
+    ['drought', 'dustHaze', 'earthquakes', 'floods', 'landslides', 'severeStorms', 'snow', 'wildfires', 'volcanoes', 'tempExtremes', 'seaLakeIce', 'waterColor', 'manmade'].forEach((ID) =>  {
+        if (document.getElementById(ID).checked)  {
+            disasterCategories.push(ID);
+        }
+    });
 
     // Make the POST request body
-    let bodyObj = {};
-    //if (dateInput !== undefined)  { bodyObj["start"] = dateInput; bodyObj["end"] = dateInput;}
+    let bodyObj = {
+        start: startDateInput,
+        end: endDateInput
+    };
     if (boundaryBoxCoord !== undefined)  { bodyObj["boundaryBox"] = boundaryBoxCoord; }
-    //if (disasterInput !== undefined)  { bodyObj["categories"] = [disasterInput]; }
+    if (disasterCategories.length > 0)  { bodyObj["categories"] = disasterCategories; }
 
+    // Print our body to console (for debugging)
+    console.log(bodyObj);
 
     // Get the new disaster data & add it to the viewer
     const response = await fetch('http://localhost:8080/NASA/disasters', {
@@ -66,6 +72,8 @@ window.getFromSearch = async function()  {
         body: JSON.stringify(bodyObj)
     });
     const responseData = await response.json();
+
+    // Print response in console and add pins to viewer
     console.log(responseData.events);
     await generateDisasterPins(responseData.events);
 }
