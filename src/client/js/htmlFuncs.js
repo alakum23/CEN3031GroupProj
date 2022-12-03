@@ -10,6 +10,15 @@ window.buttonClicked = function()  {
     console.log("A button was clicked");
 }
 
+window.toggleNavbar = function()  {
+    let UI = document.getElementById("navBar");
+    if (UI.style.display === "none")  {
+        UI.style.display = "block";
+    } else  {
+        UI.style.display = "none";
+    }
+}
+
 window.startLocationSelection = function()  {
     toggleDrawing();
 }
