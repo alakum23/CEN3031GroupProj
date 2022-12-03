@@ -12,19 +12,67 @@
                     <input type="date" id="search-date" class="search-input1" placeholder="mm/dd/yyyy"/> 
                 </div>
 
-                <text style="float:left; padding: 15px; color: white">Natural Disaster: </text>
-                <div id="searchNaturalDisaster" >
-                    <input type="text" id="search-disaster" placeholder = "Enter specific natural disaster" class="search-input"/> 
-                </div> 
-            
+                <fieldset>
+                    <legend>Select Disaster Types</legend>
+                    <div id="searchNaturalDisaster" >
+                        <div>
+                            <input type="checkbox" id="drought" name="drought" checked>
+                            <label for="drought">Drought</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="dustHaze" name="dustHaze" checked>
+                            <label for="dustHaze">Dust & Haze</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="earthquakes" name="earthquakes" checked>
+                            <label for="earthquakes">Earthquakes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="floods" name="floods" checked>
+                            <label for="floods">Floods</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="landslides" name="landslides" checked>
+                            <label for="landslides">Landslides</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="severeStorms" name="severeStorms" checked>
+                            <label for="severeStorms">Severe Storms</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="snow" name="snow" checked>
+                            <label for="snow">Snow</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="wildfires" name="wildfires" checked>
+                            <label for="wildfires">Wildfires</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="volcanoes" name="volcanoes" checked>
+                            <label for="volcanoes">Volcanoes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tempExtremes" name="tempExtremes" checked>
+                            <label for="tempExtremes">Temperature Extremes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="seaLakeIce" name="seaLakeIce" checked>
+                            <label for="seaLakeIce">Icebergs</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="waterColor" name="waterColor" checked>
+                            <label for="waterColor">Water Discoloring</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="manmade" name="manmade" checked>
+                            <label for="manmade">Manmade</label>
+                        </div>
+                    </div> 
+                </fieldset>
                 <text style="float:left; padding: 15px; color: white">Location: </text>
-                <div id="searchLocation" >
-                    <input type="text" id="search-location" placeholder = "Enter specific location" class="search-input"/> 
-
-                </div>     
-                <button class="search-button" onclick="getFromSearch()">&#x1F50D</button> 
                 <button class="location-button" onclick="startLocationSelection()">Select Location</button> 
                 <button class="location-button" onclick="clearLocationSelection()">Unselect Location</button>
+                <button class="search-button" onclick="getFromSearch()">&#x1F50D</button> 
             </div>
             <div id="cesiumContainer"></div>
         </div>
