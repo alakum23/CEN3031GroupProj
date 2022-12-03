@@ -20,7 +20,7 @@
     <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
     <label for="checkbox-1-1">Keep me Signed in</label>
     
-    <button id="signin" type = "button" onclick= "authenticate()">Sign In</button>
+    <button id="signin" type = "button" onclick= "authenticateUser()">Sign In</button>
 
     <hr>
 
@@ -76,13 +76,42 @@
         
         }
 
-        function authenticate(){       
-          var us = document.getElementById('username').value;
-          var pd = document.getElementById('pwd').value;
+        async function authenticateUser(){
+          let us = document.getElementById('username').value;
+          let pd = document.getElementById('pwd').value;
           console.log(us);
           console.log(pd);
-          //sample fetch request, must post 
-          
-        }
+
+          //sample fetch request, must post
+          let req = await fetch("http://localhost:8080/mongoose/test/find", { // Had an extra slash here
+              method: 'PUT',
+              json: true, // Tells server this is JSON data
+              body: JSON.stringify({
+                  user: us,
+                  pass: pd
+              }), // JSON stringify is needed to send JSON over the network
+          }).then((data) => {
+            console.log(data);
+          });
+
+          //  responseData = await req.json();
+          // console.log(responseData.parse());
+          // if (responseData== "good")
+          // {
+          //   console.log(responseData);
+          //   myFunc();
+
+          // } 
+          // else if (responseData == "bad")
+          // {
+          //   console.log("bad");
+
+          // }
+            
+
+          //I'm using async / await instead of .then because it's easier to read in this case
+}
+        
+      
 
 </script>
