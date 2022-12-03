@@ -20,7 +20,7 @@
     <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
     <label for="checkbox-1-1">Keep me Signed in</label>
     
-    <button id="signin" type = "button" onclick= "authenticate()">Sign In</button>
+    <button id="signin" type = "button" onclick= "authenticateUser()">Sign In</button>
 
     <hr>
 
@@ -30,16 +30,16 @@
   <form id = "form2">
 
     
-    <input type="text" class="text" name="username">
+    <input type="text" id = "SUuser" class="text" name="username">
      <span>Enter desired username</span>
     <br> 
     <br>
-    <input type="password" class="text" name="password">
+    <input type="password" id = "SUpass" class="text" name="password">
     <span>Enter desired password</span>
     <br>
 
     
-    <button class="signup" type = "button" onclick="myFunc()">Sign Up</button>
+    <button class="signup" type = "button" onclick="createUser()">Sign Up</button>
 
     <hr>
 
@@ -76,13 +76,63 @@
         
         }
 
-        function authenticate(){       
-          var us = document.getElementById('username').value;
-          var pd = document.getElementById('pwd').value;
+        async function authenticateUser(){
+          let us = document.getElementById('username').value;
+          let pd = document.getElementById('pwd').value;
           console.log(us);
           console.log(pd);
-          //sample fetch request, must post 
+
+          //sample fetch request, must post
+          let req = await fetch("http://localhost:8080/mongoose/test/find", { // Had an extra slash here
+              method: 'PUT',
+              json: true, // Tells server this is JSON data
+              body: JSON.stringify({
+                  user: us,
+                  pass: pd
+              }), // JSON stringify is needed to send JSON over the network
+          })
+          .then((response) => response.json())
+    .then((data) => {
+      console.log('This is data', data);
+      if(data.length > 0){
+              console.log("worked");
+              myFunc();
+            }
+            else{
+              console.log("wrong answer")
+             }
+
+    })
           
-        }
+}
+  async function createUser(){
+    let us = document.getElementById('SUuser').value;
+          let pd = document.getElementById('SUpass').value;
+          console.log(us);
+          console.log(pd);
+
+          let req = await fetch("http://localhost:8080/mongoose/test/add", { // Had an extra slash here
+              method: 'PUT',
+              json: true, // Tells server this is JSON data
+              body: JSON.stringify({
+                  user: us,
+                  pass: pd
+              }), // JSON stringify is needed to send JSON over the network
+          })
+          // .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      form1.style.display = "block";
+      form2.style.display = "none";
+      
+
+    })
+
+
+
+    
+  }
+        
+      
 
 </script>
