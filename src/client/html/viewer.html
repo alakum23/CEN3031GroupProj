@@ -7,10 +7,17 @@
     <body>
         <div class = "parent">
             <div id="navBar">
-                <text style="float:left; padding: 15px; color: white" >Date: </text>
-                <div id="searchDate" >
-                    <input type="date" id="search-date" class="search-input1" placeholder="mm/dd/yyyy"/> 
-                </div>
+                <fieldset>
+                    <legend>Select Dates</legend>
+                    <div id="searchDate" >
+                        <input type="date" id="search-date" class="search-input1" placeholder="mm/dd/yyyy" name="startDate"/> 
+                        <label for="startDate">Start Day</label>
+                    </div>
+                    <div id="searchDate" >
+                        <input type="date" id="search-date2" class="search-input1" placeholder="mm/dd/yyyy" name="endDate"/> 
+                        <label for="endDate">End Day</label>
+                    </div>
+                </fieldset>
 
                 <fieldset>
                     <legend>Select Disaster Types</legend>
@@ -69,9 +76,15 @@
                         </div>
                     </div> 
                 </fieldset>
-                <text style="float:left; padding: 15px; color: white">Location: </text>
-                <button class="location-button" onclick="startLocationSelection()">Select Location</button> 
-                <button class="location-button" onclick="clearLocationSelection()">Unselect Location</button>
+                
+                <fieldset>
+                    <legend>Select Location</legend>
+                    <div>
+                        <button class="location-button" onclick="startLocationSelection()">Select Location</button> 
+                        <button class="location-button" onclick="clearLocationSelection()">Unselect Location</button>        
+                    </div>
+                </fieldset>
+
                 <button class="search-button" onclick="getFromSearch()">&#x1F50D</button> 
             </div>
             <div id="cesiumContainer"></div>
