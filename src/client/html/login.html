@@ -39,7 +39,7 @@
     <br>
 
     
-    <button class="signup" type = "button" onclick="myFunc()">Sign Up</button>
+    <button class="signup" type = "button" onclick="createUser()">Sign Up</button>
 
     <hr>
 
@@ -119,8 +119,13 @@
                   pass: pd
               }), // JSON stringify is needed to send JSON over the network
           })
-          .then((response) => response.json())
+          // .then((response) => response.json())
     .then((data) => {
+      console.log(data);
+      form1.style.display = "block";
+      form2.style.display = "none";
+      
+
     })
 
 

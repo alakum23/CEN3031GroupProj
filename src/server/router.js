@@ -35,9 +35,9 @@ router.get('/api/test', [], async (req, res) =>  {
 router.put('/mongoose/test/add', [], async (req, res) => {
     // Define a new user object to add
     const newUser = new User({
-        username: 'group22', 
-        password: 'g22pass',
-        favLocation: ['Rainesville']
+        username: req.body.user, 
+        password: req.body.pass,
+        favLocation: []
     });
 
     try  {
@@ -60,6 +60,30 @@ router.put('/mongoose/test/find', [], async (req, res) => {
     let query = await User.find({
         username: req.body.user, password: req.body.pass
         //username, password
+});
+    // Get all records in database
+    // You should do error handling and stuff here...
+    //if query is not null, then allow login
+    //response await
+    //send response, read response, if blah blah then perform action
+    res.send(query);
+    // if(query!="[]")
+    // {
+    //     console.log("not null")
+    //     res.send({body: "bad"});
+
+    // }
+    // else{
+    //     console.log("null")
+    //     res.send({body: "good"});
+
+    // }
+        
+});
+
+router.put('/mongoose/test/findAll', [], async (req, res) => {
+    let query = await User.find({
+        
 });
     // Get all records in database
     // You should do error handling and stuff here...
