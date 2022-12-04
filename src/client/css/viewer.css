@@ -114,6 +114,8 @@ nav{
   top: 100px;
   left: 5px;
   z-index: 99;
+
+  display: none;
 }
 
 #navBar fieldset  {
