@@ -1,10 +1,10 @@
 <html>
     <!-- <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'> -->
 <div class="login">
-  <h2 class="active"> 
+  <h2 class="active" id = "icon"> 
     <button id = "signinbtn" onclick = "signinFunc()"> Sign in </button> 
   </h2>
-  <h2 class="active"> 
+  <h2 class="nonactive" id = "icon2"> 
     <button id = "signupbtn" onclick = "signUpFunc()"> Sign up </button>  
   </h2>
 
@@ -13,18 +13,17 @@
      <span>username</span>
     <br> 
     <br>
+    <br>
     <input type="input" id = "pwd" class="text" name="password">
     <span>password</span>
     <br>
-
-    <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
-    <label for="checkbox-1-1">Keep me Signed in</label>
-    
+    <br>
+    <br>
     <button id="signin" type = "button" onclick= "authenticateUser()">Sign In</button>
 
     <hr>
 
-    <a href="#">Forgot Password?</a>
+    <!-- <a href="#">Forgot Password?</a> -->
   </form>
 
   <form id = "form2">
@@ -34,21 +33,16 @@
      <span>Enter desired username</span>
     <br> 
     <br>
+    <br>
     <input type="password" id = "SUpass" class="text" name="password">
     <span>Enter desired password</span>
     <br>
+    <br>
 
-    
-    <button class="signup" type = "button" onclick="createUser()">Sign Up</button>
-
+    <button id="signup" type = "button" onclick="createUser()">Sign Up</button>
     <hr>
-
   </form>
-
-  
-
 </div>
-<button onclick = "myFunc()">test</button>
 </html>
 <script>
           const form1 = document.getElementById('form1');
@@ -56,6 +50,12 @@
       const form2 = document.getElementById('form2');
       form2.style.display = "none";
 
+      // var change_class=document.getElementById("active");
+      // change_class.onclick=function()
+      // {
+      //   var icon=document.getElementById("icon");
+      //   icon.className="fa fa-gear";
+      // }
       
         function myFunc() {
             location.replace("http://localhost:8080/viewer");
@@ -64,6 +64,12 @@
         const btn = document.getElementById('btn');
 
         function signinFunc(){
+          var icon=document.getElementById("icon");
+          icon.className="active";
+
+          var icon2=document.getElementById("icon2");
+          icon2.className="nonactive";
+
           if(form1.style.display = "none"){
           form1.style.display = "block";
           form2.style.display = "none";
@@ -71,6 +77,12 @@
    
         }
         function signUpFunc(){
+          var icon=document.getElementById("icon2");
+          icon.className="active";
+
+          var icon2=document.getElementById("icon");
+          icon2.className="nonactive";
+
           form1.style.display = "none";
           form2.style.display = "block";
         
