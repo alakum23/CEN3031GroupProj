@@ -17,7 +17,7 @@ import "./css/viewer.css";  // Incluse the page's CSS functions here
 import logMessage from "./js/customLog"; // Example custom function import
 import {generateDisasterPins, setDisasterPinViewer} from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
-import { addSelectorToViewer, drawSelector, endDrawRegion, startDrawRegion } from "./js/selectRegion";
+import { addSelectorToViewer, drawSelector, endDrawRegion, getSelector, startDrawRegion } from "./js/selectRegion";
 
 // Your access token can be found at: https://cesium.com/ion/tokens.
 // This is the default access token
@@ -75,11 +75,15 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 	const pickedFeature = viewer.scene.pick(movement.position);
 
 	if (pickedFeature)  {
+		// Ensure we didn't click on the drawn rectangle selector
+		if (pickedFeature.id === getSelector())  { return; }
 		
 		// Handle the pop up div information
 		popupDiv.style.display = "block";
 		popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value + "\nLatitude: " + pickedFeature.id._properties._lat._value + "\nLongitude: " + pickedFeature.id._properties._lon._value + "\nBegan: " + pickedFeature.id._properties._date._value;
-
+		
+		
+		
 		// Get the terrain based location of the entity we picked 
 		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);
 		const terrainLocation = await sampleTerrainMostDetailed(viewer.terrainProvider, [cartographicPos]);
