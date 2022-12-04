@@ -74,9 +74,9 @@ const generateDisasterPins = async (disasterData) =>  {
             // For now only support type point disasters
             continue;
         }
-        console.log(disasterData[i].categories);
-        console.log(disasterData[i].geometry[0]);
-        console.log(coords);
+        //console.log(disasterData[i].categories);
+        //console.log(disasterData[i].geometry[0]);
+        //console.log(coords);
         // Needs check for if coords are multi-dimensional array
         // Really needs different processing based on disaster type...
         // Split into own function that isn't exported?
