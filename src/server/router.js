@@ -7,6 +7,8 @@ const { check, validationResult } = require('express-validator');
 
 // Database Schema Imports
 const User = require("./db_schemas/userSchema"); // Get the student schema 
+const Student = require("./db_schemas/studentSchema"); // Get the student schema 
+const favoriteFilters = require("./db_schemas/favoriteSchema");
 
 // Creating express router
 const router = express.Router();
@@ -30,6 +32,38 @@ router.get('/api/test', [], async (req, res) =>  {
 });
 
 //------------------------------MONGO DB DATABASE ROUTES------------------------------//
+
+//new route for favorite filter
+//getting a user fav filter, and 1 for adding a new filter
+router.put('/mongoose/filters/add', [
+    //add===validation
+    check('location').optional().isString().withMessage('Location must be a valid location'),
+    check('startDate').optional().trim().isDate().withMessage('start date must be a valid date'),
+    check('endDate').optional().trim().isDate().withMessage('end date must be a valid date'),
+    check('disasterType').optional().isString().withMessage('disasters must be real disasters'),
+    check('userId').optional().isNumeric().withMessage('user id must be a valid id'),
+
+], async(req, res) => {
+    const filter = new favoriteFilters({
+        location: req.body.locaiton,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        disasterType: req.body.disasterType,
+        userId: req.body.userID,
+    });
+
+    try  {
+        // Call to save the student to the database
+        let result = await filter.save();
+
+        // Return Success Message
+        res.send({msg: "Added One Filter"});
+    } catch (error)  {
+        // Handle Errors that could be thrown by the await
+        console.log(error);
+        res.send({msg: "Could Not Add Filter"});
+    }
+})
 
 //  Sample route for adding info to mongoose
 router.put('/mongoose/test/add', [], async (req, res) => {
