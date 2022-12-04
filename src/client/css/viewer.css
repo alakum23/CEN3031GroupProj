@@ -140,6 +140,8 @@ nav{
 }
 
 .hamburger-button  {
+  cursor: pointer;
+
   box-sizing: border-box;
   width: 32px;
   height: 32px;
@@ -177,4 +179,8 @@ nav{
   background:#adf;
   border-color:#fff;
   box-shadow:0 0 8px #fff
+}
+
+.location-button, #searchDate > *, #searchNaturalDisaster > div > *    {
+  cursor: pointer;
 }

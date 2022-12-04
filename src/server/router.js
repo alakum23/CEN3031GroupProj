@@ -94,7 +94,7 @@ router.put('/mongoose/test/find', [], async (req, res) => {
     let query = await User.find({
         username: req.body.user, password: req.body.pass
         //username, password
-});
+    });
     // Get all records in database
     // You should do error handling and stuff here...
     //if query is not null, then allow login
@@ -118,7 +118,7 @@ router.put('/mongoose/test/find', [], async (req, res) => {
 router.put('/mongoose/test/findAll', [], async (req, res) => {
     let query = await User.find({
         
-});
+    });
     // Get all records in database
     // You should do error handling and stuff here...
     //if query is not null, then allow login
