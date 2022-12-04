@@ -78,7 +78,7 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 		
 		// Handle the pop up div information
 		popupDiv.style.display = "block";
-		popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value + "\n Latitude: " + pickedFeature.id._properties._lat._value + "\n Longitude: " + pickedFeature.id._properties._lon._value;
+		popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value + "\nLatitude: " + pickedFeature.id._properties._lat._value + "\nLongitude: " + pickedFeature.id._properties._lon._value + "\nBegan: " + pickedFeature.id._properties._date._value;
 
 		// Get the terrain based location of the entity we picked 
 		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);

@@ -69,7 +69,13 @@ const generateDisasterPins = async (disasterData) =>  {
     
     // Add the billboard options to the array for each disaster
     for (let i = 0; i < disasterData.length; i++)  {
-        const coords = disasterData[i].geometry[0].coordinates;
+        let coords = disasterData[i].geometry[0].coordinates;
+        if (disasterData[i].geometry.filter((e) => (e.type === "Polygon")).length > 0)  {
+            // For now only support type point disasters
+            continue;
+        }
+        console.log(disasterData[i].categories);
+        console.log(disasterData[i].geometry[0]);
         console.log(coords);
         // Needs check for if coords are multi-dimensional array
         // Really needs different processing based on disaster type...
@@ -91,7 +97,8 @@ const generateDisasterPins = async (disasterData) =>  {
             properties:  {
                 disasterName: disasterData[i].title, 
                 lat: coords[0],
-                lon: coords[1]
+                lon: coords[1],
+                date: disasterData[i].geometry[0].date
             },
         });
     }
