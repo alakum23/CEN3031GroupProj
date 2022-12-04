@@ -84,21 +84,7 @@ nav{
 #searchDate{
   display: flex;
   justify-content: space-between;
-  padding: 10px; 
-}
-
-#searchLocation{
-  width: 240px; 
-  margin-left:auto; 
-  float:left;
-  padding: 10px; 
-}
-
-#searchNaturalDisaster{
-  width: 240; 
-  margin-left:auto; 
-  float:left;
-  padding: 10px; 
+  padding: 5px; 
 }
 
 #navBar{
