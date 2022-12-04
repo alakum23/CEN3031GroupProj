@@ -9,7 +9,7 @@
             <button type="button" class="hamburger-button" onclick="toggleNavbar()">
                 Filters
             </button>
-            <div id="navBar">
+            <div id="navBar" style="display: none;">
                 <fieldset>
                     <legend>Select Dates</legend>
                     <div id="searchDate" >
@@ -82,7 +82,7 @@
                 
                 <fieldset>
                     <legend>Select Location</legend>
-                    <div>
+                    <div class="location-fields">
                         <button class="location-button" onclick="startLocationSelection()">Select Location</button> 
                         <button class="location-button" onclick="clearLocationSelection()">Unselect Location</button>        
                     </div>

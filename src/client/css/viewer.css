@@ -184,3 +184,8 @@ nav{
 .location-button, #searchDate > *, #searchNaturalDisaster > div > *    {
   cursor: pointer;
 }
+
+.location-fields  {
+  display: flex;
+  justify-content: space-between;
+}
