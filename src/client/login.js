@@ -17,28 +17,19 @@ form2.style.display = "none";
 const btn = document.getElementById('btn');
 
 window.signinFunc = function()  {
-    var icon=document.getElementById("icon");
-    icon.className="active";
+    document.getElementById("icon").className = "active";
+    document.getElementById("icon2").className="nonactive";
 
-    var icon2=document.getElementById("icon2");
-    icon2.className="nonactive";
-
-    if(form1.style.display = "none"){
-        form1.style.display = "block";
-        form2.style.display = "none";
-    }
+    form1.style.display = "block";
+    form2.style.display = "none";
 }
 
 window.signUpFunc = function()  {
-    var icon=document.getElementById("icon2");
-    icon.className="active";
-
-    var icon2=document.getElementById("icon");
-    icon2.className="nonactive";
+    document.getElementById("icon2").className="active";
+    document.getElementById("icon").className="nonactive";
 
     form1.style.display = "none";
     form2.style.display = "block";
-  
 }
 
 window.authenticateUser = async function()  {
@@ -46,6 +37,7 @@ window.authenticateUser = async function()  {
     let pd = document.getElementById('pwd').value;
     console.log(us);
     console.log(pd);
+    // Should probably encode this huh?
 
     //sample fetch request, must post
     let req = await fetch("http://localhost:8080/mongoose/test/find", { // Had an extra slash here
@@ -66,7 +58,11 @@ window.authenticateUser = async function()  {
         } else  {
             console.log("wrong answer")
         }
-    });
+    })
+    .catch((error) =>  {
+        //Handle login error here...
+
+    })
 }
 
 window.createUser = async function()  {
@@ -85,6 +81,8 @@ window.createUser = async function()  {
     })
     // .then((response) => response.json())
     .then((data) => {
+        // Let user know they were added successfully
+        // Go back to sign in page
         console.log(data);
         form1.style.display = "block";
         form2.style.display = "none";
