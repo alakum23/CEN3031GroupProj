@@ -24,6 +24,9 @@ body,
 }
 
 #signinbtn{
+  transition-duration: 0.4s;
+  border-radius: 5px;
+
   background-color: transparent;
   font-family: 'Montserrat', sans-serif;
   color: #fff;
@@ -40,7 +43,7 @@ body,
 }
 #signinbtn:hover {
   background: #9aa9c1;
-  box-shadow: 0px 4px 35px -5px #9aa9c1;
+  box-shadow: 0px 0px 15px 20px rgb(154, 169, 193, 1);
   cursor: pointer;
 }
 
@@ -50,6 +53,9 @@ body,
 
 
 #signupbtn{
+  transition-duration: 0.4s;
+  border-radius: 5px;
+
   background-color: transparent;
   font-family: 'Montserrat', sans-serif;
   color: #fff;
@@ -67,7 +73,7 @@ body,
 
 #signupbtn:hover {
   background: #9aa9c1;
-  box-shadow: 0px 4px 35px -5px #9aa9c1;
+  box-shadow: 0px 0px 15px 20px rgb(154, 169, 193, 1);
   cursor: pointer;
 }
 
