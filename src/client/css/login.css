@@ -23,10 +23,21 @@ body,
   box-shadow: 0px 30px 60px -5px #000;
 }
 
-#signinbtn{
+button  {
   transition-duration: 0.4s;
+  border-color: transparent;
   border-radius: 5px;
+}
+button:hover  {
+  background: #9aa9c1;
+  box-shadow: 0px 0px 15px 20px rgb(154, 169, 193, 1);
+  cursor: pointer;
+}
+button:focus  {
+  outline: none;
+}
 
+#signinbtn{
   background-color: transparent;
   font-family: 'Montserrat', sans-serif;
   color: #fff;
@@ -41,21 +52,12 @@ body,
   display: inline-block;
   font-weight: 100;
 }
-#signinbtn:hover {
+#signinbtn:hover  {
   background: #9aa9c1;
-  box-shadow: 0px 0px 15px 20px rgb(154, 169, 193, 1);
-  cursor: pointer;
-}
-
-#signinbtn:focus {
-  outline: none;
 }
 
 
 #signupbtn{
-  transition-duration: 0.4s;
-  border-radius: 5px;
-
   background-color: transparent;
   font-family: 'Montserrat', sans-serif;
   color: #fff;
@@ -70,15 +72,8 @@ body,
   display: inline-block;
   font-weight: 100;
 }
-
-#signupbtn:hover {
+#signupbtn:hover  {
   background: #9aa9c1;
-  box-shadow: 0px 0px 15px 20px rgb(154, 169, 193, 1);
-  cursor: pointer;
-}
-
-#signupbtn:focus {
-  outline: none;
 }
 
 #signin{
@@ -97,16 +92,9 @@ body,
   display: inline-block;
   font-weight: 20;
   margin: auto;
-
 }
 #signin:hover {
-  background: #4082f5;
-  box-shadow: 0px 4px 35px -5px #4082f5;
-  cursor: pointer;
-}
-
-#signin:focus {
-  outline: none;
+  background: #9aa9c1
 }
 
 #signup{
@@ -127,16 +115,10 @@ body,
   margin: auto;
 
 }
-
 #signup:hover {
-  background: #4082f5;
-  box-shadow: 0px 4px 35px -5px #4082f5;
-  cursor: pointer;
+  background: #9aa9c1
 }
 
-#signup:focus {
-  outline: none;
-}
 
 form {
   padding-top: 80px;
