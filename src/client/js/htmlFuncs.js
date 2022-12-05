@@ -55,10 +55,15 @@ window.getFromSearch = async function()  {
     });
 
     // Make the POST request body
-    let bodyObj = {
-        start: startDateInput,
-        end: endDateInput
-    };
+    let bodyObj = {};
+    if (startDateInput !== '' && endDateInput !== '')  {
+        bodyObj["start"] = startDateInput;
+        bodyObj["end"] = endDateInput;
+    } else if (startDateInput === '' && endDateInput === '')  {
+    } else  {
+        alert("Provide either both a start and end date or leave both blank");
+        return;
+    }
     if (boundaryBoxCoord !== undefined)  { bodyObj["boundaryBox"] = boundaryBoxCoord; }
     if (disasterCategories.length > 0)  { bodyObj["categories"] = disasterCategories; }
 

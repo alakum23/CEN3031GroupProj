@@ -9,6 +9,7 @@ const { check, validationResult } = require('express-validator');
 const User = require("./db_schemas/userSchema"); // Get the student schema 
 const Student = require("./db_schemas/studentSchema"); // Get the student schema 
 const favoriteFilters = require("./db_schemas/favoriteSchema");
+const { Error } = require('mongoose');
 
 // Creating express router
 const router = express.Router();
@@ -42,7 +43,6 @@ router.put('/mongoose/filters/add', [
     check('endDate').optional().trim().isDate().withMessage('end date must be a valid date'),
     check('disasterType').optional().isString().withMessage('disasters must be real disasters'),
     check('userId').optional().isNumeric().withMessage('user id must be a valid id'),
-
 ], async(req, res) => {
     const filter = new favoriteFilters({
         location: req.body.locaiton,
@@ -61,12 +61,15 @@ router.put('/mongoose/filters/add', [
     } catch (error)  {
         // Handle Errors that could be thrown by the await
         console.log(error);
-        res.send({msg: "Could Not Add Filter"});
+        res.status(400).send({msg: "Could Not Add Filter"});
     }
-})
+});
 
-//  Sample route for adding info to mongoose
-router.put('/mongoose/test/add', [], async (req, res) => {
+// Sample route for adding info to mongoose
+router.put('/mongoose/user/add', [
+    check('user').isString().withMessage("Username must be a string"),
+    check('pass').isString().withMessage("Password must be a string")
+], async (req, res) => {
     // Define a new user object to add
     const newUser = new User({
         username: req.body.user, 
@@ -77,66 +80,37 @@ router.put('/mongoose/test/add', [], async (req, res) => {
     try  {
         // Call to save the user to the database
         let result = await newUser.save();
-
         // Return Success Message
         res.send("Added One User");
     } catch (error)  {
         // Handle Errors that could be thrown by the await
         console.log(error);
-        res.send("Could Not Add User");
+        res.status(400).send("Could Not Add User");
     }
 });
 
-//  Sample route for getting info from Mongoose
-//we will use this for "sign in"
-var sub;
-router.put('/mongoose/test/find', [], async (req, res) => {
-    let query = await User.find({
-        username: req.body.user, password: req.body.pass
-        //username, password
-    });
+
+// We will use this for "sign in"
+router.put('/mongoose/user/find', [
+    check('user').isString().withMessage("Username must be a string"),
+    check('pass').isString().withMessage("Password must be a string")
+], async (req, res) => {
     // Get all records in database
     // You should do error handling and stuff here...
     //if query is not null, then allow login
-    //response await
-    //send response, read response, if blah blah then perform action
-    res.send(query);
-    // if(query!="[]")
-    // {
-    //     console.log("not null")
-    //     res.send({body: "bad"});
-
-    // }
-    // else{
-    //     console.log("null")
-    //     res.send({body: "good"});
-
-    // }
-        
-});
-
-router.put('/mongoose/test/findAll', [], async (req, res) => {
-    let query = await User.find({
-        
-    });
-    // Get all records in database
-    // You should do error handling and stuff here...
-    //if query is not null, then allow login
-    //response await
-    //send response, read response, if blah blah then perform action
-    res.send(query);
-    // if(query!="[]")
-    // {
-    //     console.log("not null")
-    //     res.send({body: "bad"});
-
-    // }
-    // else{
-    //     console.log("null")
-    //     res.send({body: "good"});
-
-    // }
-        
+    try  {
+        let query = await User.findOne({
+            username: req.body.user,
+            password: req.body.pass
+        });
+        if (query === null)  { throw new Error('NOT FOUND!'); }
+        console.log(query);
+        console.log("FOUND");
+        res.send(query);
+    } catch  {
+        console.log("NOT FOUND");
+        res.status(400).send({message: 'Could not find user!'})
+    }   
 });
 
 //------------------------------NASA DATASET ROUTES------------------------------//

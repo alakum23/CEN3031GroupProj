@@ -40,7 +40,7 @@ window.authenticateUser = async function()  {
     // Should probably encode this huh?
 
     //sample fetch request, must post
-    let req = await fetch("http://localhost:8080/mongoose/test/find", { // Had an extra slash here
+    fetch("http://localhost:8080/mongoose/user/find", { // Had an extra slash here
         method: 'PUT',
         json: true, // Tells server this is JSON data
         body: JSON.stringify({
@@ -48,20 +48,23 @@ window.authenticateUser = async function()  {
             pass: pd
         }), // JSON stringify is needed to send JSON over the network
     })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('This is data', data);
-        if(data.length > 0){
-            console.log("worked");
-            // Redirect to viewer page
-            location.replace("http://localhost:8080/viewer");
-        } else  {
-            console.log("wrong answer")
+    .then((response) => {
+        if (!response.ok) {
+            // create error object and reject if not a 2xx response code
+            let err = new Error("HTTP status code: " + response.status)
+            err.response = response
+            err.status = response.status
+            throw err
         }
+        return response.json();
+    })
+    .then((data) => {
+        // Completed successfully so redirect...
+        location.replace("http://localhost:8080/viewer");
     })
     .catch((error) =>  {
-        //Handle login error here...
-
+        // Handle any login error here...
+        console.log(error);
     })
 }
 
@@ -71,7 +74,7 @@ window.createUser = async function()  {
     console.log(us);
     console.log(pd);
 
-    let req = await fetch("http://localhost:8080/mongoose/test/add", { // Had an extra slash here
+    fetch("http://localhost:8080/mongoose/user/add", { // Had an extra slash here
         method: 'PUT',
         json: true, // Tells server this is JSON data
         body: JSON.stringify({
