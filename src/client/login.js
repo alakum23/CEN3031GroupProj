@@ -16,7 +16,7 @@ form2.style.display = "none";
 
 const btn = document.getElementById('btn');
 
-function signinFunc(){
+window.signinFunc = function()  {
     var icon=document.getElementById("icon");
     icon.className="active";
 
@@ -24,13 +24,12 @@ function signinFunc(){
     icon2.className="nonactive";
 
     if(form1.style.display = "none"){
-    form1.style.display = "block";
-    form2.style.display = "none";
+        form1.style.display = "block";
+        form2.style.display = "none";
     }
-
 }
 
-function signUpFunc(){
+window.signUpFunc = function()  {
     var icon=document.getElementById("icon2");
     icon.className="active";
 
@@ -42,7 +41,7 @@ function signUpFunc(){
   
 }
 
-async function authenticateUser(){
+window.authenticateUser = async function()  {
     let us = document.getElementById('username').value;
     let pd = document.getElementById('pwd').value;
     console.log(us);
@@ -70,7 +69,7 @@ async function authenticateUser(){
     });
 }
 
-async function createUser()  {
+window.createUser = async function()  {
     let us = document.getElementById('SUuser').value;
     let pd = document.getElementById('SUpass').value;
     console.log(us);
