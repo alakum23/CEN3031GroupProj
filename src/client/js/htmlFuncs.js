@@ -60,6 +60,7 @@ window.getFromSearch = async function()  {
         bodyObj["start"] = startDateInput;
         bodyObj["end"] = endDateInput;
     } else if (startDateInput === '' && endDateInput === '')  {
+        bodyObj["status"] = "open";
     } else  {
         alert("Provide either both a start and end date or leave both blank");
         return;
