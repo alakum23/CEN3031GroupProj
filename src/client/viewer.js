@@ -117,18 +117,3 @@ logMessage("Viewer setup with building data!");
 
 let req2 = fetch("http://localhost:8080/api/test");
 req2.then(response => console.log(response));
-
-fetch("http://localhost:8080/mongoose/filters/add", {
-	method: 'PUT',
-	json: true,
-	body:  JSON.stringify({
-		//PUT YOUR STUFF HERE
-		location: "STRING",
-		startDate: "STRING",
-        endDate: "STRING",
-        disasterType: ["STRING"],
-        userId: "STRING",
-	})
-}).then(res => res.json()).then((data) => {
-	console.log(data);
-})
