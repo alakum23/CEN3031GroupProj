@@ -82,12 +82,25 @@ window.createUser = async function()  {
             pass: pd
         }), // JSON stringify is needed to send JSON over the network
     })
-    // .then((response) => response.json())
+    .then((response) => {
+        if (!response.ok) {
+            // create error object and reject if not a 2xx response code
+            let err = new Error("HTTP status code: " + response.status)
+            err.response = response
+            err.status = response.status
+            throw err
+        }
+        return response.json();
+    })
     .then((data) => {
         // Let user know they were added successfully
         // Go back to sign in page
         console.log(data);
         form1.style.display = "block";
         form2.style.display = "none";
-    });
+    })
+    .catch((error) =>  {
+        // Handle any login error here...
+        console.log(error);
+    })
 }

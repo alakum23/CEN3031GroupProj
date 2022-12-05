@@ -1,6 +1,7 @@
 //Node JS package imports 
 const path = require('path');   // For common operations with file paths
 const express = require('express'); // For setting up the router
+const SHA256 = require("crypto-js/sha256");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); // For requests to NASA
 require('dotenv').config(); // For reading needed info from .env for NASA connection
 const { check, validationResult } = require('express-validator');
@@ -15,6 +16,9 @@ const { Error } = require('mongoose');
 const router = express.Router();
 router.use(express.json({limit: '1mb', type: `*/*`}));
 const BUILD_DIR = path.join(__dirname, '../../dist');
+
+// Creating salt for hashing:
+const salt = 'f844b09ff50c';
 
 //------------------------------WEBPAGE ROUTES------------------------------//
 
@@ -70,10 +74,23 @@ router.put('/mongoose/user/add', [
     check('user').isString().withMessage("Username must be a string"),
     check('pass').isString().withMessage("Password must be a string")
 ], async (req, res) => {
+
+    // Ensure username is not already taken
+    try  {
+        let response = await User.findOne({
+            username: req.body.user
+        });
+        if (response)  { throw new Error("Username already exists in DB!"); }
+    } catch (error)  {
+        console.log(error);
+        res.status(400).send({ response: "Could Not Add User"});
+        return;
+    }
+    
     // Define a new user object to add
     const newUser = new User({
         username: req.body.user, 
-        password: req.body.pass,
+        password: SHA256(req.body.pass).toString(), // Encrypt with SHA256
         favLocation: []
     });
 
@@ -81,11 +98,11 @@ router.put('/mongoose/user/add', [
         // Call to save the user to the database
         let result = await newUser.save();
         // Return Success Message
-        res.send("Added One User");
+        res.send({ response: "Added One User"});
     } catch (error)  {
         // Handle Errors that could be thrown by the await
         console.log(error);
-        res.status(400).send("Could Not Add User");
+        res.status(400).send({ response: "Could Not Add User"});
     }
 });
 
@@ -101,7 +118,7 @@ router.put('/mongoose/user/find', [
     try  {
         let query = await User.findOne({
             username: req.body.user,
-            password: req.body.pass
+            password: SHA256(req.body.pass).toString(), // Encrypt with SHA256
         });
         if (query === null)  { throw new Error('NOT FOUND!'); }
         console.log(query);
