@@ -52,17 +52,17 @@ describe('Page Navigation Tests', () =>  {
         await expect(page.title()).resolves.toMatch('HazardVis');
     }, maxTestTime);
 
-    it('Should redirect nonsense routes to /viewer', async () => {
+    it('Should redirect nonsense routes to /login', async () => {
         await page.goto(`http://127.0.0.1:${port}`); 
-        expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
+        expect(page.url()).toBe(`http://127.0.0.1:${port}/login`);
         await expect(page.title()).resolves.toMatch('HazardVis');
 
         await page.goto(`http://127.0.0.1:${port}/nonsense-route`); 
-        expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
+        expect(page.url()).toBe(`http://127.0.0.1:${port}/login`);
         await expect(page.title()).resolves.toMatch('HazardVis');
 
         await page.goto(`http://127.0.0.1:${port}/nonsense-route/nested-again/crazy-route`); 
-        expect(page.url()).toBe(`http://127.0.0.1:${port}/viewer`);
+        expect(page.url()).toBe(`http://127.0.0.1:${port}/login`);
         await expect(page.title()).resolves.toMatch('HazardVis');
     }, maxTestTime);
 });
