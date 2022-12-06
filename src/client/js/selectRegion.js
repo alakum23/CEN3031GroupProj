@@ -1,5 +1,4 @@
-import { CallbackProperty, Cartographic, Rectangle, Cartesian3, VerticalOrigin, HeightReference, NearFarScalar, Color, Billboard, ScreenSpaceEventHandler } from "cesium";
-import Event from "cesium/Source/Core/Event";
+import { CallbackProperty, Cartographic, Rectangle, Cartesian3, Color } from "cesium";
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
 
 let drawingEnabled = false;
@@ -84,10 +83,10 @@ const drawSelector = (viewer, movement) =>  {
 		// Mouse cartographic position (rectangle needs that not the cartesian location)
 		tempCartographic = Cartographic.fromCartesian(cartesian, viewer.scene.globe.ellipsoid);
 
-	  	if (!firstPointSet)  {
+		if (!firstPointSet)  {
 			Cartographic.clone(tempCartographic, firstPoint);
 			firstPointSet = true;
-	  	} else  {
+		} else  {
 			// We order the points so the rectangle draws correctly
 			rectangleSelector.east = Math.max(tempCartographic.longitude, firstPoint.longitude);
 			rectangleSelector.west = Math.min(tempCartographic.longitude, firstPoint.longitude);

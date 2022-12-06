@@ -8,7 +8,6 @@ const { check, validationResult } = require('express-validator');
 
 // Database Schema Imports
 const User = require("./db_schemas/userSchema"); // Get the student schema 
-const Student = require("./db_schemas/studentSchema"); // Get the student schema 
 const favoriteFilters = require("./db_schemas/favoriteSchema");
 const { Error } = require('mongoose');
 

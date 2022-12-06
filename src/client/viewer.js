@@ -14,7 +14,6 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
-import logMessage from "./js/customLog"; // Example custom function import
 import {generateDisasterPins, setDisasterPinViewer} from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
 import { addSelectorToViewer, drawSelector, endDrawRegion, getSelector, startDrawRegion } from "./js/selectRegion";
@@ -50,17 +49,14 @@ fetch("http://localhost:8080/NASA/all-disasters", {
 	});
 });
 
-// filterRegion is a rectangle entity that user draws on globe
-const filterRegion = addSelectorToViewer(viewer);
+// Add the selector for a region to the viewer
+addSelectorToViewer(viewer);
 
 // Set the drawEventHandler actions 
 const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
 drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN);
 drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE);
 drawEventHandler.setInputAction(() =>  endDrawRegion(viewer), ScreenSpaceEventType.LEFT_UP);
-//Hide the selector by clicking anywhere
-//drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
-
 
 // Handle setup of the popup div for when pins are clicked
 const popupDiv = document.getElementById("popup");
@@ -81,8 +77,6 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 		// Handle the pop up div information
 		popupDiv.style.display = "block";
 		popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value + "\nLatitude: " + pickedFeature.id._properties._lat._value + "\nLongitude: " + pickedFeature.id._properties._lon._value + "\nBegan: " + pickedFeature.id._properties._date._value;
-		
-		
 		
 		// Get the terrain based location of the entity we picked 
 		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);
@@ -107,13 +101,4 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 		// No pin selected so hide the pop-up
 		popupDiv.style.display = "none";
 	}
-
 }, ScreenSpaceEventType.LEFT_CLICK);
-
-
-// Test the custom function I imported
-logMessage("Viewer setup with building data!");
-// Test making an api call to the backend express app
-
-let req2 = fetch("http://localhost:8080/api/test");
-req2.then(response => console.log(response));

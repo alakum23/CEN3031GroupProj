@@ -1,5 +1,7 @@
 // Import dependencies for this function
-import { PinBuilder, Cartesian3, Viewer, VerticalOrigin, HeightReference, NearFarScalar, Color, Billboard } from "cesium";
+import { PinBuilder, Cartesian3, Viewer, VerticalOrigin, HeightReference, NearFarScalar, Color } from "cesium";
+
+// Images from https://www.flaticon.com/free-icons/
 import * as wildfireImg from "../img/wildfirePinImg.png"
 import * as earthquakeImg from "../img/earthquakePinImg.png"
 import * as volcanoImg from "../img/volcanoPinImg.png"
@@ -13,20 +15,6 @@ import * as manmadeImg from "../img/manmadePinImg.png"
 import * as watercolorImg from "../img/watercolorPinImg.png"
 import * as droughtImg from "../img/droughtPinImg.png"
 import * as dustStormImg from "../img/dustStormPinImg.png"
-
-//<a href="https://www.flaticon.com/free-icons/earthquake" title="earthquake icons">Earthquake icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/earthquake" title="earthquake icons">Earthquake icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/volcano" title="volcano icons">Volcano icons created by GOWI - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/wildfire" title="wildfire icons">Wildfire icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/forest-fire" title="forest fire icons">Forest fire icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/tornado" title="tornado icons">Tornado icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/cyclone" title="cyclone icons">Cyclone icons created by Karacis - Flaticon</a>
-
-
-// Rework to be add pins to viewer
-// With a set pinGenerationViewer function
-// And a method to get the disaster pins
-// Export those and we can use them in the HTML UI functions
 
 let viewer;
 let disasterPins = [];

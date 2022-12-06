@@ -1,13 +1,10 @@
 if (module.hot) { module.hot.accept(); }
 import "./css/login.css";
 
-
 const form1 = document.getElementById('form1');
 form1.style.display = "block";
 const form2 = document.getElementById('form2');
 form2.style.display = "none";
-
-const btn = document.getElementById('btn');
 
 window.signinFunc = function()  {
     document.getElementById("icon").className = "active";
