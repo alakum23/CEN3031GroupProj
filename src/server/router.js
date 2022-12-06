@@ -48,6 +48,12 @@ router.put('/mongoose/filters/add', [
     check('disasterType').optional().isString().withMessage('disasters must be real disasters'),
     check('userId').optional().isNumeric().withMessage('user id must be a valid id'),
 ], async(req, res) => {
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const filter = new favoriteFilters({
         location: req.body.locaiton,
         startDate: req.body.startDate,
@@ -58,7 +64,7 @@ router.put('/mongoose/filters/add', [
 
     try  {
         // Call to save the student to the database
-        let result = await filter.save();
+        await filter.save();
 
         // Return Success Message
         res.send({msg: "Added One Filter"});
@@ -71,9 +77,14 @@ router.put('/mongoose/filters/add', [
 
 // Sample route for adding info to mongoose
 router.put('/mongoose/user/add', [
-    check('user').isString().withMessage("Username must be a string"),
-    check('pass').isString().withMessage("Password must be a string")
+    check('user').isString().trim().escape().withMessage("Username must be a string"),
+    check('pass').isString().trim().escape().withMessage("Password must be a string")
 ], async (req, res) => {
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
     // Ensure username is not already taken
     try  {
@@ -96,7 +107,7 @@ router.put('/mongoose/user/add', [
 
     try  {
         // Call to save the user to the database
-        let result = await newUser.save();
+        await newUser.save();
         // Return Success Message
         res.send({ response: "Added One User"});
     } catch (error)  {
@@ -109,12 +120,16 @@ router.put('/mongoose/user/add', [
 
 // We will use this for "sign in"
 router.put('/mongoose/user/find', [
-    check('user').isString().withMessage("Username must be a string"),
-    check('pass').isString().withMessage("Password must be a string")
+    check('user').isString().trim().escape().withMessage("Username must be a string"),
+    check('pass').isString().trim().escape().withMessage("Password must be a string")
 ], async (req, res) => {
-    // Get all records in database
-    // You should do error handling and stuff here...
-    //if query is not null, then allow login
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Check if login is valid
     try  {
         let query = await User.findOne({
             username: req.body.user,

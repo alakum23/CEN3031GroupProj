@@ -59,8 +59,7 @@ window.saveCurrentFilter = async function()  {
     if (startDateInput !== '' && endDateInput !== '')  {
         bodyObj["start"] = startDateInput;
         bodyObj["end"] = endDateInput;
-    } else if (startDateInput === '' && endDateInput === '')  {
-    } else  {
+    } else if (!(startDateInput === '' && endDateInput === ''))  {
         alert("Provide either both a start and end date or leave both blank");
         return;
     }

@@ -8,18 +8,21 @@ body,
 }
 
 .login {
-  background-color: #d3d3d3;
-  font-family: 'Montserrat', sans-serif;
+  background: url(https://picsum.photos/id/1004/5616/3744) no-repeat center center #505050;   
+  background-size: cover;
+  background-color: #505050;
+
   color: #fff;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   letter-spacing: 1px;
+
   position: relative;
   height: 560px;
   width: 405px;
   margin: auto;
   padding: 60px 60px;
-  background: url(https://picsum.photos/id/1004/5616/3744) no-repeat   center center #505050;   
-  background-size: cover;
+  
   box-shadow: 0px 30px 60px -5px #000;
 }
 
@@ -39,18 +42,19 @@ button:focus  {
 
 #signinbtn{
   background-color: transparent;
-  font-family: 'Montserrat', sans-serif;
-  color: #fff;
-  font-size: 30px;
-  letter-spacing: 1px;
-  border: none;
-  padding-left: 12px;
-  font-size: 22px;
-  text-transform: uppercase;
-  padding-bottom: 5px;
-  letter-spacing: 2px;
+
   display: inline-block;
+
+  color: #fff;
+  font-size: 22px;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 100;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+
+  padding-left: 12px;
+  padding-bottom: 5px;
 }
 #signinbtn:hover  {
   background: #9aa9c1;
@@ -59,38 +63,38 @@ button:focus  {
 
 #signupbtn{
   background-color: transparent;
-  font-family: 'Montserrat', sans-serif;
+
+  display: inline-block;  
+  
   color: #fff;
-  font-size: 30px;
-  letter-spacing: 1px;
-  border:none;
-  padding-left: 12px;
   font-size: 22px;
-  text-transform: uppercase;
-  padding-bottom: 5px;
-  letter-spacing: 2px;
-  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 100;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border:none;
+
+  padding-left: 12px;
+  padding-bottom: 5px;
 }
 #signupbtn:hover  {
   background: #9aa9c1;
 }
 
 #signin{
+  background-color: transparent;
+
+  display: inline-block;
+
+  color: #fff;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 20;
+  letter-spacing: 1px;
   text-align: center;
 
-  background-color: transparent;
-  font-family: 'Montserrat', sans-serif;
-  color: #fff;
-  letter-spacing: 1px;
-  /* border: none; */
   padding-left: 12px;
-  font-size: 15px;
-  /* text-transform: uppercase; */
   padding-bottom: 2px;
-  letter-spacing: 1px;
-  display: inline-block;
-  font-weight: 20;
   margin: auto;
 }
 #signin:hover {
@@ -98,22 +102,21 @@ button:focus  {
 }
 
 #signup{
-  text-align: center;
+  display: inline-block;
 
   background-color: transparent;
-  font-family: 'Montserrat', sans-serif;
-  color: #fff;
-  letter-spacing: 1px;
-  /* border: none; */
-  padding-left: 12px;
-  font-size: 15px;
-  /* text-transform: uppercase; */
-  padding-bottom: 2px;
-  letter-spacing: 1px;
-  display: inline-block;
-  font-weight: 20;
-  margin: auto;
 
+  color: #fff;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 20;
+  letter-spacing: 1px;
+
+  padding-left: 12px;
+  padding-bottom: 2px;
+
+  margin: auto;
 }
 #signup:hover {
   background: #9aa9c1
@@ -157,7 +160,6 @@ span {
 }
 
 .text {
-  border: none;
   width: 89%;
   padding: 10px 20px;
   display: block;

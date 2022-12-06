@@ -7,13 +7,6 @@ form1.style.display = "block";
 const form2 = document.getElementById('form2');
 form2.style.display = "none";
 
-// var change_class=document.getElementById("active");
-// change_class.onclick=function()
-// {
-//   var icon=document.getElementById("icon");
-//   icon.className="fa fa-gear";
-// }
-
 const btn = document.getElementById('btn');
 
 window.signinFunc = function()  {
