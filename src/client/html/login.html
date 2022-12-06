@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<title>HazardVis</title>
+    	<meta charset="utf-8">
+  	</head>
+    <div class="login">
+  		<h2 class="active" id="icon"> 
+    		<button id="signinbtn" onclick="signinFunc()"> Sign in </button> 
+  		</h2>
+  		<h2 class="nonactive" id ="icon2"> 
+    		<button id="signupbtn" onclick="signUpFunc()"> Sign up </button>  
+  		</h2>
+
+  		<form id = "form1">
+    		<input type="input" id="username" class="text" name="username">
+     		<span>username</span>
+    		<br> 
+    		<br>
+    		<br>
+    		<input type="password" id="pwd" class="text" name="password">
+    		<span>password</span>
+    		<br>
+    		<br>
+    		<br>
+    		<button id="signin" type="button" onclick="authenticateUser()">Sign In</button>
+    		<hr>
+  		</form>
+
+  		<form id="form2">
+    		<input type="text" id="SUuser" class="text" name="username">
+     		<span>Enter desired username</span>
+    		<br> 
+    		<br>
+    		<br>
+    		<input type="password" id ="SUpass" class="text" name="password">
+    		<span>Enter desired password</span>
+    		<br>
+    		<br>
+    		<button id="signup" type ="button" onclick="createUser()">Sign Up</button>
+    		<hr>
+  		</form>
+
+	</div>
+</html>
+
+

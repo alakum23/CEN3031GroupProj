@@ -1,55 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>HazardVis</title>
-    <meta charset="utf-8">
-</head>
-    
-    <!-- <button id="pageButton" onclick="buttonClicked()">Click Me!</button> -->
-    <!-- <div id="overlay" > -->
-        <div class="navBar" style = "color: blue">
+    <head>
+        <title>HazardVis</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div class = "parent">
+            <button type="button" class="hamburger-button" onclick="toggleNavbar()">
+                Filters
+            </button>
+            <div id="navBar" style="display: none;">
+                <fieldset>
+                    <legend>Select Dates</legend>
+                    <div id="searchDate" >
+                        <label for="startDate">Start Day</label>
+                        <input type="date" id="startDate" class="search-input1" placeholder="mm/dd/yyyy" name="startDate"/> 
+                    </div>
+                    <div id="searchDate">
+                        <label for="endDate">End Day</label>
+                        <input type="date" id="endDate" class="search-input1" placeholder="mm/dd/yyyy" name="endDate"/> 
+                    </div>
+                </fieldset>
 
-            <!-- <div class="search-container" style = "float:left">  -->
-                <text style="float:left; padding: 15px" >Date: </text>
-                <div id="searchDate" >
-                    <input type="date" name="search-date" class="search-input"/> 
-                    <button class="search-button" onclick="searchDate()">&#x1F50D</button>
-                </div>
-            <!-- </div> -->
-            
-            <text style="float:left; padding: 15px">Location: </text>
-                <div id="searchLocation" >
-                    <input type="text" name="search-location" placeholder = "Enter specific location" class="search-input"/> 
-                    <button class="search-button" onclick="searchLocation()">&#x1F50D</button> 
-                </div>
+                <fieldset>
+                    <legend>Select Disaster Types</legend>
+                    <div id="searchNaturalDisaster" >
+                        <div>
+                            <input type="checkbox" id="drought" name="drought" checked>
+                            <label for="drought">Drought</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="dustHaze" name="dustHaze" checked>
+                            <label for="dustHaze">Dust & Haze</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="earthquakes" name="earthquakes" checked>
+                            <label for="earthquakes">Earthquakes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="floods" name="floods" checked>
+                            <label for="floods">Floods</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="landslides" name="landslides" checked>
+                            <label for="landslides">Landslides</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="severeStorms" name="severeStorms" checked>
+                            <label for="severeStorms">Severe Storms</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="snow" name="snow" checked>
+                            <label for="snow">Snow</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="wildfires" name="wildfires" checked>
+                            <label for="wildfires">Wildfires</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="volcanoes" name="volcanoes" checked>
+                            <label for="volcanoes">Volcanoes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tempExtremes" name="tempExtremes" checked>
+                            <label for="tempExtremes">Temperature Extremes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="seaLakeIce" name="seaLakeIce" checked>
+                            <label for="seaLakeIce">Icebergs</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="waterColor" name="waterColor" checked>
+                            <label for="waterColor">Water Discoloring</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="manmade" name="manmade" checked>
+                            <label for="manmade">Manmade</label>
+                        </div>
+                    </div> 
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Select Location</legend>
+                    <div class="location-fields">
+                        <button class="location-button" onclick="startLocationSelection()">Select Location</button> 
+                        <button class="location-button" onclick="clearLocationSelection()">Unselect Location</button>        
+                    </div>
+                </fieldset>
 
-            <text style="float:left; padding: 15px">Natural Disaster: </text>
-            <div id="searchNaturalDisaster" >
-                <input type="text" name="search-disaster" placeholder = "Enter specific natural disaster" class="search-input"/> 
-                <button class="search-button">&#x1F50D</button> 
+                <fieldset>
+                    <legend>Apply Filters</legend>
+                    <div>
+                        <button class="search-button" onclick="applyCurrentFilter()">&#x1F50D</button>
+                        <button class="save-filter-button" onclick="saveCurrentFilter()">Save Current Filters</button>
+                        
+                        <label for="Saved Filters">Apply Saved Filter</label>
+                        <select class="" id="savedFiltersDropdown" name="Saved Filters">
+                            <!-- Options For Old Filters Here -->
+                        </select> 
+                    </div>
+                </fieldset>
             </div>
+            <div id="cesiumContainer"></div>
         </div>
-    <!-- </div> -->
-<body>
-    <button class="pageButton" onclick="buttonClicked()">Click Me!</button>
-    <div id="cesiumContainer"></div>
-    
-</body>
+        <div id="popup">
+            NASA DATA popup
+        </div>
+    </body>
 </html>
-
-<script>
-    function searchDate(){
-        console.log("entered");
-        // let input = document.getElementByID('search-date').value;
-        let input = document.getElementsByName('search-date').value;
-        console.log(input);
-    }
-
-    function searchLocation(){
-        console.log("entered");
-        // let input = document.getElementByID('search-date').value;
-        let input = document.getElementsByName('search-location').value;
-        console.log(input);
-    }
-</script>
-

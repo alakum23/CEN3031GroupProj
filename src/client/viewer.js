@@ -9,15 +9,14 @@ if (module.hot) {
 }
 
 // Import some Cesium assets (functions, classes, etc)
-import { Rectangle, Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, sampleTerrainMostDetailed, KeyboardEventModifier, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
+import { Ion, Viewer, ScreenSpaceEventHandler, createWorldTerrain, sampleTerrainMostDetailed, createOsmBuildings, Color, Cartesian3, Cartographic, ScreenSpaceEventType, HeadingPitchRange } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 // Import custom assets (functions, classes, etc)
 import "./css/viewer.css";  // Incluse the page's CSS functions here
-import logMessage from "./js/customLog"; // Example custom function import
-import generateDisasterPins from "./js/generateDisasterPins";
+import {generateDisasterPins, setDisasterPinViewer} from "./js/generateDisasterPins";
 import "./js/htmlFuncs";  // Include the functions used by the HTML UI elements here
-import { addSelectorToViewer, drawSelector, endDrawRegion, hideSelector, startDrawRegion } from "./js/selectRegion";
+import { addSelectorToViewer, drawSelector, endDrawRegion, getSelector, startDrawRegion } from "./js/selectRegion";
 
 // Your access token can be found at: https://cesium.com/ion/tokens.
 // This is the default access token
@@ -36,71 +35,49 @@ viewer.scene.primitives.add(createOsmBuildings());
 viewer.scene.globe.depthTestAgainstTerrain = false;
 viewer.scene.globe.enableLighting = true;
 
+// Setup disaster pin functions for viewer
+setDisasterPinViewer(viewer);
 
 // Make a request for disaster data
-let req = fetch("http://localhost:8080/NASA/all-disasters", {
+fetch("http://localhost:8080/NASA/all-disasters", {
 	method: 'GET',
     json: true,
-}).then(value =>  value.json().then(data =>  {
-    console.log(data);
-
+}).then(value =>  value.json()).then(data =>  {
 	// Make an array of pins for representing disasters (will eventually become HTML button function too)
-	generateDisasterPins(data.events).then((entities) =>  {
-		entities.forEach((entity) =>  { 
-			viewer.entities.add(entity);
-		});
+	generateDisasterPins(data.events).then(() =>  {
+		console.log("ADDED");
 	});
-}));
+});
 
-
-
-
-// filterRegion is a rectangle entity that user draws on globe
-const filterRegion = addSelectorToViewer(viewer);
+// Add the selector for a region to the viewer
+addSelectorToViewer(viewer);
 
 // Set the drawEventHandler actions 
 const drawEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
-drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN, KeyboardEventModifier.SHIFT);
-drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE, KeyboardEventModifier.SHIFT);
-drawEventHandler.setInputAction(() =>  {
-	endDrawRegion(viewer);
+drawEventHandler.setInputAction(() => startDrawRegion(viewer), ScreenSpaceEventType.LEFT_DOWN);
+drawEventHandler.setInputAction((event) => drawSelector(viewer, event), ScreenSpaceEventType.MOUSE_MOVE);
+drawEventHandler.setInputAction(() =>  endDrawRegion(viewer), ScreenSpaceEventType.LEFT_UP);
 
-	// BELOW CODE GETS THE CORNERS FROM THE RECTANGLE AND QUERIES NASA FOR ALL EVENTS IN THAT REGION
-	const rect = filterRegion.rectangle.coordinates._value;
-	const northwest = Rectangle.northwest(rect);
-	const southeast = Rectangle.southeast(rect);
-
-	// Convert to degrees for NASA
-	const toDegrees = (radians) => radians * 180 / Math.PI;
-
-	const boundaryBoxCoord = toDegrees(northwest.longitude) + "," + 
-						     toDegrees(northwest.latitude) + "," + 
-						     toDegrees(southeast.longitude) + "," + 
-						     toDegrees(southeast.latitude);
-
-	// This is the sample of how to query nasa for a bounding box (only use await if you don't use .then())
-	fetch("http://localhost:8080/NASA/disasters", {
-		method: 'POST',
-    	json: true,
-    	body:  JSON.stringify({
-			boundaryBox: boundaryBoxCoord,
-			status: "open"
-    	})
-	}).then(value =>  value.json().then(data =>  {
-    	console.log(data);
-	}));
-
-}, ScreenSpaceEventType.LEFT_UP, KeyboardEventModifier.SHIFT);
-//Hide the selector by clicking anywhere
-drawEventHandler.setInputAction(() => hideSelector(), ScreenSpaceEventType.LEFT_CLICK);
-
+// Handle setup of the popup div for when pins are clicked
+const popupDiv = document.getElementById("popup");
+popupDiv.style.display = "none";
+viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function(commandInfo)  {
+	popupDiv.style.display = "none";
+});
 
 // Setup mouse click action to make things in viewer clickable
 viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movement)  {
 	// Anything from Cesium left clicking that we want to happen we can put here...
+	const pickedFeature = viewer.scene.pick(movement.position);
 
-	const pickedFeature = viewer.scene.pick(movement.position);	
 	if (pickedFeature)  {
+		// Ensure we didn't click on the drawn rectangle selector
+		if (pickedFeature.id === getSelector())  { return; }
+		
+		// Handle the pop up div information
+		popupDiv.style.display = "block";
+		popupDiv.innerText = "Name: " + pickedFeature.id._properties._disasterName._value + "\nLatitude: " + pickedFeature.id._properties._lat._value + "\nLongitude: " + pickedFeature.id._properties._lon._value + "\nBegan: " + pickedFeature.id._properties._date._value;
+		
 		// Get the terrain based location of the entity we picked 
 		const cartographicPos = Cartographic.fromCartesian(pickedFeature.primitive.position);
 		const terrainLocation = await sampleTerrainMostDetailed(viewer.terrainProvider, [cartographicPos]);
@@ -120,29 +97,8 @@ viewer.screenSpaceEventHandler.setInputAction(async function onLeftClick(movemen
 		viewer.flyTo(tempEntity, { 
 			offset: new HeadingPitchRange(undefined, -Math.PI/6, 1000) 
 		}).then(() => viewer.entities.remove(tempEntity));
+	} else  {
+		// No pin selected so hide the pop-up
+		popupDiv.style.display = "none";
 	}
-
 }, ScreenSpaceEventType.LEFT_CLICK);
-
-
-// Test the custom function I imported
-logMessage("Viewer setup with building data!");
-
-// Test making an api call to the backend express app
-let req2 = fetch("http://localhost:8080/api/test");
-req2.then(response => console.log(response));
-
-fetch("http://localhost:8080/mongoose/filters/add", {
-	method: 'PUT',
-	json: true,
-	body:  JSON.stringify({
-		//PUT YOUR STUFF HERE
-		location: "STRING",
-		startDate: "STRING",
-        endDate: "STRING",
-        disasterType: ["STRING"],
-        userId: "STRING",
-	})
-}).then(res => res.json()).then((data) => {
-	console.log(data);
-})

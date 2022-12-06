@@ -1,0 +1,246 @@
+body,
+.signin {
+  background-color: #d3d3d3;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.login {
+  background: url(https://picsum.photos/id/1004/5616/3744) no-repeat center center #505050;   
+  background-size: cover;
+  background-color: #505050;
+
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+
+  position: relative;
+  height: 560px;
+  width: 405px;
+  margin: auto;
+  padding: 60px 60px;
+  
+  box-shadow: 0px 30px 60px -5px #000;
+}
+
+button  {
+  transition-duration: 0.4s;
+  border-color: transparent;
+  border-radius: 5px;
+}
+button:hover  {
+  background: #9aa9c1;
+  box-shadow: 0px 0px 15px 20px rgb(154, 169, 193, 1);
+  cursor: pointer;
+}
+button:focus  {
+  outline: none;
+}
+
+#signinbtn{
+  background-color: transparent;
+
+  display: inline-block;
+
+  color: #fff;
+  font-size: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+
+  padding-left: 12px;
+  padding-bottom: 5px;
+}
+#signinbtn:hover  {
+  background: #9aa9c1;
+}
+
+
+#signupbtn{
+  background-color: transparent;
+
+  display: inline-block;  
+  
+  color: #fff;
+  font-size: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border:none;
+
+  padding-left: 12px;
+  padding-bottom: 5px;
+}
+#signupbtn:hover  {
+  background: #9aa9c1;
+}
+
+#signin{
+  background-color: transparent;
+
+  display: inline-block;
+
+  color: #fff;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 20;
+  letter-spacing: 1px;
+  text-align: center;
+
+  padding-left: 12px;
+  padding-bottom: 2px;
+  margin: auto;
+}
+#signin:hover {
+  background: #9aa9c1
+}
+
+#signup{
+  display: inline-block;
+
+  background-color: transparent;
+
+  color: #fff;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 20;
+  letter-spacing: 1px;
+
+  padding-left: 12px;
+  padding-bottom: 2px;
+
+  margin: auto;
+}
+#signup:hover {
+  background: #9aa9c1
+}
+
+
+form {
+  padding-top: 80px;
+}
+
+.active {
+  border-bottom: 2px solid #1161ed;
+}
+
+.nonactive {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+  padding-left: 12px;
+  font-size: 22px;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  letter-spacing: 2px;
+  display: inline-block;
+  font-weight: 100;
+}
+
+h2:first-child {
+  padding-left: 0px;
+}
+
+span {
+  text-transform: uppercase;
+  font-size: 12px;
+  opacity: 0.4; 
+  display: inline-block;
+  position: relative;
+  top: -65px;
+  transition: all 0.5s ease-in-out;
+}
+
+.text {
+  width: 89%;
+  padding: 10px 20px;
+  display: block;
+  height: 15px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0);
+  overflow: hidden;
+  margin-top: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.text:focus {
+  outline: 0;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0);
+}
+
+.text:focus + span {
+  opacity: 0.6;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+}
+
+
+
+input {
+  display: inline-block;
+  padding-top: 20px;
+  font-size: 14px;
+}
+
+h2,
+span,
+
+label {
+  display: inline-block;
+  padding-top: 10px;
+  padding-left: 5px;
+}
+
+.signin {
+  background-color: #1161ed;
+  color: #FFF;
+  width: 100%;
+  padding: 10px 20px;
+  display: block;
+  height: 39px;
+  border-radius: 20px;
+  margin-top: 30px;
+  transition: all 0.5s ease-in-out;
+  border: none;
+  text-transform: uppercase;
+}
+
+.signin:hover {
+  background: #4082f5;
+  box-shadow: 0px 4px 35px -5px #4082f5;
+  cursor: pointer;
+}
+
+.signin:focus {
+  outline: none;
+}
+
+hr {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  top: 85px;
+  position: relative;
+}
+
+a {
+  text-align: center;
+  display: block;
+  top: 120px;
+  position: relative;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.2);
+}

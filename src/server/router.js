@@ -1,13 +1,15 @@
 //Node JS package imports 
 const path = require('path');   // For common operations with file paths
 const express = require('express'); // For setting up the router
+const SHA256 = require("crypto-js/sha256");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); // For requests to NASA
 require('dotenv').config(); // For reading needed info from .env for NASA connection
 const { check, validationResult } = require('express-validator');
 
 // Database Schema Imports
-const Student = require("./db_schemas/studentSchema"); // Get the student schema 
+const User = require("./db_schemas/userSchema"); // Get the student schema 
 const favoriteFilters = require("./db_schemas/favoriteSchema");
+const { Error } = require('mongoose');
 
 // Creating express router
 const router = express.Router();
@@ -17,6 +19,10 @@ const BUILD_DIR = path.join(__dirname, '../../dist');
 //------------------------------WEBPAGE ROUTES------------------------------//
 
 // Define all the application routes here
+router.get('/login', [], (req, res) =>  {
+    res.sendFile(path.join(BUILD_DIR, './login.html'))
+});
+
 router.get('/viewer', [], (req, res) =>  {
     res.sendFile(path.join(BUILD_DIR, './viewer.html'))
 });
@@ -37,8 +43,13 @@ router.put('/mongoose/filters/add', [
     check('endDate').optional().trim().isDate().withMessage('end date must be a valid date'),
     check('disasterType').optional().isString().withMessage('disasters must be real disasters'),
     check('userId').optional().isNumeric().withMessage('user id must be a valid id'),
-
 ], async(req, res) => {
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const filter = new favoriteFilters({
         location: req.body.locaiton,
         startDate: req.body.startDate,
@@ -49,46 +60,85 @@ router.put('/mongoose/filters/add', [
 
     try  {
         // Call to save the student to the database
-        let result = await filter.save();
+        await filter.save();
 
         // Return Success Message
         res.send({msg: "Added One Filter"});
     } catch (error)  {
         // Handle Errors that could be thrown by the await
         console.log(error);
-        res.send({msg: "Could Not Add Filter"});
-    }
-})
-
-//  Sample route for adding info to mongoose
-router.get('/mongoose/test/add', [], async (req, res) => {
-    // Define a new student object to add
-    const stud = new Student({
-        roll_no: 1001,
-        name: 'Madison Hyde',
-        year: 3,
-        subjects: ['DBMS', 'OS', 'Graph Theory', 'Internet Programming']
-    });
-
-    try  {
-        // Call to save the student to the database
-        let result = await stud.save();
-
-        // Return Success Message
-        res.send("Added One Student");
-    } catch (error)  {
-        // Handle Errors that could be thrown by the await
-        console.log(error);
-        res.send("Could Not Add Student");
+        res.status(400).send({msg: "Could Not Add Filter"});
     }
 });
 
-//  Sample route for getting info from Mongoose
-router.get('/mongoose/test/find', [], async (req, res) => {
-    let query = await Student.find({}); // Get all records in database
-    // You should do error handling and stuff here...
-    console.log(query);
-    res.send(query);
+// Sample route for adding info to mongoose
+router.put('/mongoose/user/add', [
+    check('user').isString().trim().escape().withMessage("Username must be a string"),
+    check('pass').isString().trim().escape().withMessage("Password must be a string")
+], async (req, res) => {
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Ensure username is not already taken
+    try  {
+        let response = await User.findOne({
+            username: req.body.user
+        });
+        if (response)  { throw new Error("Username already exists in DB!"); }
+    } catch (error)  {
+        console.log(error);
+        res.status(400).send({ response: "Could Not Add User"});
+        return;
+    }
+    
+    // Define a new user object to add
+    const newUser = new User({
+        username: req.body.user, 
+        password: SHA256(req.body.pass).toString(), // Encrypt with SHA256
+        favLocation: []
+    });
+
+    try  {
+        // Call to save the user to the database
+        await newUser.save();
+        // Return Success Message
+        res.send({ response: "Added One User"});
+    } catch (error)  {
+        // Handle Errors that could be thrown by the await
+        console.log(error);
+        res.status(400).send({ response: "Could Not Add User"});
+    }
+});
+
+
+// We will use this for "sign in"
+router.put('/mongoose/user/find', [
+    check('user').isString().trim().escape().withMessage("Username must be a string"),
+    check('pass').isString().trim().escape().withMessage("Password must be a string")
+], async (req, res) => {
+    // Handle the validation error responses
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Check if login is valid
+    try  {
+        let query = await User.findOne({
+            username: req.body.user,
+            password: SHA256(req.body.pass).toString(), // Encrypt with SHA256
+        });
+        if (query === null)  { throw new Error('NOT FOUND!'); }
+        console.log(query);
+        console.log("FOUND");
+        res.send(query);
+    } catch  {
+        console.log("NOT FOUND");
+        res.status(400).send({message: 'Could not find user!'})
+    }   
 });
 
 //------------------------------NASA DATASET ROUTES------------------------------//
@@ -122,7 +172,7 @@ router.post('/NASA/disasters', [
     // Handle the validation error responses
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() });
     }
 
     // Do rest of logic
@@ -133,8 +183,8 @@ router.post('/NASA/disasters', [
 
     // Append filter params if they exist
     if (req.body.categories !== undefined)  { params.append("category", req.body.categories.toString()); }
-    if (req.body.start !== undefined)  { params.append("start", req.body.pastDataStart); }
-    if (req.body.end !== undefined)  { params.append("end", req.body.pastDataEnd); }    
+    if (req.body.start !== undefined)  { params.append("start", req.body.start); }
+    if (req.body.end !== undefined)  { params.append("end", req.body.end); }    
     if (req.body.boundaryBox !== undefined)  { params.append("bbox", req.body.boundaryBox); }
 
     // Log the params
@@ -170,7 +220,7 @@ router.get('/NASA/all-disasters', [], async (req, res) => {
 
 //Specify the default webpage last!
 router.get('*', (req, res) =>  {
-    res.redirect('/viewer');
+    res.redirect('/login');
 });
 
 // Exporting router
