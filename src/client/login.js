@@ -54,6 +54,7 @@ window.authenticateUser = async function()  {
     })
     .catch((error) =>  {
         // Handle any login error here...
+        alert("Invalid user credentials!");
         console.log(error);
     })
 }
@@ -91,6 +92,7 @@ window.createUser = async function()  {
     })
     .catch((error) =>  {
         // Handle any login error here...
+        alert("Unable to create new account!");
         console.log(error);
     })
 }
