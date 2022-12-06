@@ -17,9 +17,6 @@ const router = express.Router();
 router.use(express.json({limit: '1mb', type: `*/*`}));
 const BUILD_DIR = path.join(__dirname, '../../dist');
 
-// Creating salt for hashing:
-const salt = 'f844b09ff50c';
-
 //------------------------------WEBPAGE ROUTES------------------------------//
 
 // Define all the application routes here
